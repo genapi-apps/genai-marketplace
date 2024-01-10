@@ -6,10 +6,11 @@ import { nftsLargeImgs } from "@/contains/fakeData";
 
 export interface SectionLargeSliderProps {
   className?: string;
+  moduleList:any
 }
 
 const SectionLargeSlider: FC<SectionLargeSliderProps> = ({
-  className = "",
+  className = "",moduleList
 }) => {
   const [indexActive, setIndexActive] = useState(0);
 
@@ -33,7 +34,7 @@ const SectionLargeSlider: FC<SectionLargeSliderProps> = ({
 
   return (
     <div className={`nc-SectionLargeSlider relative ${className}`}>
-      {[1, 1, 1].map((_, index) =>
+      {moduleList.map((item:any, index:any) =>
         indexActive === index ? (
           <CardLarge1
             key={index}
@@ -41,6 +42,7 @@ const SectionLargeSlider: FC<SectionLargeSliderProps> = ({
             featuredImgUrl={nftsLargeImgs[index]}
             onClickNext={handleClickNext}
             onClickPrev={handleClickPrev}
+            item={item}
           />
         ) : null
       )}

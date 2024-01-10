@@ -11,10 +11,11 @@ import { Transition } from "@/app/headlessui";
 
 export interface HeaderFilterSectionProps {
   className?: string;
+  moduleList:any
 }
 
 const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
-  className = "mb-12",
+  className = "mb-12",moduleList
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [tabActive, setTabActive] = useState("All NFTs");
@@ -27,7 +28,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {["All NFTs", "Arts", "Music", "Sports", "Jewels"].map(
+          {/* {["All NFTs", "Arts", "Music", "Sports", "Jewels"].map(
             (item, index) => (
               <NavItem
                 key={index}
@@ -37,7 +38,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
                 {item}
               </NavItem>
             )
-          )}
+          )} */}
         </Nav>
         <span className="block flex-shrink-0">
           <ButtonPrimary
@@ -93,7 +94,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
         leaveTo="opacity-0"
       >
         <div className="w-full border-b border-neutral-200 dark:border-neutral-700 my-8"></div>
-        <TabFilters />
+        <TabFilters moduleList={moduleList} />
       </Transition>
     </div>
   );

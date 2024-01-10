@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import BgGlassmorphism from "@/components/BgGlassmorphism/BgGlassmorphism";
 import SectionHowItWork from "@/components/SectionHowItWork/SectionHowItWork";
 import SectionLargeSlider from "./SectionLargeSlider";
@@ -13,10 +14,33 @@ import SectionGridFeatureNFT2 from "./SectionGridFeatureNFT2";
 import SectionSliderCategories from "@/components/SectionSliderCategories/SectionSliderCategories";
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionVideos from "./SectionVideos";
+import axios from 'axios'
 
 function PageHome() {
+  
+  const [moduleList, setModuleList] = useState()
+
+
+  useEffect(() => {
+    const getModule = async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getToken()}`
+          }
+        }
+      )  
+      setModuleList(response.data.data) 
+    }
+      
+    getModule()
+  }, [])
+
+  
   return (
-    <div className="nc-PageHome relative overflow-hidden">
+   moduleList && <div className="nc-PageHome relative overflow-hidden">
       <BgGlassmorphism />
 
       <div className="container relative mt-5 mb-20 sm:mb-24 lg:mt-20 lg:mb-32">
@@ -27,12 +51,12 @@ function PageHome() {
 
       <div className="bg-neutral-100/70 dark:bg-black/20 py-20 lg:py-32">
         <div className="container">
-          <SectionLargeSlider />
+          <SectionLargeSlider moduleList={moduleList} />
         </div>
       </div>
 
       <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
-        <SectionMagazine8 />
+        <SectionMagazine8  moduleList={moduleList} />
 
         <div className="relative py-20 lg:py-28">
           <BackgroundSection />
@@ -40,10 +64,11 @@ function PageHome() {
             sectionStyle="style2"
             data={Array.from("11111111")}
             boxCard="box4"
+             moduleList={moduleList} 
           />
         </div>
 
-        <SectionSliderCardNftVideo />
+        {/* <SectionSliderCardNftVideo  moduleList={moduleList}  /> */}
 
         <div className="relative py-20 lg:py-28">
           <BackgroundSection />
@@ -54,7 +79,7 @@ function PageHome() {
 
         <div className="relative py-20 lg:py-28">
           <BackgroundSection className="bg-neutral-100/70 dark:bg-black/20 " />
-          <SectionGridFeatureNFT2 />
+          <SectionGridFeatureNFT2  moduleList={moduleList}  />
         </div>
 
         <SectionSliderCategories />

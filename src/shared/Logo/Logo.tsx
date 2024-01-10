@@ -27,10 +27,12 @@ const Logo: React.FC<LogoProps> = ({
           className={`block h-8 sm:h-10 w-auto ${
             imgLight ? "dark:hidden" : ""
           }`}
-          src={img}
+          src={"/logo.png"}
           alt="Logo"
           sizes="200px"
           priority
+          width={400}
+          height={400}
         />
       ) : (
         "Logo Here"
@@ -38,10 +40,12 @@ const Logo: React.FC<LogoProps> = ({
       {imgLight && (
         <Image
           className="hidden h-8 sm:h-10 w-auto dark:block"
-          src={imgLight}
+           src={"/logo.png"}
           alt="Logo-Light"
           sizes="200px"
           priority
+           width={400}
+          height={400}
         />
       )}
     </Link>

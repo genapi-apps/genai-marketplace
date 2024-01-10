@@ -47,7 +47,8 @@ const sortOrderRadios = [
 ];
 
 //
-const TabFilters = () => {
+const TabFilters = ({moduleList}) => {
+  console.log(moduleList)
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
@@ -96,6 +97,8 @@ const TabFilters = () => {
   };
 
   // OK
+  const uniqueCategories =moduleList &&  Array.from(new Set(moduleList.map(item => item.category)));
+
   const renderTabsTypeOfSales = () => {
     return (
       <Popover className="relative">
@@ -139,7 +142,7 @@ const TabFilters = () => {
                 />
               </svg>
 
-              <span className="ml-2">Sale Types</span>
+              <span className="ml-2">Category</span>
               {!saleTypeStates.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
@@ -161,22 +164,23 @@ const TabFilters = () => {
                 <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
                   <div className="relative flex flex-col px-5 py-6 space-y-5">
                     <Checkbox
-                      name="All Sale Types"
-                      label="All Sale Types"
-                      defaultChecked={saleTypeStates.includes("All Sale Types")}
+                      name="All Category Types"
+                      label="All Category Types"
+                      defaultChecked={saleTypeStates.includes("All Category Types")}
                       onChange={(checked) =>
-                        handleChangeSaleType(checked, "All Sale Types")
+                        handleChangeSaleType(checked, "All Category Types")
                       }
                     />
                     <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-                    {typeOfSales.map((item) => (
-                      <div key={item.name} className="">
+                    
+                    {uniqueCategories && uniqueCategories.map((item:any) => (
+                      <div key={item} className="">
                         <Checkbox
-                          name={item.name}
-                          label={item.name}
-                          defaultChecked={saleTypeStates.includes(item.name)}
+                          name={item}
+                          label={item}
+                          defaultChecked={saleTypeStates.includes(item)}
                           onChange={(checked) =>
-                            handleChangeSaleType(checked, item.name)
+                            handleChangeSaleType(checked, item)
                           }
                         />
                       </div>
@@ -888,11 +892,11 @@ const TabFilters = () => {
     <div className="flex lg:space-x-4">
       {/* FOR DESKTOP */}
       <div className="hidden lg:flex space-x-4">
-        {renderTabsPriceRage()}
+        {/* {renderTabsPriceRage()} */}
         {renderTabsTypeOfSales()}
-        {renderTabsFileTypes()}
+        {/* {renderTabsFileTypes()} */}
         {renderTabsSortOrder()}
-        {renderTabVerifiedCreator()}
+        {/* {renderTabVerifiedCreator()} */}
       </div>
 
       {/* FOR RESPONSIVE MOBILE */}

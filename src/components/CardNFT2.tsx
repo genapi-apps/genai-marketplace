@@ -14,9 +14,11 @@ import useGetRandomData from "@/hooks/useGetRandomData";
 export interface CardNFT2Props {
   className?: string;
   isLiked?: boolean;
+  item:any;
 }
 
-const CardNFT2: FC<CardNFT2Props> = ({ className = "", isLiked }) => {
+const CardNFT2: FC<CardNFT2Props> = ({ className = "", isLiked, item }) => {
+  console.log(item)
   const { titleRd, nftImageRd } = useGetRandomData();
 
   const [itemType, setItemType] = useState<"video" | "audio" | "default">(
@@ -65,21 +67,19 @@ const CardNFT2: FC<CardNFT2Props> = ({ className = "", isLiked }) => {
           />
         </div>
 
-        {itemType === "video" && (
+        {/* {itemType === "video" && (
           <ItemTypeVideoIcon className="absolute bottom-2.5 right-2.5 w-7 h-7 md:w-9 md:h-9" />
         )}
         {itemType === "audio" && (
           <ItemTypeImageIcon className="absolute bottom-2.5 right-2.5 w-7 h-7 md:w-9 md:h-9" />
-        )}
-
-        {/* LIKE AND AVATARS */}
-        <div className="absolute top-2.5 left-2.5 z-10 flex items-center space-x-2">
+        )} */}
+ 
+        {/* <div className="absolute top-2.5 left-2.5 z-10 flex items-center space-x-2">
           <LikeButton liked={isLiked} className=" !h-9" />
           {renderAvatars()}
-        </div>
-
-        {/* ----TIME--- */}
-        <RemainingTimeNftCard contentClassName="right-5 top-1/2 -translate-y-1/2 pb-1" />
+        </div> */}
+ 
+        {/* <RemainingTimeNftCard contentClassName="right-5 top-1/2 -translate-y-1/2 pb-1" /> */}
 
         <div className="absolute left-[-1px] bottom-[-0.4px] ">
           <svg
@@ -96,13 +96,17 @@ const CardNFT2: FC<CardNFT2Props> = ({ className = "", isLiked }) => {
           </svg>
 
           <div className="absolute left-4 bottom-0 w-48 ">
-            <h2 className={`text-lg font-semibold `}>{titleRd}</h2>
+            <h2 className={`text-lg font-semibold `}>{item.name}</h2>
 
             <div className="w-full mt-1.5 flex justify-between items-end ">
-              <Prices labelTextClassName="bg-white dark:bg-neutral-900 " />
+              {/* <Prices labelTextClassName="bg-white dark:bg-neutral-900 " />
               <span className="block text-neutral-500 dark:text-neutral-400 text-xs">
                 11 in stock
+              </span> */}
+                 <span className="block text-neutral-500 dark:text-neutral-400 text-xs">
+               {item.description}
               </span>
+             
             </div>
           </div>
         </div>

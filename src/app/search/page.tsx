@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React,{useState, useEffect} from "react";
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
 import CardNFT from "@/components/CardNFT";
 import HeaderFilterSearchPage from "@/components/HeaderFilterSearchPage";
@@ -9,8 +10,29 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import Pagination from "@/shared/Pagination/Pagination";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 const PageSearch = ({}) => {
+  const [moduleList, setModuleList] = useState()
+
+
+  useEffect(() => {
+    const getModule = async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getToken()}`
+          }
+        }
+      )  
+      setModuleList(response.data.data) 
+    }
+      
+    getModule()
+  }, [])
+
   return (
     <div className={`nc-PageSearch `}>
       <div
@@ -72,12 +94,12 @@ const PageSearch = ({}) => {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
         <main>
           {/* FILTER */}
-          <HeaderFilterSearchPage />
+          <HeaderFilterSearchPage  moduleList={moduleList} />
 
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {Array.from("11111111").map((_, index) => (
-              <CardNFT key={index} />
+            {moduleList && moduleList.map((item:any, index:any) => (
+              <CardNFT key={index} item={item} />
             ))}
           </div>
 
