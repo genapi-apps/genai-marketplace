@@ -14,9 +14,10 @@ import useGetRandomData from "@/hooks/useGetRandomData";
 export interface CardNFTProps {
   className?: string;
   isLiked?: boolean;
+  item:any
 }
 
-const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked }) => {
+const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked ,item}) => {
   const { nftImageRd, titleRd } = useGetRandomData();
 
   const [itemType, setItemType] = useState<"video" | "audio" | "default">(
@@ -86,17 +87,17 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked }) => {
             99 in stock
           </span>
         </div>
-        <h2 className={`text-lg font-medium`}>{titleRd}</h2>
+        <h2 className={`text-lg font-medium`}>{item.name}</h2>
 
         <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div>
 
-        <div className="flex justify-between items-end">
+        {/* <div className="flex justify-between items-end">
           <Prices labelTextClassName="bg-white dark:bg-neutral-900" />
           <div className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
             <ClockIcon className="w-4 h-4" />
             <span className="ml-1 mt-0.5">14 hours left</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <Link href={"/nft-detail"} className="absolute inset-0"></Link>

@@ -13,12 +13,14 @@ export interface CardAuthorBox4Props {
   className?: string;
   following?: boolean;
   authorIndex?: number;
+  item:any
 }
 
 const CardAuthorBox4: FC<CardAuthorBox4Props> = ({
   className = "",
   following,
   authorIndex,
+  item
 }) => {
   const { personNameRd, nftsAbstractRd } = useGetRandomData();
   return (
@@ -26,7 +28,7 @@ const CardAuthorBox4: FC<CardAuthorBox4Props> = ({
       className={`nc-CardAuthorBox4 relative flex flex-col overflow-hidden group border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 group rounded-3xl hover:shadow-xl transition-shadow ${className}`}
     >
       <div className="relative flex-shrink-0 h-36">
-        {authorIndex && (
+        {/* {authorIndex && (
           <Badge
             className="absolute top-2 left-3 !font-semibold"
             name={
@@ -36,7 +38,7 @@ const CardAuthorBox4: FC<CardAuthorBox4Props> = ({
               authorIndex === 1 ? "red" : authorIndex === 2 ? "green" : "yellow"
             }
           />
-        )}
+        )} */}
 
         <NcImage
           containerClassName="flex h-full w-full flex-shrink-0 rounded-3xl overflow-hidden z-0"
@@ -74,20 +76,20 @@ const CardAuthorBox4: FC<CardAuthorBox4Props> = ({
         <div className="mt-2.5 flex items-center justify-between">
           <div>
             <h2 className={`text-base font-medium flex items-center`}>
-              <span className="">{personNameRd}</span>
+              <span className="">{item.name}</span>
               <VerifyIcon />
             </h2>
             <span className={`block mt-0.5 text-sm `}>
-              <span className="font-medium">12.321</span>
+              {/* <span className="font-medium">12.321</span> */}
               <span className={`ml-1.5 text-neutral-500 dark:text-neutral-400`}>
-                ETH
+                {item.category}
               </span>
             </span>
           </div>
-          <FollowButton
+          {/* <FollowButton
             sizeClass="px-4 py-2 min-w-[84px]"
             isFollowing={following}
-          />
+          /> */}
         </div>
       </div>
 

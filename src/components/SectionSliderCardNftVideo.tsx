@@ -11,10 +11,11 @@ export interface SectionSliderCardNftVideoProps {
   className?: string;
   heading?: string;
   subHeading?: string;
+  moduleList:any
 }
 
 const SectionSliderCardNftVideo: FC<SectionSliderCardNftVideoProps> = ({
-  className = "",
+  className = "",moduleList
 }) => {
   return (
     <div className={`nc-SectionSliderCardNftVideo ${className}`}>
@@ -62,7 +63,7 @@ const SectionSliderCardNftVideo: FC<SectionSliderCardNftVideoProps> = ({
               </Link>
             );
           }
-          return <CardNFTVideo key={index} featuredImage={item} />;
+          return <CardNFTVideo key={index} featuredImage={item}  />;
         }}
       />
     </div>

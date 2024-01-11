@@ -11,37 +11,95 @@ import { nftsImgs } from "@/contains/fakeData";
 import MySwitch from "@/components/MySwitch";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import NcImage from "@/shared/NcImage/NcImage";
+import axios from "axios";
 
-const plans = [
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[0],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[1],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[2],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[3],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[4],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[5],
-  },
-];
+// const plans = [
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[0],
+//   },
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[1],
+//   },
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[2],
+//   },
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[3],
+//   },
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[4],
+//   },
+//   {
+//     name: "Crypto Legend - Professor",
+//     featuredImage: nftsImgs[5],
+//   },
+// ];
+interface FormData {
+  royalties: string;
+  size: string;
+  propertie: string;
+  description: string;
+  external_link: string;
+  name: string;
+  screen_shot: string;
+  video: string;
+  audio: string;
+  _3D_model: string;
+  category:string;
+}
 
 const PageUploadItem = ({}) => {
-  const [selected, setSelected] = useState(plans[1]);
+  // const [selected, setSelected] = useState(plans[1]);
+ const [formData, setFormData] = useState<FormData>({
+    royalties: '',
+    size: '',
+    propertie: '',
+    description: '',
+    external_link: '',
+    name: '',
+    screen_shot: '',
+    video: '',
+    audio: '',
+    _3D_model: '',
+    category:''
+  });
+  
+  const [attachment, setAttachment] = useState(null)
+  ///create-modules
+ const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
+  const handleSubmit =async (e: any) => {
+    e.preventDefault();  
+     const formData1 = new FormData()
+    attachment && formData1.append("image", attachment) 
+    formData1.append("name", formData.name)
+    formData1.append("description", formData.description)
+ formData1.append("external_link", formData.external_link)
+
+   
+    const value = {formData, formData1}
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`,formData1,  {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getToken()}`
+          }
+        })
+        console.log(response)
+  };
+ const handleFileChange = (e: any) => {
+    setAttachment(e.target.files[0])
+  } 
   return (
     <div className={`nc-PageUploadItem`}>
       <div className="container">
@@ -87,31 +145,35 @@ const PageUploadItem = ({}) => {
                     </svg>
                     <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
                       <label
-                        htmlFor="file-upload"
+                        htmlFor="attachment"
                         className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                       >
                         <span>Upload a file</span>
                         <input
-                          id="file-upload"
-                          name="file-upload"
+                           
                           type="file"
-                          className="sr-only"
+                          className="sr-only" name="attachment" id="attachment"  onChange={handleFileChange}
                         />
+                    
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
+                     {attachment ?  attachment.name:  " PNG, JPG, GIF up to 10MB"}
+                    </p> 
                   </div>
                 </div>
               </div>
             </div>
 
             {/* ---- */}
-            <FormItem label="Item Name">
-              <Input defaultValue="NFT name" />
+            <FormItem label="Name">
+              <Input defaultValue="Name" id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
             </FormItem>
+                <FormItem label="Category">
+              <Input defaultValue="Category" id="category" name="category" type="text" value={formData.category} onChange={handleChange} />
+            </FormItem>
+
 
             {/* ---- */}
             <FormItem
@@ -122,7 +184,7 @@ const PageUploadItem = ({}) => {
                 <span className="inline-flex items-center px-3 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   https://
                 </span>
-                <Input className="!rounded-l-none" placeholder="abc.com" />
+                <Input className="!rounded-l-none" placeholder="abc.com" id="external_link" name="external_link" type="text" value={formData.external_link} onChange={handleChange}/>
               </div>
             </FormItem>
 
@@ -137,13 +199,14 @@ const PageUploadItem = ({}) => {
                   supported.
                 </div>
               }
+              
             >
-              <Textarea rows={6} className="mt-1.5" placeholder="..." />
+              <Textarea rows={6} className="mt-1.5" placeholder="..."  id="description" name="description"  value={formData.description} onChange={handleChange}/>
             </FormItem>
 
             <div className="w-full border-b-2 border-neutral-100 dark:border-neutral-700"></div>
 
-            <div>
+            {/* <div>
               <Label>Choose collection</Label>
               <div className="text-neutral-500 dark:text-neutral-400 text-sm">
                 Choose an exiting collection or create a new one
@@ -209,26 +272,26 @@ const PageUploadItem = ({}) => {
                   ))}
                 </div>
               </RadioGroup>
-            </div>
+            </div> */}
 
             {/* ---- */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-2.5">
               {/* ---- */}
               <FormItem label="Royalties">
-                <Input placeholder="20%" />
+                <Input placeholder="20%"  id="royalties" name="royalties"  value={formData.royalties} onChange={handleChange} />
               </FormItem>
               {/* ---- */}
               <FormItem label="Size">
-                <Input placeholder="165Mb" />
+                <Input placeholder="165Mb"  id="size" name="size"  value={formData.size} onChange={handleChange} />
               </FormItem>
               {/* ---- */}
               <FormItem label="Propertie">
-                <Input placeholder="Propertie" />
+                <Input placeholder="Propertie"  id="propertie" name="propertie"  value={formData.propertie} onChange={handleChange} />
               </FormItem>
             </div>
-
+             
             {/* ---- */}
-            <MySwitch enabled />
+            <MySwitch enabled  />
 
             {/* ---- */}
             <MySwitch
@@ -245,12 +308,13 @@ const PageUploadItem = ({}) => {
 
             {/* ---- */}
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
-              <ButtonPrimary href="/nft-detail" className="flex-1">
+              {/* <ButtonPrimary href="/nft-detail" className="flex-1">
                 Upload item
               </ButtonPrimary>
               <ButtonSecondary href="/nft-detail" className="flex-1">
                 Preview item
-              </ButtonSecondary>
+              </ButtonSecondary> */}
+              <button onClick={(e:any)=> handleSubmit(e)}>Create</button>
             </div>
           </div>
         </div>

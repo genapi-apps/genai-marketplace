@@ -21,6 +21,7 @@ export interface CardLarge1Props {
   onClickPrev?: () => void;
   isShowing?: boolean;
   featuredImgUrl?: string | StaticImageData;
+  item:any
 }
 
 const CardLarge1: FC<CardLarge1Props> = ({
@@ -29,6 +30,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
   onClickNext = () => {},
   onClickPrev = () => {},
   featuredImgUrl = nftsLargeImgs[0],
+  item
 }) => {
   const randomTitle = [
     "Walking On Air ",
@@ -46,7 +48,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
           {/* TITLE */}
           <h2 className="text-2xl lg:text-3xl 2xl:text-5xl font-semibold ">
             <Link href={"/nft-detail"} title="Walking On Air">
-              {randomTitle[0]}
+              {item.name}
             </Link>
           </h2>
 
