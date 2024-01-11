@@ -5,6 +5,12 @@ import "rc-slider/assets/index.css";
 import Footer from "@/shared/Footer/Footer";
 import MusicPlayer from "@/components/MusicPlayer/MusicPlayer";
 import SiteHeader from "@/app/SiteHeader";
+import { ToolkitProvider } from "@/redux/toolkitProvider";
+ 
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import ProtectedRoute from "@/components/ProtectedRoute";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,11 +31,28 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
+         <ToolkitProvider>
         <SiteHeader />
-        {children}
+       <ProtectedRoute> {children}
         <Footer />
         <MusicPlayer />
+         </ProtectedRoute>
+        </ToolkitProvider>
+          <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       </body>
     </html>
   );
 }
+
+ 
