@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"
 import axios from "axios";
 import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
+import { setEmailAuth } from "@/redux/auth/authSlice";
 
 const loginSocials = [
   {
@@ -30,71 +32,44 @@ const loginSocials = [
   },
 ];
 
-const PageLogin = () => {
-   const [inputs, setInputs] = useState({ email: "", password: "" })
-  const [errors, setErrors] = useState({ email: "", password: "" })
+const PageForgotPassword = () => {
+  const [inputs, setInputs] = useState({ })
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [companyLogoSrc, setCompanyLogoSrc] = useState('/logo.png'); // Default image source
   const [loading, setLoading] = useState(false)
- const [msg, setMsg] = useState("")
-  const router = useRouter()
-   const handleChange = (e: any) => {
+  const [msg, setMsg] = useState("")
+  const dispatch = useDispatch()
+  const { push } = useRouter()
+  const handleChange = (e: any) => {
     setMsg("")
     const name = e.target.name
     const value = e.target.value
     setInputs((prevState) => ({ ...prevState, [name]: value }))
-    setErrors((prevState) => ({ ...prevState, [name]: "" }))
   }
 
-  const handleSubmit = async (e: any) => {
+ 
+  const handleSubmit = async(e: any) => {
     e.preventDefault()
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-    if (!emailRegex.test(inputs.email)) {
-      setErrors((prevState) => ({
-        ...prevState,
-        email: "Invalid email address"
-      }))
-    }
-
-    if (inputs.password.length < 6) {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: "Password must be at least 6 characters"
-      }))
-    }
-
     setLoading(true)
     try {
-      const signin = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`,
+      const forgot_password = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/send-forgot-email`,
         inputs
       )
 
-      if (signin.data.status === true) {
-        if (signin.data.email) { 
-          // push("/two-way-authentication")
-        } else {
-          localStorage.setItem("marketplacegenaitoken", signin.data.data.access_token)
-          localStorage.setItem("marketusername", JSON.stringify(signin.data.data))
-     
-          toast("SignIn Successful!")
-         
-          setTimeout(() => {
-            router.push(`/`)
-            setLoading(false)
-          }, 2000)
-        }
-      } else if (signin.data.status === false) {
-        setMsg(signin.data.message)
+      if (forgot_password.data.status === true) {
+       
+          dispatch(setEmailAuth(forgot_password.data.email))
+          push('/otp-authentication');
+      
+      } else if (forgot_password.data.status === false) {
+        setMsg(forgot_password.data.message)
         setLoading(false)
-      } else {
-        setMsg(signin.data.message)
-        setLoading(false)
-      }
-
+      } 
       // Handle successful signup
     } catch (error) {
-      console.error("Error during signup:", error)
+      console.error("Error during forgot password:", error)
       // Handle error, update state, show user-friendly error message, etc.
     }
   }
@@ -102,7 +77,7 @@ const PageLogin = () => {
     <div className={`nc-PageLogin`} data-nc-id="PageLogin">
       <div className="container mb-24 lg:mb-32">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-          Login
+         Forgot Password
         </h2>
         <div className="max-w-md mx-auto space-y-6">
           {/* <div className="grid gap-3">
@@ -143,25 +118,10 @@ const PageLogin = () => {
                       name="email" 
                 value={inputs.email || ""}
                 onChange={handleChange}
-                className={`mt-1 ${  errors.email && "border-red-600"}`}
+                className={`mt-1 `}
               />
             </label>
-            <label className="block">
-              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-                Password
-               
-              </span>
-              <Input type="password" 
-                name="password"
-                placeholder="Password"
-                value={inputs.password || ""}
-                onChange={handleChange}
-                  className={`mt-1 ${  errors.password && "border-red-600"}`}
-                 />
-               <Link href="/forgot-password" className="text-sm text-green-600 float-right">
-                  Forgot password?
-                </Link>
-            </label>
+            
             <ButtonPrimary type="submit"   disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
           </form>
   {msg && (
@@ -171,9 +131,9 @@ const PageLogin = () => {
           )}
           {/* ==== */}
           <span className="block text-center text-neutral-700 dark:text-neutral-300">
-            New user? {` `}
+            
             <Link className="text-green-600" href="/signup">
-              Create an account
+              login
             </Link>
           </span>
         </div>
@@ -182,4 +142,4 @@ const PageLogin = () => {
   );
 };
 
-export default PageLogin;
+export default PageForgotPassword;
