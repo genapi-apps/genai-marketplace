@@ -32,6 +32,7 @@ function PageHome() {
           }
         }
       )  
+      console.log("@@@@@@@@@@@@",response)
       setModuleList(response.data.data) 
     }
       

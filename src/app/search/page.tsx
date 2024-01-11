@@ -1,5 +1,5 @@
 "use client"
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
 import CardNFT from "@/components/CardNFT";
 import HeaderFilterSearchPage from "@/components/HeaderFilterSearchPage";
@@ -12,26 +12,65 @@ import Pagination from "@/shared/Pagination/Pagination";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 
-const PageSearch = ({}) => {
-  const [moduleList, setModuleList] = useState()
 
+const PageSearch = ({ }) => {
+  const [moduleList, setModuleList] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [noDataFound, setNoDataFound] = useState(false);
 
-  useEffect(() => {
-    const getModule = async () => {
+  const getModule = async () => {
+    try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
         {
           headers: {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${getToken()}`
-          }
+          },
         }
-      )  
-      setModuleList(response.data.data) 
+      );
+      setModuleList(response.data.data);
+      setNoDataFound(response.data.data.length === 0);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-      
-    getModule()
-  }, [])
+  };
+
+  const handleSearch = async () => {
+    try {
+      if (keyword.trim() !== "") {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/search/${keyword}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: `Bearer ${getToken()}`
+            },
+          }
+        );
+        setModuleList(response.data.data);
+        setNoDataFound(response.data.data.length === 0);
+      } else {
+        getModule();
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleChange = (e: any) => {
+    setKeyword(e.target.value);
+  };
+
+
+  useEffect(() => {
+    getModule();
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [keyword]);
+
 
   return (
     <div className={`nc-PageSearch `}>
@@ -40,7 +79,7 @@ const PageSearch = ({}) => {
       />
       <div className="container">
         <header className="max-w-2xl mx-auto -mt-10 flex flex-col lg:-mt-7">
-          <form className="relative w-full" method="post">
+          <form className="relative w-full" method="post" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
             <label
               htmlFor="search-input"
               className="text-neutral-500 dark:text-neutral-300"
@@ -53,6 +92,8 @@ const PageSearch = ({}) => {
                 placeholder="Type your keywords"
                 sizeClass="pl-14 py-5 pr-5 md:pl-16"
                 rounded="rounded-full"
+                value={keyword}
+                onChange={handleChange}
               />
 
               <span className="absolute left-5 top-1/2 transform -translate-y-1/2 text-2xl md:left-6">
@@ -94,15 +135,19 @@ const PageSearch = ({}) => {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
         <main>
           {/* FILTER */}
-          <HeaderFilterSearchPage  moduleList={moduleList} />
+          <HeaderFilterSearchPage moduleList={moduleList} />
+
 
           {/* LOOP ITEMS */}
+          {noDataFound ? (
+            <p className="text-black-800 text-center">No data found.</p>
+          ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {moduleList && moduleList.map((item:any, index:any) => (
+            {moduleList && moduleList.map((item: any, index: any) => (
               <CardNFT key={index} item={item} />
             ))}
           </div>
-
+  )}
           {/* PAGINATION */}
           <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
