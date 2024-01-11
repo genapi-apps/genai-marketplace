@@ -9,7 +9,7 @@ import Checkbox from "@/shared/Checkbox/Checkbox";
 import Slider from "rc-slider";
 import Radio from "@/shared/Radio/Radio";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-
+import axios from "axios";
 // DEMO DATA
 const typeOfSales = [
   {
@@ -47,8 +47,8 @@ const sortOrderRadios = [
 ];
 
 //
-const TabFilters = ({moduleList}) => {
-  console.log(moduleList)
+const TabFilters = ({ moduleList }) => {
+  console.log("%%%%%%%%%%%%%%%%%%%%%%", moduleList)
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
@@ -68,13 +68,39 @@ const TabFilters = ({moduleList}) => {
       : setfileTypesState(fileTypesState.filter((i) => i !== name));
   };
 
-  const handleChangeSaleType = (checked: boolean, name: string) => {
-    checked
-      ? setSaleTypeStates([...saleTypeStates, name])
-      : setSaleTypeStates(saleTypeStates.filter((i) => i !== name));
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [ setModuleList] = useState([]);
+
+  const handleChangeSaleType = (checked: boolean, category: string) => {
+    setSelectedCategories((prevCategories) =>
+      checked
+        ? [...prevCategories, category]
+        : prevCategories.filter((item) => item !== category)
+    );
   };
 
-  //
+  const handleApplyButtonClick = async () => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/modules/filter/${selectedCategories.join(',')}`;
+
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    //  setModuleList(response.data.data);
+      console.log(response.data);
+
+
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  };
+
+
+
+
 
   // OK
   const renderXClear = () => {
@@ -97,7 +123,7 @@ const TabFilters = ({moduleList}) => {
   };
 
   // OK
-  const uniqueCategories =moduleList &&  Array.from(new Set(moduleList.map(item => item.category)));
+  const uniqueCategories = moduleList && Array.from(new Set(moduleList.map(item => item.category)));
 
   const renderTabsTypeOfSales = () => {
     return (
@@ -106,15 +132,13 @@ const TabFilters = ({moduleList}) => {
           <>
             <Popover.Button
               className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none
-               ${
-                 open
-                   ? "!border-primary-500 "
-                   : "border-neutral-300 dark:border-neutral-700"
-               }
-                ${
-                  !!saleTypeStates.length
-                    ? "!border-primary-500 bg-primary-50 text-primary-900"
-                    : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+               ${open
+                  ? "!border-primary-500 "
+                  : "border-neutral-300 dark:border-neutral-700"
+                }
+                ${!!saleTypeStates.length
+                  ? "!border-primary-500 bg-primary-50 text-primary-900"
+                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
                 }
                 `}
             >
@@ -151,61 +175,63 @@ const TabFilters = ({moduleList}) => {
                 </span>
               )}
             </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    <Checkbox
-                      name="All Category Types"
-                      label="All Category Types"
-                      defaultChecked={saleTypeStates.includes("All Category Types")}
-                      onChange={(checked) =>
-                        handleChangeSaleType(checked, "All Category Types")
-                      }
-                    />
-                    <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-                    
-                    {uniqueCategories && uniqueCategories.map((item:any) => (
-                      <div key={item} className="">
-                        <Checkbox
-                          name={item}
-                          label={item}
-                          defaultChecked={saleTypeStates.includes(item)}
-                          onChange={(checked) =>
-                            handleChangeSaleType(checked, item)
-                          }
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
-                    <ButtonThird
-                      onClick={() => {
-                        close();
-                        setSaleTypeStates([]);
-                      }}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Clear
-                    </ButtonThird>
-                    <ButtonPrimary
-                      onClick={close}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Apply
-                    </ButtonPrimary>
-                  </div>
+           <Transition
+        as={Fragment}
+        enter="transition ease-out duration-200"
+        enterFrom="opacity-0 translate-y-1"
+        enterTo="opacity-100 translate-y-0"
+        leave="transition ease-in duration-150"
+        leaveFrom="opacity-100 translate-y-0"
+        leaveTo="opacity-0 translate-y-1"
+      >
+        <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
+          <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
+            <div className="relative flex flex-col px-5 py-6 space-y-5">
+              <Checkbox
+                name="All Category Types"
+                label="All Category Types"
+                defaultChecked={selectedCategories.includes("All Category Types")}
+                onChange={(checked) =>
+                  handleChangeSaleType(checked, "All Category Types")
+                }
+              />
+              <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
+
+              {uniqueCategories && uniqueCategories.map((item: any) => (
+                <div key={item} className="">
+                  <Checkbox
+                    name={item}
+                    label={item}
+                    defaultChecked={selectedCategories.includes(item)}
+                    onChange={(checked) =>
+                      handleChangeSaleType(checked, item)
+                    }
+                  />
                 </div>
-              </Popover.Panel>
-            </Transition>
+              ))}
+            </div>
+            <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
+              <ButtonThird
+                onClick={() => {
+                  close();
+                  setSelectedCategories([]);
+                }}
+                sizeClass="px-4 py-2 sm:px-5"
+              >
+                Clear
+              </ButtonThird>
+              <ButtonPrimary
+                onClick={() => {
+                  handleApplyButtonClick();
+                }}
+                sizeClass="px-4 py-2 sm:px-5"
+              >
+                Apply
+              </ButtonPrimary>
+            </div>
+          </div>
+        </Popover.Panel>
+      </Transition>
           </>
         )}
       </Popover>
@@ -221,10 +247,9 @@ const TabFilters = ({moduleList}) => {
             <Popover.Button
               className={`flex items-center justify-center px-4 py-2 text-sm border rounded-full focus:outline-none 
               ${open ? "!border-primary-500 " : ""}
-                ${
-                  !!sortOrderStates.length
-                    ? "!border-primary-500 bg-primary-50 text-primary-900"
-                    : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+                ${!!sortOrderStates.length
+                  ? "!border-primary-500 bg-primary-50 text-primary-900"
+                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
                 }
                 `}
             >
@@ -273,7 +298,7 @@ const TabFilters = ({moduleList}) => {
               <span className="ml-2">
                 {sortOrderStates
                   ? sortOrderRadios.filter((i) => i.id === sortOrderStates)[0]
-                      .name
+                    .name
                   : "Sort order"}
               </span>
               {!sortOrderStates.length ? (
@@ -342,10 +367,9 @@ const TabFilters = ({moduleList}) => {
             <Popover.Button
               className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none 
               ${open ? "!border-primary-500 " : ""}
-                ${
-                  !!fileTypesState.length
-                    ? "!border-primary-500 bg-primary-50 text-primary-900"
-                    : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+                ${!!fileTypesState.length
+                  ? "!border-primary-500 bg-primary-50 text-primary-900"
+                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
                 }
                 `}
             >
@@ -603,11 +627,10 @@ const TabFilters = ({moduleList}) => {
   const renderTabVerifiedCreator = () => {
     return (
       <div
-        className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none cursor-pointer  ${
-          isVerifiedCreator
+        className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none cursor-pointer  ${isVerifiedCreator
             ? "border-primary-500 bg-primary-50 text-primary-900"
             : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
-        }`}
+          }`}
         onClick={() => setIsVerifiedCreator(!isVerifiedCreator)}
       >
         <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none">
