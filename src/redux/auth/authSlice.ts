@@ -5,7 +5,8 @@ import { createSlice, current } from "@reduxjs/toolkit"
 export interface CounterState {
   auth: "",
   email:string,
-  otp:string
+  otp:string,
+  moduleList:any
   
 }
  
@@ -13,7 +14,8 @@ export interface CounterState {
 const initialState: CounterState = {
   auth: "",
   email:"",
-  otp:""
+  otp:"", 
+  moduleList:""
 }
  
 
@@ -27,12 +29,16 @@ export const counterSlice = createSlice({
     setOtpAuth: (state, action) => {
       state.otp = action.payload
     },
+    setModuleList:(state, action)=>{
+      
+    state.moduleList = action.payload
+    }
     
   }
 })
 
 export const { 
-  setEmailAuth, setOtpAuth
+  setEmailAuth, setOtpAuth, setModuleList
 } = counterSlice.actions
 
 export default counterSlice.reducer

@@ -14,11 +14,19 @@ import SectionGridFeatureNFT2 from "./SectionGridFeatureNFT2";
 import SectionSliderCategories from "@/components/SectionSliderCategories/SectionSliderCategories";
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionVideos from "./SectionVideos";
-import axios from 'axios' 
+ 
+import axios from 'axios'
+import { useDispatch } from "react-redux"
+import { setModuleList } from "@/redux/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+
 function PageHome() {
   
-  const [moduleList, setModuleList] = useState()
+  // const [moduleList, setModuleList] = useState()
+  const dispatch = useDispatch()
+  const { moduleList } = useAppSelector((state) => state.auth);
   
+ 
 
   useEffect(() => {
     const getModule = async () => {
@@ -33,7 +41,9 @@ function PageHome() {
         }
       )  
  
-      setModuleList(response.data.data) 
+      console.log("@@@@@@@@@@@@",response)
+      dispatch(setModuleList(response.data.data))
+   
     }
       
     getModule()

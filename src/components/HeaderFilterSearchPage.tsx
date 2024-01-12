@@ -26,7 +26,7 @@ const HeaderFilterSearchPage: FC<HeaderFilterSearchPageProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {["All NFTs", "Arts", "Music", "Sports", "Jewels"].map(
+          {["All NFTs"].map(
             (item, index) => (
               <NavItem
                 key={index}

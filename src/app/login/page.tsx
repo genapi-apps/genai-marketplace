@@ -75,6 +75,7 @@ const PageLogin = () => {
           // push("/two-way-authentication")
         } else {
           localStorage.setItem("marketplacegenaitoken", signin.data.data.access_token)
+          localStorage.setItem("id", signin.data.data.id)
           localStorage.setItem("marketusername", JSON.stringify(signin.data.data))
      
           toast("SignIn Successful!")
