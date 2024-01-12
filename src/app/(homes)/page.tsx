@@ -15,10 +15,16 @@ import SectionSliderCategories from "@/components/SectionSliderCategories/Sectio
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionVideos from "./SectionVideos";
 import axios from 'axios'
+import { useDispatch } from "react-redux"
+import { setModuleList } from "@/redux/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 
 function PageHome() {
   
-  const [moduleList, setModuleList] = useState()
+  // const [moduleList, setModuleList] = useState()
+  const dispatch = useDispatch()
+  const { moduleList } = useAppSelector((state) => state.auth);
+  
 
 
   useEffect(() => {
@@ -33,7 +39,8 @@ function PageHome() {
         }
       )  
       console.log("@@@@@@@@@@@@",response)
-      setModuleList(response.data.data) 
+      dispatch(setModuleList(response.data.data))
+      // setModuleList(response.data.data) 
     }
       
     getModule()

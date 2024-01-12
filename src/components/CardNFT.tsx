@@ -81,12 +81,12 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked ,item}) => {
       </div>
 
       <div className="px-2 py-5 space-y-3">
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           {renderAvatars()}
           <span className="text-neutral-700 dark:text-neutral-400 text-xs">
-            99 in stock
+            99 in stockss
           </span>
-        </div>
+        </div> */}
         <h2 className={`text-lg font-medium`}>{item.name}</h2>
 
         <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div>
