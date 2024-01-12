@@ -50,7 +50,7 @@ const sortOrderRadios = [
 
 //
 const TabFilters = ({ moduleList }) => {
-  console.log("%%%%%%%%%%%%%%%%%%%%%%moduleList", moduleList)
+  // console.log("%%%%%%%%%%%%%%%%%%%%%%moduleList", moduleList)
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
@@ -94,7 +94,7 @@ const TabFilters = ({ moduleList }) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data)
+      console.log(response)
       dispatch(setModuleList(response.data.data))
       // console.log("response", response.data)
 
@@ -102,24 +102,6 @@ const TabFilters = ({ moduleList }) => {
       console.error("Error making API call:", error);
     }
   };
-  const [categoryList, setCategoryList] = useState([]);
-  const getCategories = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules_category`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setCategoryList(response.data.data);
-      console.log("carrrrrrrrrrrrrrrrrrrr",response.data.data)
-    } catch (error) {
-      console.error("Error fetching category data:", error);
-    }
-  };
-  
 
 
   // OK

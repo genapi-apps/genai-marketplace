@@ -14,10 +14,10 @@ import useGetRandomData from "@/hooks/useGetRandomData";
 export interface CardNFTProps {
   className?: string;
   isLiked?: boolean;
-  item:any
+  item: any
 }
 
-const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked ,item}) => {
+const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
   const { nftImageRd, titleRd } = useGetRandomData();
 
   const [itemType, setItemType] = useState<"video" | "audio" | "default">(
@@ -65,18 +65,18 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked ,item}) => {
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
         </div>
-        {itemType === "video" && (
+        {/* {itemType === "video" && (
           <ItemTypeVideoIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        )}
+        )} */}
 
-        {itemType === "audio" && (
+        {/* {itemType === "audio" && (
           <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        )}
+        )} */}
 
-        <LikeButton
+        {/* <LikeButton
           liked={isLiked}
           className="absolute top-3 right-3 z-10 !h-9"
-        />
+        /> */}
         <div className="absolute top-3 inset-x-3 flex"></div>
       </div>
 
@@ -88,6 +88,9 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked ,item}) => {
           </span>
         </div> */}
         <h2 className={`text-lg font-medium`}>{item.name}</h2>
+        <span className="text-sm" style={{ fontSize: '0.875rem', lineHeight: '1.25rem' }}>
+          {item.short_description}
+        </span>
 
         <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div>
 
