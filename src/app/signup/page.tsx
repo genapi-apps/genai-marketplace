@@ -90,7 +90,7 @@ const PageSignUp = () => {
     }
 
     setLoading(true)
-console.log(inputs, errors)
+// console.log(inputs, errors)
     try {
       const signup = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create_user`,
@@ -128,7 +128,7 @@ console.log(inputs, errors)
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword)
   }
-console.log(errors)
+// console.log(errors)
   return (
     <div className={`nc-PageSignUp `} data-nc-id="PageSignUp">
       <div className="container mb-24 lg:mb-32">

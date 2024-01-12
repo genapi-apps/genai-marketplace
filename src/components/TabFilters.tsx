@@ -48,7 +48,7 @@ const sortOrderRadios = [
 
 //
 const TabFilters = ({ moduleList }) => {
-  console.log("%%%%%%%%%%%%%%%%%%%%%%", moduleList)
+  // console.log("%%%%%%%%%%%%%%%%%%%%%%", moduleList)
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
@@ -90,7 +90,7 @@ const TabFilters = ({ moduleList }) => {
         },
       });
     //  setModuleList(response.data.data);
-      console.log(response.data);
+      // console.log(response.data);
 
 
     } catch (error) {

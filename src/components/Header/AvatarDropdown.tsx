@@ -21,7 +21,7 @@ export default function AvatarDropdown() {
     let a=  JSON.parse( b)
      setUsers(a)
   }, [])
-  console.log(users)
+  // console.log(users)
   return (
     <div className="AvatarDropdown relative flex">
       <Popover className="self-center">

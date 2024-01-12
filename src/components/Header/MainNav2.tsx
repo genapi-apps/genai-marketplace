@@ -53,7 +53,7 @@ const MainNav2: FC<MainNav2Props> = () => {
           </div>
           <div className="flex-shrink-0 flex justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
             <div className="hidden items-center xl:flex space-x-2">
-              <Navigation />
+              {/* <Navigation /> */}
               <div className="hidden sm:block h-9 border-l border-neutral-300 dark:border-neutral-6000"></div>
               <SwitchDarkMode />
               <ButtonPrimary

@@ -1,121 +1,11 @@
-"use client"
-import React, { useEffect, useState } from "react";
-import BgGlassmorphism from "@/components/BgGlassmorphism/BgGlassmorphism";
-import SectionHowItWork from "@/components/SectionHowItWork/SectionHowItWork";
-import SectionLargeSlider from "./SectionLargeSlider";
-import SectionMagazine8 from "@/components/SectionMagazine8";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox";
-import SectionSliderCardNftVideo from "@/components/SectionSliderCardNftVideo";
-import SectionHero2 from "@/components/SectionHero/SectionHero2";
-import SectionSliderCollections2 from "@/components/SectionSliderCollections2";
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2";
-import SectionGridFeatureNFT2 from "./SectionGridFeatureNFT2";
-import SectionSliderCategories from "@/components/SectionSliderCategories/SectionSliderCategories";
-import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import SectionVideos from "./SectionVideos";
-import axios from 'axios' 
-function PageHome() {
-  
-  const [moduleList, setModuleList] = useState()
-  
-
-  useEffect(() => {
-    const getModule = async () => {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
-        //https://ibprocess.intellibooks.io/api/get-sample
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${getToken()}`
-          }
-        }
-      )  
- 
-      setModuleList(response.data.data) 
-    }
-      
-    getModule()
-  }, [])
-
-//   console.log(Homedata)
-  return (
-   moduleList && <div className="nc-PageHome relative overflow-hidden">
-      <BgGlassmorphism />
-
-      <div className="container relative mt-5 mb-20 sm:mb-24 lg:mt-20 lg:mb-32">
-      {Homedata.map((item,i)=> {
-        // console.log(item)
-        return item.type === "mark_p_Sectionhero" && <SectionHero2 item={item.data} />
-      })}  
-
-  {Homedata.map((item,i)=> {
-       
-        return item.type === "mark_p_Sectionhowitwork" &&   <SectionHowItWork className="mt-24 lg:mt-40 xl:mt-48" item={item} />
-      })}  
-       
-      </div>
-
-      <div className="bg-neutral-100/70 dark:bg-black/20 py-20 lg:py-32">
-        <div className="container">
-          <SectionLargeSlider moduleList={moduleList} />
-        </div>
-      </div>
- 
-
-      <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
-        {/* <SectionMagazine8  moduleList={moduleList} /> */}
-
-        {/* <div className="relative py-20 lg:py-28">
-          <BackgroundSection />
-          <SectionGridAuthorBox
-            sectionStyle="style2"
-            data={Array.from("11111111")}
-            boxCard="box4"
-             moduleList={moduleList} 
-          />
-        </div> */}
-
-        {/* <SectionSliderCardNftVideo  moduleList={moduleList}  /> */}
-{/* 
-        <div className="relative py-20 lg:py-28">
-          <BackgroundSection />
-          <SectionSliderCollections2 cardStyle="style2" />
-        </div> */}
-
-        <SectionBecomeAnAuthor />
-
-        <div className="relative py-20 lg:py-28">
-          <BackgroundSection className="bg-neutral-100/70 dark:bg-black/20 " />
-          <SectionGridFeatureNFT2  moduleList={moduleList}  />
-        </div>
-
-        <SectionSliderCategories />
-
-        <div className="relative py-20 lg:py-24">
-          <BackgroundSection />
-          <SectionSubscribe2 />
-        </div>
-
-        {/* <SectionVideos /> */}
-      </div>
-    </div>
-  );
-}
-
-export default PageHome;
-
-
-const Homedata =
-   [
+export const Homedata= [
         {
             "type": "mark_p_Sectionhero",
-            "data": 
+            "data": [
                 {
                     "id": 1,
-                    "heading": "Lorem ipsum is placeholder text",
-                    "subheading": "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
+                    "heading": "hello",
+                    "subheading": "hello this is testing",
                     "section_hero_image": "1704978384593-logo.jpeg",
                     "imageUrls": [
                         {
@@ -124,8 +14,31 @@ const Homedata =
                         }
                     ]
                 },
-              
-            
+                {
+                    "id": 2,
+                    "heading": "Discover, collect, and sell NFTs",
+                    "subheading": "Discover the most outstanding NTFs in all topics of life.\nCreative your NTFs and sell them",
+                    "section_hero_image": "1705042416467-logo.jpeg",
+                    "imageUrls": [
+                        {
+                            "type": "mark_p_Sectionhero",
+                            "url": "/controller/market_place/images/1705042416467-logo.jpeg"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "heading": "Discover, collect, and sell NFTs",
+                    "subheading": "Discover the most outstanding NTFs in all topics of life.\nCreative your NTFs and sell them",
+                    "section_hero_image": "1705042462850-logo.jpeg",
+                    "imageUrls": [
+                        {
+                            "type": "mark_p_Sectionhero",
+                            "url": "/controller/market_place/images/1705042462850-logo.jpeg"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "type": "mark_p_Sectionhowitwork",
