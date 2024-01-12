@@ -32,7 +32,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
   const [tabActive, setTabActive] = useState("Popular");
 
   const renderCard = (item:any,index: number) => {
-    console.log(item)
+    // console.log(item)
     switch (boxCard) {
       case "box1":
         return (
@@ -148,7 +148,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
       </div>
     );
   };
-console.log(data)
+// console.log(data)
   return (
     <div className={`nc-SectionGridAuthorBox relative ${className}`}>
       {sectionStyle === "style1" ? renderHeading1() : renderHeading2()}

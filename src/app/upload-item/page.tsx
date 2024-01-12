@@ -95,7 +95,7 @@ const PageUploadItem = ({}) => {
             // Authorization: `Bearer ${getToken()}`
           }
         })
-        console.log(response)
+        // console.log(response)
   };
  const handleFileChange = (e: any) => {
     setAttachment(e.target.files[0])
@@ -120,11 +120,14 @@ const PageUploadItem = ({}) => {
           <div className="mt-10 md:mt-0 space-y-5 sm:space-y-6 md:sm:space-y-8">
             <div>
               <h3 className="text-lg sm:text-2xl font-semibold">
-                Image, Video, Audio, or 3D Model
+                Image
+                {/* , Video, Audio, or 3D Model */}
               </h3>
               <span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV,
-                OGG, GLB, GLTF. Max size: 100 MB
+                File types supported: JPG, PNG,
+                 {/* GIF, SVG, MP4, WEBM, MP3, WAV,
+                OGG, GLB, GLTF.  */}
+                Max size: 100 MB
               </span>
               <div className="mt-5 ">
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
@@ -277,34 +280,34 @@ const PageUploadItem = ({}) => {
             {/* ---- */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-2.5">
               {/* ---- */}
-              <FormItem label="Royalties">
+              {/* <FormItem label="Royalties">
                 <Input placeholder="20%"  id="royalties" name="royalties"  value={formData.royalties} onChange={handleChange} />
-              </FormItem>
+              </FormItem> */}
               {/* ---- */}
-              <FormItem label="Size">
+              {/* <FormItem label="Size">
                 <Input placeholder="165Mb"  id="size" name="size"  value={formData.size} onChange={handleChange} />
-              </FormItem>
+              </FormItem> */}
               {/* ---- */}
-              <FormItem label="Propertie">
+              {/* <FormItem label="Propertie">
                 <Input placeholder="Propertie"  id="propertie" name="propertie"  value={formData.propertie} onChange={handleChange} />
-              </FormItem>
+              </FormItem> */}
             </div>
              
             {/* ---- */}
-            <MySwitch enabled  />
+            {/* <MySwitch enabled  /> */}
 
             {/* ---- */}
-            <MySwitch
+            {/* <MySwitch
               label="Instant sale price"
               desc="Enter the price for which the item will be instantly sold"
-            />
+            /> */}
 
             {/* ---- */}
-            <MySwitch
+            {/* <MySwitch
               enabled
               label="Unlock once purchased"
               desc="Content will be unlocked after successful transaction"
-            />
+            /> */}
 
             {/* ---- */}
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
@@ -314,7 +317,7 @@ const PageUploadItem = ({}) => {
               <ButtonSecondary href="/nft-detail" className="flex-1">
                 Preview item
               </ButtonSecondary> */}
-              <button onClick={(e:any)=> handleSubmit(e)}>Create</button>
+              <ButtonPrimary onClick={(e:any)=> handleSubmit(e)}>Create</ButtonPrimary>
             </div>
           </div>
         </div>

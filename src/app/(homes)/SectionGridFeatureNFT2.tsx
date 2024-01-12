@@ -9,7 +9,7 @@ export interface SectionGridFeatureNFT2Props {
 }
 
 const SectionGridFeatureNFT2: FC<SectionGridFeatureNFT2Props> = ({moduleList}) => {
-  console.log(moduleList)
+ 
   return (
     <div className="nc-SectionGridFeatureNFT2 relative">
       <HeaderFilterSection moduleList={moduleList}/>

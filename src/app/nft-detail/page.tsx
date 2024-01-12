@@ -1,4 +1,4 @@
-import React from "react";
+import React,{FC} from "react";
 import ItemTypeVideoIcon from "@/components/ItemTypeVideoIcon";
 import LikeButton from "@/components/LikeButton";
 import { nftsLargeImgs, personNames } from "@/contains/fakeData";
@@ -15,23 +15,32 @@ import TabDetail from "./TabDetail";
 import TimeCountDown from "./TimeCountDown";
 import Link from "next/link";
 
-const NftDetailPage = ({}) => {
-  const renderSection1 = () => {
+export interface SectionLargeSliderProps {
+  
+  moduleDetail:any
+}
+
+const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
+  console.log(moduleDetail)
+  const renderSection1 = (moduleDetail:any) => {
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
         {/* ---------- 1 ----------  */}
         <div className="pb-9 space-y-5">
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <Badge href="/collection" name="Virtual Worlds" color="green" />
             <LikeSaveBtns />
-          </div>
+          </div> */}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-            BearX #3636
+           {moduleDetail[0].name}
+          </h2>
+           <h2 className="text-xl  ">
+           {moduleDetail[0].description}
           </h2>
 
           {/* ---------- 4 ----------  */}
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
-            <Link href={"/author"} className="flex items-center ">
+            {/* <Link href={"/author"} className="flex items-center ">
               <Avatar sizeClass="h-9 w-9" radius="rounded-full" />
               <span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
                 <span className="text-sm">Creator</span>
@@ -55,7 +64,7 @@ const NftDetailPage = ({}) => {
                   <VerifyIcon iconClass="w-4 h-4" />
                 </span>
               </span>
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -68,7 +77,7 @@ const NftDetailPage = ({}) => {
         {/* PRICE */}
         <div className="pb-9 pt-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
+            {/* <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
               <span className="absolute bottom-full translate-y-1 py-1 px-1.5 bg-white dark:bg-neutral-900 text-sm text-neutral-500 dark:text-neutral-400">
                 Current Bid
               </span>
@@ -82,7 +91,7 @@ const NftDetailPage = ({}) => {
 
             <span className="text-sm text-neutral-500 dark:text-neutral-400 ml-5 mt-2 sm:mt-0 sm:ml-10">
               [96 in stock]
-            </span>
+            </span> */}
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
@@ -120,7 +129,7 @@ const NftDetailPage = ({}) => {
 
               <span className="ml-2.5">Place a bid</span>
             </ButtonPrimary>
-            <ButtonSecondary href={"/connect-wallet"} className="flex-1">
+            {/* <ButtonSecondary href={"/connect-wallet"} className="flex-1">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M8.57007 15.27L15.11 8.72998"
@@ -153,14 +162,14 @@ const NftDetailPage = ({}) => {
               </svg>
 
               <span className="ml-2.5"> Make offer</span>
-            </ButtonSecondary>
+            </ButtonSecondary> */}
           </div>
         </div>
 
         {/* ---------- 9 ----------  */}
-        <div className="pt-9">
+        {/* <div className="pt-9">
           <TabDetail />
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -180,18 +189,18 @@ const NftDetailPage = ({}) => {
                 fill
               />
               {/* META TYPE */}
-              <ItemTypeVideoIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" />
+              {/* <ItemTypeVideoIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" /> */}
 
               {/* META FAVORITES */}
-              <LikeButton className="absolute right-3 top-3 " />
+              {/* <LikeButton className="absolute right-3 top-3 " /> */}
             </div>
 
-            <AccordionInfo />
+            {/* <AccordionInfo /> */}
           </div>
 
           {/* SIDEBAR */}
           <div className="pt-10 lg:pt-0 xl:pl-10 border-t-2 border-neutral-200 dark:border-neutral-700 lg:border-t-0">
-            {renderSection1()}
+            {moduleDetail && renderSection1(moduleDetail)}
           </div>
         </div>
       </main>

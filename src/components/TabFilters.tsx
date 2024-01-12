@@ -50,7 +50,7 @@ const sortOrderRadios = [
 
 //
 const TabFilters = ({ moduleList }) => {
-  // console.log("%%%%%%%%%%%%%%%%%%%%%%moduleList", moduleList)
+ 
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
@@ -94,9 +94,10 @@ const TabFilters = ({ moduleList }) => {
           "Content-Type": "application/json",
         },
       });
+ 
       console.log(response)
       dispatch(setModuleList(response.data.data))
-      // console.log("response", response.data)
+    
 
     } catch (error) {
       console.error("Error making API call:", error);
