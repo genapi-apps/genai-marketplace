@@ -11,13 +11,15 @@ import Input from "@/shared/Input/Input";
 import Pagination from "@/shared/Pagination/Pagination";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
+import { useAppSelector } from "@/redux/hooks";
+import { useDispatch } from "react-redux"
+import { setModuleList } from "@/redux/auth/authSlice";
 
-
-const PageSearch = ({ }) => {
-  const [moduleList, setModuleList] = useState([]);
+const PageSearch = ({ }) => { 
   const [keyword, setKeyword] = useState("");
   const [noDataFound, setNoDataFound] = useState(false);
-
+  const { moduleList } = useAppSelector((state) => state.auth);
+  const dispatch = useDispatch()
   const getModule = async () => {
     try {
       const response = await axios.get(
@@ -29,7 +31,8 @@ const PageSearch = ({ }) => {
           },
         }
       );
-      setModuleList(response.data.data);
+      // setModuleList(response.data.data);
+      dispatch(setModuleList(response.data.data))
       setNoDataFound(response.data.data.length === 0);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -151,7 +154,7 @@ const PageSearch = ({ }) => {
           {/* PAGINATION */}
           <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
-            <ButtonPrimary loading>Show me more</ButtonPrimary>
+            {/* <ButtonPrimary loading>Show me more</ButtonPrimary> */}
           </div>
         </main>
 
