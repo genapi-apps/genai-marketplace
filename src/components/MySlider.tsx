@@ -82,15 +82,14 @@ export default function MySlider<T>({
 
   if (!numberOfItems) {
     return <div></div>;
-  }
-
+  } 
   return (
     <div className={`nc-MySlider ${className}`}>
       {renderSectionHeading &&
         renderSectionHeading({
           onClickPrev: () => changeItemId(currentIndex - 1),
           onClickNext: () => changeItemId(currentIndex + 1),
-          showNext: data.length > currentIndex + numberOfItems,
+          showNext: data && data.length > currentIndex + numberOfItems,
           showPrev: !!currentIndex,
         })}
 
@@ -107,7 +106,7 @@ export default function MySlider<T>({
               className="relative flex whitespace-nowrap -mx-2 xl:-mx-4 "
             >
               <AnimatePresence initial={false} custom={direction}>
-                {data.map((item, indx) => (
+                {data && data.length>0 && data.map((item, indx) => (
                   <motion.li
                     className={`relative flex-shrink-0 inline-block px-2 xl:px-4 whitespace-normal`}
                     custom={direction}
@@ -137,7 +136,7 @@ export default function MySlider<T>({
             />
           ) : null}
 
-          {data.length > currentIndex + numberOfItems && !hideNextPrev ? (
+          {data && data.length > currentIndex + numberOfItems && !hideNextPrev ? (
             <NextBtn
               onClick={() => changeItemId(currentIndex + 1)}
               className={`w-9 h-9 xl:w-12 xl:h-12 text-lg absolute bg-white -right-3 xl:-right-6 z-[1] ${arrowBtnClass}`}

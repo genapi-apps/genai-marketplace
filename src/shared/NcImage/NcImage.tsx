@@ -18,13 +18,14 @@ const NcImage: FC<NcImageProps> = ({
   return (
     <div className={containerClassName}>
       {src ? (
-        <Image
+        <img
           className={className}
           alt={alt}
           sizes={sizes}
           {...args}
           src={src}
           fill={fill}
+          style={{height:"100%"}}
         />
       ) : null}
     </div>

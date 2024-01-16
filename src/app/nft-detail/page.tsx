@@ -1,4 +1,5 @@
-import React,{FC} from "react";
+"use client"
+import React, { FC, useState, useEffect } from "react";
 import ItemTypeVideoIcon from "@/components/ItemTypeVideoIcon";
 import LikeButton from "@/components/LikeButton";
 import { nftsLargeImgs, personNames } from "@/contains/fakeData";
@@ -16,14 +17,14 @@ import TimeCountDown from "./TimeCountDown";
 import Link from "next/link";
 
 export interface SectionLargeSliderProps {
-  
-  moduleDetail:any
+
+  moduleDetail: any
 }
 
-const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
-  console.log(moduleDetail)
-  const renderSection1 = (moduleDetail:any) => {
-    return (
+const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
+  const renderSection1 = (moduleDetail: any) => {
+
+     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
         {/* ---------- 1 ----------  */}
         <div className="pb-9 space-y-5">
@@ -31,16 +32,39 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
             <Badge href="/collection" name="Virtual Worlds" color="green" />
             <LikeSaveBtns />
           </div> */}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-           {moduleDetail[0].name}
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-semibold">
+            {moduleDetail && moduleDetail[0].category_name}
           </h2>
-           <h2 className="text-xl  ">
-           {moduleDetail[0].description}
+          <h2 className="text-xl sm:text-2xl lg:text-2xl font-semibold ">
+            {moduleDetail[0].name}
+          </h2>
+
+          <h2 className="text-sm  ">
+            {moduleDetail[0].description}
+          </h2>
+
+          <h2 className="text-sm  ">
+            {moduleDetail[0].keyword}
+          </h2>
+          <h2 className="text-sm  ">
+            {moduleDetail[0].tag}
+          </h2>
+          <h2 className="text-sm font-semibold ">
+
+            Support
+          </h2>
+          <h2 className="text-sm text-blue-500 ">
+
+            <Link href={moduleDetail[0].website}> {moduleDetail[0].website}</Link>
+          </h2>
+          <h2 className="text-sm  text-blue-500 ">
+            <Link href={moduleDetail[0].support_email}> {moduleDetail[0].support_email}</Link>
+
           </h2>
 
           {/* ---------- 4 ----------  */}
-          <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
-            {/* <Link href={"/author"} className="flex items-center ">
+          {/* <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
+            <Link href={"/author"} className="flex items-center ">
               <Avatar sizeClass="h-9 w-9" radius="rounded-full" />
               <span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
                 <span className="text-sm">Creator</span>
@@ -64,20 +88,20 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
                   <VerifyIcon iconClass="w-4 h-4" />
                 </span>
               </span>
-            </Link> */}
-          </div>
+            </Link>
+          </div> */}
         </div>
 
         {/* ---------- 6 ----------  */}
-        <div className="py-9">
+        {/* <div className="py-9">
           <TimeCountDown />
-        </div>
+        </div> */}
 
         {/* ---------- 7 ----------  */}
         {/* PRICE */}
         <div className="pb-9 pt-14">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
-            {/* <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
+          {/* <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
               <span className="absolute bottom-full translate-y-1 py-1 px-1.5 bg-white dark:bg-neutral-900 text-sm text-neutral-500 dark:text-neutral-400">
                 Current Bid
               </span>
@@ -91,8 +115,8 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
 
             <span className="text-sm text-neutral-500 dark:text-neutral-400 ml-5 mt-2 sm:mt-0 sm:ml-10">
               [96 in stock]
-            </span> */}
-          </div>
+            </span>
+          </div> */}
 
           <div className="mt-8 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <ButtonPrimary href={"/connect-wallet"} className="flex-1">
@@ -127,7 +151,7 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
                 />
               </svg>
 
-              <span className="ml-2.5">Place a bid</span>
+              <span className="ml-2.5">Try Now</span>
             </ButtonPrimary>
             {/* <ButtonSecondary href={"/connect-wallet"} className="flex-1">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -183,11 +207,23 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
           <div className="space-y-8 lg:space-y-10">
             {/* HEADING */}
             <div className="relative">
-              <NcImage
+
+
+              {moduleDetail && moduleDetail[0].imageUrls && moduleDetail[0].imageUrls.map((ite: any, i: any) => {
+
+                return ite.type === "thumbnail" && <NcImage
+                  containerClassName="aspect-w-1 aspect-h-1 relative"
+                  className="absolute inset-0 object-cover rounded-3xl sm:rounded-[40px] border-4 sm:border-[14px] border-white dark:border-neutral-800"
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
+                  alt={"title"}
+                  sizes="(max-width: 768px) 100vw, 840px"
+                />
+              })}
+              {/* <NcImage
                 src={nftsLargeImgs[0]}
                 containerClassName="aspect-w-11 aspect-h-12 rounded-3xl overflow-hidden z-0 relative"
                 fill
-              />
+              /> */}
               {/* META TYPE */}
               {/* <ItemTypeVideoIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" /> */}
 
@@ -195,7 +231,7 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({moduleDetail}) => {
               {/* <LikeButton className="absolute right-3 top-3 " /> */}
             </div>
 
-            {/* <AccordionInfo /> */}
+          {moduleDetail &&   <AccordionInfo moduleDetail={moduleDetail} />}
           </div>
 
           {/* SIDEBAR */}

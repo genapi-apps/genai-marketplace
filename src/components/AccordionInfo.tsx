@@ -49,22 +49,24 @@ const DEMO_DATA = [
 interface Props {
   panelClassName?: string;
   data?: typeof DEMO_DATA;
+  moduleDetail:any
 }
 
 const AccordionInfo: FC<Props> = ({
   panelClassName = "p-4 pt-3 last:pb-0 text-slate-600 text-sm dark:text-slate-300 leading-6",
   data = DEMO_DATA,
+  moduleDetail
 }) => {
   return (
     <div className="w-full rounded-2xl space-y-2.5">
       {/* ============ */}
-      {data.map((item, index) => {
+      {moduleDetail.map((item:any, index:any) => {
         return (
           <Disclosure key={index} defaultOpen={index < 2}>
             {({ open }) => (
               <>
                 <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 font-medium text-left bg-slate-100/80 hover:bg-slate-200/60 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75 ">
-                  <span>{item.name}</span>
+                  <span>Details</span>
                   {!open ? (
                     <PlusIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                   ) : (
@@ -74,7 +76,7 @@ const AccordionInfo: FC<Props> = ({
                 <Disclosure.Panel
                   className={panelClassName}
                   as="div"
-                  dangerouslySetInnerHTML={{ __html: item.content }}
+                  dangerouslySetInnerHTML={{ __html: item.full_description }}
                 ></Disclosure.Panel>
               </>
             )}

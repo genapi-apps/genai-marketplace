@@ -1,12 +1,10 @@
 import React, { FC } from "react";
 import Logo from "@/shared/Logo/Logo";
-import MenuBar from "@/shared/MenuBar/MenuBar";
-import SwitchDarkMode from "@/shared/SwitchDarkMode/SwitchDarkMode";
+import MenuBar from "@/shared/MenuBar/MenuBar"; 
 import Input from "@/shared/Input/Input";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import Navigation from "@/shared/Navigation/Navigation";
-
+import Link from "next/link";
+ 
 export interface MainNav2Props {}
 
 const MainNav2: FC<MainNav2Props> = () => {
@@ -17,7 +15,7 @@ const MainNav2: FC<MainNav2Props> = () => {
           <div className="self-center flex justify-start flex-grow space-x-3 sm:space-x-8 lg:space-x-10">
             <Logo />
             <div className="hidden sm:block flex-grow max-w-xs">
-              <form action="" method="POST" className="relative">
+               <Link  href="/search" className="relative">  
                 <Input
                   type="search"
                   placeholder="Search items"
@@ -48,30 +46,16 @@ const MainNav2: FC<MainNav2Props> = () => {
                   </svg>
                 </span>
                 <input type="submit" hidden value="" />
-              </form>
+              </Link>
             </div>
           </div>
           <div className="flex-shrink-0 flex justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
             <div className="hidden items-center xl:flex space-x-2">
-              {/* <Navigation /> */}
-              <div className="hidden sm:block h-9 border-l border-neutral-300 dark:border-neutral-6000"></div>
-              <SwitchDarkMode />
-              <ButtonPrimary
-                href={"/upload-item"}
-                sizeClass="px-4 py-2 sm:px-5"
-              >
-                Create
-              </ButtonPrimary>
-              <ButtonSecondary
-                href={"/connect-wallet"}
-                sizeClass="px-4 py-2 sm:px-5"
-              >
-                Connect Wallet
-              </ButtonSecondary>
+              
             </div>
             <div className="flex items-center space-x-1 xl:hidden">
               <ButtonPrimary
-                href={"/upload-item"}
+                href={"/create-item"}
                 sizeClass="px-4 py-2 sm:px-5"
               >
                 Create

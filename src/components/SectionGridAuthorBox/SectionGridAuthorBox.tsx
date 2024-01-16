@@ -18,7 +18,6 @@ export interface SectionGridAuthorBoxProps {
   gridClassName?: string;
   boxCard?: "box1" | "box2" | "box3" | "box4";
   data?: any[];
-  moduleList:any
 }
 
 const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
@@ -27,12 +26,10 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
   sectionStyle = "style1",
   gridClassName = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
   data = Array.from("11111111"),
-  moduleList
 }) => {
   const [tabActive, setTabActive] = useState("Popular");
 
-  const renderCard = (item:any,index: number) => {
-    // console.log(item)
+  const renderCard = (index: number) => {
     switch (boxCard) {
       case "box1":
         return (
@@ -49,7 +46,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
         return (
           <CardAuthorBox4
             authorIndex={index < 3 ? index + 1 : undefined}
-            key={index} item={item}
+            key={index}
           />
         );
 
@@ -109,17 +106,17 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
               </svg>
               `,
             },
-            // {
-            //   name: "Following",
-            //   icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            //   <path d="M18.5 19.5H14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            //   <path d="M16.5 21.5V17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            //   <path d="M12.16 10.87C12.06 10.86 11.94 10.86 11.83 10.87C9.44997 10.79 7.55997 8.84 7.55997 6.44C7.54997 3.99 9.53997 2 11.99 2C14.44 2 16.43 3.99 16.43 6.44C16.43 8.84 14.53 10.79 12.16 10.87Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            //   <path d="M11.99 21.8101C10.17 21.8101 8.36004 21.3501 6.98004 20.4301C4.56004 18.8101 4.56004 16.1701 6.98004 14.5601C9.73004 12.7201 14.24 12.7201 16.99 14.5601" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            //   </svg>
+            {
+              name: "Following",
+              icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 19.5H14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.5 21.5V17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12.16 10.87C12.06 10.86 11.94 10.86 11.83 10.87C9.44997 10.79 7.55997 8.84 7.55997 6.44C7.54997 3.99 9.53997 2 11.99 2C14.44 2 16.43 3.99 16.43 6.44C16.43 8.84 14.53 10.79 12.16 10.87Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.99 21.8101C10.17 21.8101 8.36004 21.3501 6.98004 20.4301C4.56004 18.8101 4.56004 16.1701 6.98004 14.5601C9.73004 12.7201 14.24 12.7201 16.99 14.5601" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
               
-            //   `,
-            // },
+              `,
+            },
             {
               name: "New & Noteworthy",
               icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,17 +145,17 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
       </div>
     );
   };
-// console.log(data)
+
   return (
     <div className={`nc-SectionGridAuthorBox relative ${className}`}>
       {sectionStyle === "style1" ? renderHeading1() : renderHeading2()}
       <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
-        {moduleList.map((item:any, index:any) => renderCard(item,index))}
+        {data.map((_, index) => renderCard(index))}
       </div>
-      {/* <div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">
+      <div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">
         <ButtonSecondary>Show me more </ButtonSecondary>
         <ButtonPrimary>Become a author</ButtonPrimary>
-      </div> */}
+      </div>
     </div>
   );
 };

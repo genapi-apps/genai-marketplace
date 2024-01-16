@@ -20,9 +20,8 @@ const Logo: React.FC<LogoProps> = ({
       href="/"
       className={`ttnc-logo inline-block text-slate-600 ${className}`}
     >
-      {/* THIS USE FOR MY CLIENT */}
-      {/* PLEASE UN COMMENT BELLOW CODE AND USE IT */}
-      {img ? (
+    
+     
         <Image
           className={`block h-8 sm:h-10 w-auto ${
             imgLight ? "dark:hidden" : ""
@@ -34,20 +33,8 @@ const Logo: React.FC<LogoProps> = ({
           width={400}
           height={400}
         />
-      ) : (
-        "Logo Here"
-      )}
-      {imgLight && (
-        <Image
-          className="hidden h-8 sm:h-10 w-auto dark:block"
-           src={"/logo.png"}
-          alt="Logo-Light"
-          sizes="200px"
-          priority
-           width={400}
-          height={400}
-        />
-      )}
+     
+     
     </Link>
   );
 };

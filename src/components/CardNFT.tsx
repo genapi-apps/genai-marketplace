@@ -14,10 +14,10 @@ import useGetRandomData from "@/hooks/useGetRandomData";
 export interface CardNFTProps {
   className?: string;
   isLiked?: boolean;
-  item: any
+  item:any
 }
 
-const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
+const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
   const { nftImageRd, titleRd } = useGetRandomData();
 
   const [itemType, setItemType] = useState<"video" | "audio" | "default">(
@@ -53,30 +53,40 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
         />
       </div>
     );
-  };
-
+  }; 
   return (
     <div className={`nc-CardNFT relative flex flex-col group ${className}`}>
       <div className="relative flex-shrink-0 ">
-        <div>
-          <NcImage
+        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0">
+         
+            {item && item.imageUrls ? item.imageUrls.map((ite:any, i:any)=>{
+         
+          return ite.type === "thumbnail" &&       <NcImage
             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
-            src={nftImageRd}
+             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
+        }) : 
+          <NcImage
+            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
+             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thumbnail/${item.thumbnail}`}
+            className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
+          />
+        }  
         </div>
         {/* {itemType === "video" && (
           <ItemTypeVideoIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        )} */}
+        )}
 
-        {/* {itemType === "audio" && (
+        {itemType === "audio" && (
           <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        )} */}
+        )}
 
-        {/* <LikeButton
+        <LikeButton
           liked={isLiked}
           className="absolute top-3 right-3 z-10 !h-9"
         /> */}
+          <h2 className=" absolute top-3 left-3 z-10 text-xs p-1 bg-white border rounded-xl ">{item && item.category_name}</h2>
         <div className="absolute top-3 inset-x-3 flex"></div>
       </div>
 
@@ -84,15 +94,14 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
         {/* <div className="flex justify-between">
           {renderAvatars()}
           <span className="text-neutral-700 dark:text-neutral-400 text-xs">
-            99 in stockss
+            99 in stock
           </span>
         </div> */}
-        <h2 className={`text-lg font-medium`}>{item.name}</h2>
-        <span className="text-sm" style={{ fontSize: '0.875rem', lineHeight: '1.25rem' }}>
-          {item.short_description}
-        </span>
+       
+          <h2 className={`text-lg font-medium`}>{item && item.name}</h2>
+             <h2 className={`text-sm font-medium m-0 p-0`}>{item && item.short_description}</h2>
 
-        <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div>
+        {/* <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div> */}
 
         {/* <div className="flex justify-between items-end">
           <Prices labelTextClassName="bg-white dark:bg-neutral-900" />
@@ -103,7 +112,7 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
         </div> */}
       </div>
 
-      <Link href={"/nft-detail"} className="absolute inset-0"></Link>
+    {item &&  <Link href={`/collection/${item.name}/${item.id}`} className="absolute inset-0"></Link>}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import AvatarDropdown from "./AvatarDropdown";
 import Input from "@/shared/Input/Input";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Navigation from "@/shared/Navigation/Navigation";
+import Link from "next/link";
 
 export interface MainNav2LoggedProps {}
 
@@ -18,8 +19,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
           <div className="self-center flex justify-start flex-grow space-x-3 sm:space-x-8 lg:space-x-10">
             <Logo />
             <div className="hidden sm:block flex-grow max-w-xs">
-              <form action="" method="POST" className="relative">
-                <Input
+              <Link  href="/search" className="relative">    <Input
                   type="search"
                   placeholder="Search items"
                   className="pr-10 w-full"
@@ -49,21 +49,15 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
                   </svg>
                 </span>
                 <input type="submit" hidden value="" />
-              </form>
+              </Link>
             </div>
           </div>
           <div className="flex-shrink-0 flex justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
             <div className="hidden xl:flex space-x-2">
-              <Navigation />
-              <div className="self-center hidden sm:block h-6 border-l border-neutral-300 dark:border-neutral-6000"></div>
-              <div className="flex">
-                <SwitchDarkMode />
-                {/* <NotifyDropdown /> */}
-              </div>
-              <div></div>
+            
               <ButtonPrimary
                 className="self-center"
-                href="/upload-item"
+                href="/create-item"
                 sizeClass="px-4 py-2 sm:px-5"
               >
                 Create
@@ -72,7 +66,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               <AvatarDropdown />
             </div>
             <div className="flex items-center space-x-1 xl:hidden">
-              <NotifyDropdown />
+             
               <AvatarDropdown />
               <MenuBar />
             </div>

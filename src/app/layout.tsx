@@ -5,7 +5,7 @@ import "rc-slider/assets/index.css";
 import Footer from "@/shared/Footer/Footer";
 import MusicPlayer from "@/components/MusicPlayer/MusicPlayer";
 import SiteHeader from "@/app/SiteHeader";
-import { ToolkitProvider } from "@/redux/toolkitProvider";
+import { ToolkitProvider } from "@/redux/toolKitProviders";
  
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"

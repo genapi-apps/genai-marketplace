@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { FC,Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonThird from "@/shared/Button/ButtonThird";
@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useDispatch } from "react-redux"
 import { setModuleList } from "@/redux/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 // DEMO DATA
 const typeOfSales = [
   {
@@ -48,21 +49,26 @@ const sortOrderRadios = [
   { name: "Most favorited", id: "Most-favorited" },
 ];
 
-//
-const TabFilters = ({ moduleList }) => {
- 
-  const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
-  //
-  const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
-  const [rangePrices, setRangePrices] = useState([0.01, 10]);
-  const [fileTypesState, setfileTypesState] = useState<string[]>([]);
-  const [saleTypeStates, setSaleTypeStates] = useState<string[]>([]);
-  const [sortOrderStates, setSortOrderStates] = useState<string>("");
+export interface TabFiltersProps {
+  
+   moduleList:any
+}
 
  
+const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
+ 
+  const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
+  
+  const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
+  const [rangePrices, setRangePrices] = useState([0.01, 10]);
+  const [fileTypesState, setfileTypesState] = useState<string[]>([]); 
+  const [sortOrderStates, setSortOrderStates] = useState<string>("");
+   const [clearAll, setClearAll] = useState<string>("");
+  
   const closeModalMoreFilter = () => setisOpenMoreFilter(false);
   const openModalMoreFilter = () => setisOpenMoreFilter(true);
   const dispatch = useDispatch()
+    const { categoryList } = useAppSelector((state) => state.auth);
   
   const handleChangeFileTypes = (checked: boolean, name: string) => {
     checked
@@ -72,7 +78,7 @@ const TabFilters = ({ moduleList }) => {
 
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const handleChangeSaleType = (checked: boolean, category: string) => {
+  const handleChangeCategoryType = (checked: boolean, category: string) => {
     setSelectedCategories((prevCategories) =>
       checked
         ? [...new Set([...prevCategories, category])]
@@ -81,21 +87,21 @@ const TabFilters = ({ moduleList }) => {
   };
 
   const handleApplyButtonClick = async () => {
+   
+   {clearAll}
     try {
       let categoriesToSend;
-      if (selectedCategories.includes("All Category Types")) {
+      if (selectedCategories.includes("all")) {
         categoriesToSend = ["all"];
       } else {
         categoriesToSend = selectedCategories;
       }
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/modules/filter/${categoriesToSend.join(',')}`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/modules/filter/${categoriesToSend.join(',')}`;
       const response = await axios.get(apiUrl, {
         headers: {
           "Content-Type": "application/json",
         },
-      });
- 
-      console.log(response)
+      }); 
       dispatch(setModuleList(response.data.data))
     
 
@@ -104,8 +110,8 @@ const TabFilters = ({ moduleList }) => {
     }
   };
 
+  
 
-  // OK
   const renderXClear = () => {
     return (
       <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary-500 text-white flex items-center justify-center ml-3 cursor-pointer">
@@ -125,9 +131,7 @@ const TabFilters = ({ moduleList }) => {
     );
   };
 
-  // OK
-  const uniqueCategories = moduleList && Array.from(new Set(moduleList.map(item => item.category)));
-
+ 
   const renderTabsTypeOfSales = () => {
     return (
       <Popover className="relative">
@@ -139,7 +143,7 @@ const TabFilters = ({ moduleList }) => {
                   ? "!border-primary-500 "
                   : "border-neutral-300 dark:border-neutral-700"
                 }
-                ${!!saleTypeStates.length
+                ${!!selectedCategories.length
                   ? "!border-primary-500 bg-primary-50 text-primary-900"
                   : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
                 }
@@ -170,10 +174,10 @@ const TabFilters = ({ moduleList }) => {
               </svg>
 
               <span className="ml-2">Category</span>
-              {!saleTypeStates.length ? (
+              {!selectedCategories.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
-                <span onClick={() => setSaleTypeStates([])}>
+                <span onClick={() => setSelectedCategories(["all"])}>
                   {renderXClear()}
                 </span>
               )}
@@ -190,13 +194,22 @@ const TabFilters = ({ moduleList }) => {
               <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
                 <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
                   <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {["All Category Types", ...uniqueCategories].map((item: any) => (
-                      <div key={item} className="">
+                   <div className="capitalize text-sm">
                         <Checkbox
-                          name={item}
-                          label={item}
-                          defaultChecked={selectedCategories.includes(item)}
-                          onChange={(checked) => handleChangeSaleType(checked, item)}
+                          name={"all"}
+                          label={"all"}
+                          onChange={(checked) =>   setSelectedCategories([])}
+                          className="text-sm"
+                        />
+                      </div>
+                    {categoryList && categoryList.length>0 && categoryList.map((item: any) => (
+                      <div key={item.name} className="capitalize text-sm">
+                        <Checkbox
+                          name={item.name}
+                          label={item.name}
+                          defaultChecked={selectedCategories.includes(item.name)}
+                          onChange={(checked) => handleChangeCategoryType(checked, item.name)}
+                          className="text-sm"
                         />
                       </div>
                     ))}
@@ -205,8 +218,9 @@ const TabFilters = ({ moduleList }) => {
                   <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       onClick={() => {
-                        close();
-                        setSelectedCategories([]);
+                        close(); 
+                        handleApplyButtonClick()
+                        setClearAll("all")
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
@@ -216,7 +230,7 @@ const TabFilters = ({ moduleList }) => {
                       onClick={() => {
                         handleApplyButtonClick();
                         close();
-                        setSelectedCategories([]);
+                        // setSelectedCategories([]);
                       }}
 
                       sizeClass="px-4 py-2 sm:px-5"
@@ -882,7 +896,7 @@ const TabFilters = ({ moduleList }) => {
                     <ButtonThird
                       onClick={() => {
                         setRangePrices([0.01, 10]);
-                        setSaleTypeStates([]);
+                        setSelectedCategories([]);
                         setfileTypesState([]);
                         setSortOrderStates("");
                         closeModalMoreFilter();
@@ -909,20 +923,12 @@ const TabFilters = ({ moduleList }) => {
 
   return (
     <div className="flex lg:space-x-4">
-      {/* FOR DESKTOP */}
-      <div className="hidden lg:flex space-x-4">
-        {/* {renderTabsPriceRage()} */}
+     <div className="lg:flex space-x-4">
         {renderTabsTypeOfSales()}
-        {/* {renderTabsFileTypes()} */}
-        {renderTabsSortOrder()}
-        {/* {renderTabVerifiedCreator()} */}
+       
       </div>
 
-      {/* FOR RESPONSIVE MOBILE */}
-      <div className="flex overflow-x-auto lg:hidden space-x-4">
-        {renderTabMobileFilter()}
-        {renderTabVerifiedCreator()}
-      </div>
+    
     </div>
   );
 };

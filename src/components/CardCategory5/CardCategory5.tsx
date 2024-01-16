@@ -9,6 +9,7 @@ export interface CardCategory5Props {
   featuredImage?: string | StaticImageData;
   name: string;
   index: number;
+  item:any
 }
 
 const COLORS = [
@@ -29,36 +30,39 @@ const CardCategory5: FC<CardCategory5Props> = ({
   featuredImage = images1,
   name,
   index,
-}) => {
+  item
+}) => { 
   return (
     <Link
-      href={"/collection"}
+      href={`/collection/${item.name}`}
       className={`nc-CardCategory5 flex flex-col ${className}`}
     >
       <div
-        className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 rounded-2xl overflow-hidden group`}
+        className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow rounded-2xl overflow-hidden group`}
       >
-        <NcImage
+        {/* <NcImage
           containerClassName=""
-          src={featuredImage}
+          src={"https://assets.promptbase.com/DALLE_IMAGES%2FVAXItKojEQXmXUs4prJNIftWE6T2%2Fresized%2F1704400212730_600x600.webp?alt=media&token=b6492ba0-181e-43f3-85dc-3df75c792e9b"}
           className="object-cover rounded-2xl z-0"
+          fill
+        /> */}
+                <NcImage
+          containerClassName=""
+           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.imageUrl}`}
+            className="object-cover rounded-2xl z-0 "
           fill
         />
         <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"></span>
       </div>
       <div className="mt-4 flex items-center">
-        <div className={`w-10 h-10 rounded-full ${COLORS[index]}`}></div>
-        <div className="ml-3">
+        {/* <div className={`w-10 h-10 rounded-full ${COLORS[index]}`}></div> */}
+        <div className="">
           <h2
             className={`text-base sm:text-lg text-neutral-900 dark:text-neutral-100 font-medium truncate`}
           >
-            {name}
+            {item.name}
           </h2>
-          <span
-            className={`block mt-1 text-sm text-neutral-6000 dark:text-neutral-400`}
-          >
-            1255 NFTs
-          </span>
+         
         </div>
       </div>
     </Link>

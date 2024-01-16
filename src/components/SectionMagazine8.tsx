@@ -6,10 +6,9 @@ import CardNFTMusic2 from "./CardNFTMusic2";
 
 export interface SectionMagazine8Props {
   className?: string;
-  moduleList:any
 }
 
-const SectionMagazine8: FC<SectionMagazine8Props> = ({ className = "", moduleList }) => {
+const SectionMagazine8: FC<SectionMagazine8Props> = ({ className = "" }) => {
   return (
     <div className={`nc-SectionMagazine8 relative ${className}`}>
       <Heading
@@ -28,10 +27,9 @@ const SectionMagazine8: FC<SectionMagazine8Props> = ({ className = "", moduleLis
           className="sm:col-span-3 xl:col-span-2"
         />
         <div className="grid grid-rows-3 gap-6 xl:gap-8 sm:col-span-6 xl:col-span-2">
-          {moduleList.map(
-            (item:any, index:any) => (
-              <CardNFTMusic2 //featuredImage={p} 
-              item={item} key={index} />
+          {[nftsAbstracts[2], nftsAbstracts[4], nftsAbstracts[7]].map(
+            (p, index) => (
+              <CardNFTMusic2 featuredImage={p} key={index} />
             )
           )}
         </div>

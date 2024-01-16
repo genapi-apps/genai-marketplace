@@ -172,27 +172,23 @@ const NavMobile: React.FC<NavMobileProps> = ({
             your stories and share them
           </span>
 
-          <div className="flex justify-between items-center mt-4">
+          {/* <div className="flex justify-between items-center mt-4">
             <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />
             <span className="block">
               <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
             </span>
-          </div>
+          </div> */}
         </div>
         <span className="absolute right-2 top-2 p-1">
           <ButtonClose onClick={onClickClose} />
         </span>
 
-        <div className="mt-5">{renderSearchForm()}</div>
+        {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
       <ul className="flex flex-col py-6 px-2 space-y-1">
-        {data.map(_renderItem)}
+        {/* {data.map(_renderItem)} */}
       </ul>
-      <div className="flex items-center justify-between py-6 px-5 space-x-2">
-        <ButtonPrimary href={"/"} className="!px-10">
-          Buy this template
-        </ButtonPrimary>
-      </div>
+     
     </div>
   );
 };

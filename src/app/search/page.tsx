@@ -23,7 +23,7 @@ const PageSearch = ({ }) => {
   const getModule = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules?page=1&limit=10`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -51,7 +51,7 @@ const PageSearch = ({ }) => {
             },
           }
         );
-        setModuleList(response.data.data);
+        setModuleList(response.data.data);  dispatch(setModuleList(response.data.data))
         setNoDataFound(response.data.data.length === 0);
       } else {
         getModule();
@@ -151,21 +151,17 @@ const PageSearch = ({ }) => {
             ))}
           </div>
   )}
-          {/* PAGINATION */}
-          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            <Pagination />
-            {/* <ButtonPrimary loading>Show me more</ButtonPrimary> */}
-          </div>
+        
         </main>
 
         {/* === SECTION 5 === */}
-        <div className="relative py-16 lg:py-28">
+        {/* <div className="relative py-16 lg:py-28">
           <BackgroundSection />
           <SectionSliderCollections />
-        </div>
+        </div> */}
 
         {/* SUBCRIBES */}
-        <SectionBecomeAnAuthor />
+        {/* <SectionBecomeAnAuthor /> */}
       </div>
     </div>
   );

@@ -15,13 +15,32 @@ import CardNFT from "@/components/CardNFT";
 import TabFilters from "@/components/TabFilters";
 import SectionSliderCardNftVideo from "@/components/SectionSliderCardNftVideo";
 
-import { useAppSelector } from "@/redux/hooks";
+import { useParams } from 'next/navigation'
+import axios from "axios";
  
 
-const PageCollection = () => {
-  const [collection, ssetCollection]= useState()
-  const { moduleList } = useAppSelector((state) => state.auth);
+const PageCollection = ({name}) => { 
   
+  const params = useParams<{ name: string; }>()
+  
+    const [categoryList, setCategoryList] = useState()
+    
+   
+     useEffect(() => {
+        const getModule = async () => {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/modules/${params.name}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+          setCategoryList(response.data.data) 
+        }
+
+        getModule()
+    }, [])
   ///modules/filter/:categories
   return (
     <div className={`nc-PageCollection`}>
@@ -41,12 +60,12 @@ const PageCollection = () => {
    
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-20 lg:space-y-28">
         <main>
-          <TabFilters moduleList={moduleList} />
+          <TabFilters moduleList={categoryList}/>
           
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
-            {moduleList && moduleList.map((item:any, index:any) => (
-              <CardNFT key={index} item={item} />
+            {categoryList && categoryList.map((item:any, index:any) => (
+              <CardNFT key={index} item={item}/>
             ))}
           </div>
 

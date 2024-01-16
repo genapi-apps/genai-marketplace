@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bannerHero{
+    opacity: 1;
+    bottom: 0;
+    z-index: 1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: .3s;
+    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fshowcase_3_stabbed_webp_small.webp?alt=media&token=404027e7-28ee-458c-afab-fedcc2207c1c);
+    border-radius: 8px;
+}

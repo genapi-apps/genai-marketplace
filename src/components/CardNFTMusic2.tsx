@@ -12,13 +12,11 @@ import ButtonPlayMusicPlayer from "./ButtonPlayMusicPlayer";
 export interface CardNFTMusic2Props {
   className?: string;
   featuredImage?: string;
-  item:any
 }
 
 const CardNFTMusic2: FC<CardNFTMusic2Props> = ({
   className = "",
-  // featuredImage = nftsAbstracts[18],
-  item
+  featuredImage = nftsAbstracts[18],
 }) => {
   const { nftAudioUrlRl } = useGetRandomData();
 
@@ -95,13 +93,13 @@ const CardNFTMusic2: FC<CardNFTMusic2Props> = ({
         <div className="relative w-16 sm:w-24">
           <NcImage
             containerClassName="absolute inset-0 rounded-2xl overflow-hidden shadow-lg z-0"
-            src={"https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80"}
+            src={featuredImage}
             fill
           />
         </div>
 
         <div className="flex flex-col justify-center flex-grow">
-          <h2 className={`block font-medium sm:text-lg`}>{item.name}</h2>
+          <h2 className={`block font-medium sm:text-lg`}>NFT music #114</h2>
           <div className=" flex items-center pt-3 mt-1.5">
             {renderAvatars()}
             <Prices
