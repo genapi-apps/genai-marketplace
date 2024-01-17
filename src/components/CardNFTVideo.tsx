@@ -20,28 +20,7 @@ const CardNFTVideo: FC<CardNFTVideoProps> = ({
   isLiked,
   featuredImage ,
 }) => {  
-  const renderAvatars = () => {
-    return (
-      <div className="hidden sm:flex -space-x-1 ">
-        <Avatar
-          containerClassName="ring-2 ring-white dark:ring-neutral-900"
-          sizeClass="h-5 w-5 text-sm"
-        />
-        <Avatar
-          containerClassName="ring-2 ring-white dark:ring-neutral-900"
-          sizeClass="h-5 w-5 text-sm"
-        />
-        <Avatar
-          containerClassName="ring-2 ring-white dark:ring-neutral-900"
-          sizeClass="h-5 w-5 text-sm"
-        />
-        <Avatar
-          containerClassName="ring-2 ring-white dark:ring-neutral-900"
-          sizeClass="h-5 w-5 text-sm"
-        />
-      </div>
-    );
-  };
+  
  
 
   return (

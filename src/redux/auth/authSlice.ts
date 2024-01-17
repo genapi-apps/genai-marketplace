@@ -7,7 +7,10 @@ export interface CounterState {
   email:string,
   otp:string,
   moduleList:any,
-  categoryList: any
+  categoryList: any,
+  trendingList:any,
+  newestList:any,
+  featuredList:any
   
 }
  
@@ -17,7 +20,10 @@ const initialState: CounterState = {
   email:"",
   otp:"", 
   moduleList:"",
-  categoryList:""
+  categoryList:"",
+  trendingList:"",
+  newestList:"",
+  featuredList:""
 }
  
 
@@ -37,6 +43,15 @@ export const counterSlice = createSlice({
     },
     setCategoryList:(state,action)=>{
      state.categoryList= action.payload
+    },
+    setNewestList:(state,action)=>{
+     state.newestList= action.payload
+    },
+    setTrendingList:(state,action)=>{
+     state.trendingList= action.payload
+    },
+       setFeatureList:(state,action)=>{
+     state.featuredList= action.payload
     }
 
     
@@ -44,7 +59,7 @@ export const counterSlice = createSlice({
 })
 
 export const { 
-  setEmailAuth, setOtpAuth, setModuleList, setCategoryList
+  setEmailAuth, setOtpAuth, setModuleList, setCategoryList,setNewestList,setTrendingList, setFeatureList
 } = counterSlice.actions
 
 export default counterSlice.reducer

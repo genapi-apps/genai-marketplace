@@ -12,6 +12,7 @@ import MySwitch from "@/components/MySwitch";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import NcImage from "@/shared/NcImage/NcImage";
 import axios from "axios";
+import { toast } from "react-toastify";
  
 interface FormData {
   name: string,
@@ -91,62 +92,47 @@ const PageUploadItem = ({ }) => {
         getCategoryList()
        
     }, [])
+
+  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const formData1 = new FormData()
-  
-      
-  
- 
-  // Append formData1 to requestData
-   thumbnail && formData1.append("thumbnail", thumbnail);
-  logo && formData1.append("logo",logo);
-   screenShot && formData1.append("screen_shot", screenShot);
-  video && formData1.append("video",video);
- 
-
+    const NewformData = new FormData()
+    
+    logo && NewformData.append('logo', logo);
+    thumbnail && NewformData.append('thumbnail', thumbnail);
+    video && NewformData.append('video', video);
+    logo && NewformData.append('logo', logo);
      
-   const requestData = {
-    name: formData.name,
-    description: formData.description,
-    external_link: formData.external_link,
-    category: formData.category_module_id,
-    short_description: formData.short_description,
-    full_description: formData.full_description,
-    support_email: formData.support_email,
-    thumbnail:thumbnail && formData1.append("thumbnail", thumbnail),
-   logo:  logo && formData1.append("logo",logo),
- screenShot:  screenShot && formData1.append("screen_shot", screenShot),
-video:  video && formData1.append("video",video),
- 
-  };
-  console.log()
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`,  {
-    name: formData.name,
-    description: formData.description,
-    external_link: formData.external_link,
-    category: formData.category_module_id,
-    short_description: formData.short_description,
-    full_description: formData.full_description,
-    support_email: formData.support_email,
-    thumbnail:thumbnail && formData1.append("thumbnail", thumbnail),
-   logo:  logo && formData1.append("logo",logo),
- screenShot:  screenShot && formData1.append("screen_shot", screenShot),
-video:  video && formData1.append("video",video),
- 
-  }, {
+  
+   NewformData.append("name", formData.name)  
+   NewformData.append("description",  formData.description)      
+   NewformData.append("category_module_id", formData.category_module_id)  
+   NewformData.append("short_description", formData.short_description)   
+   NewformData.append("full_description", formData.full_description)   
+   NewformData.append("external_link", formData.external_link)   
+   NewformData.append("support_email", formData.support_email)   
+   
+       
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`, NewformData, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         // Authorization: `Bearer ${getToken()}`
       }
     })
-    console.log(response)
+   if(response.data.success ){
+    toast("Item Created Successfully!")
+   }
   };
   const handleThumbnailChange = (e: any) => {
+
     setThumbnail(e.target.files[0])
   }
   const handleLogoChange = (e: any) => {
-    setLogo(e.target.files[0])
+   
+      setLogo(e.target.files[0]);
+   
+  
+
   }
   const handleScreenShotChange = (e: any) => {
     setScreenShot(e.target.files[0])
@@ -163,29 +149,21 @@ video:  video && formData1.append("video",video),
             <h2 className="text-3xl sm:text-4xl font-semibold">
               Create New Item
             </h2>
-            <span className="block mt-3 text-neutral-500 dark:text-neutral-400">
-              You can set preferred display name, create your profile URL and
-              manage other personal settings.
-            </span>
+           
           </div>
 
           <hr className="w-full border-t-2 border-neutral-100 dark:border-neutral-700" />
 
           <div className="mt-10 md:mt-0 space-y-5 sm:space-y-6 md:sm:space-y-8">
 
-
-            {/* ---- */}
-            <FormItem label="Name">
-              <Input defaultValue="Name" id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
-            </FormItem>
-           
-            <FormItem label="Category">
+              <FormItem label="Category">
                 <select 
                   defaultValue="Category" 
                   id="category_module_id" 
                   name="category_module_id" 
                   value={formData.category_module_id} 
                   onChange={handleChange} 
+                  className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 disabled:bg-neutral-200 dark:disabled:bg-neutral-800 rounded-2xl text-sm font-normal h-11 px-4 py-3 "
                 > 
                 {homeList && homeList.map((item:any,i:any)=>{
                   return <option value={item.id} key={i}>{item.name}</option>
@@ -193,6 +171,12 @@ video:  video && formData1.append("video",video),
                   
                 </select>
               </FormItem>
+            {/* ---- */}
+            <FormItem label="Name">
+              <Input defaultValue="Name" id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
+            </FormItem>
+           
+         
             <FormItem
               label="Description"
               desc={
@@ -240,7 +224,7 @@ video:  video && formData1.append("video",video),
             {/* ---- */}
             <FormItem
               label="External link"
-              desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
+             // desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
             >
               <div className="flex">
                 <span className="inline-flex items-center px-3 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
@@ -251,7 +235,7 @@ video:  video && formData1.append("video",video),
             </FormItem>
             <FormItem
               label="Support Email"
-              desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
+           //   desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
             >
               <div className="flex">
                 <span className="inline-flex items-center px-3 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
@@ -293,14 +277,14 @@ video:  video && formData1.append("video",video),
                     </svg>
                     <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
                       <label
-                        htmlFor="attachment"
+                        htmlFor="screenShot"
                         className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                       >
                         <span>Upload a file</span>
                         <input
 
                           type="file"
-                          className="sr-only" name="attachment" id="attachment" onChange={handleScreenShotChange}
+                          className="sr-only" name="screenShot" id="screenShot" onChange={handleScreenShotChange}
                         />
 
                       </label>
@@ -345,14 +329,14 @@ video:  video && formData1.append("video",video),
                     </svg>
                     <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
                       <label
-                        htmlFor="attachment"
+                        htmlFor="logo"
                         className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                       >
                         <span>Upload a file</span>
                         <input
 
                           type="file"
-                          className="sr-only" name="attachment" id="attachment" onChange={handleLogoChange}
+                          className="sr-only" name="logo" id="logo" onChange={handleLogoChange}
                         />
 
                       </label>
@@ -397,14 +381,14 @@ video:  video && formData1.append("video",video),
                     </svg>
                     <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
                       <label
-                        htmlFor="attachment"
+                        htmlFor="video"
                         className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                       >
                         <span>Upload a file</span>
                         <input
 
                           type="file"
-                          className="sr-only" name="attachment" id="attachment" onChange={handleVideoChange}
+                          className="sr-only" name="video" id="video" onChange={handleVideoChange}
                         />
 
                       </label>
@@ -447,14 +431,14 @@ video:  video && formData1.append("video",video),
                     </svg>
                     <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
                       <label
-                        htmlFor="attachment"
+                        htmlFor="thumbnail"
                         className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
                       >
                         <span>Upload a file</span>
                         <input
 
                           type="file"
-                          className="sr-only" name="attachment" id="attachment" onChange={handleThumbnailChange}
+                          className="sr-only" name="thumbnail" id="thumbnail" onChange={handleThumbnailChange}
                         />
 
                       </label>

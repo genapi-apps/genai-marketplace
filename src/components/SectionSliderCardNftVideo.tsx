@@ -22,7 +22,7 @@ const SectionSliderCardNftVideo: FC<SectionSliderCardNftVideoProps> = ({
   return (
     <div className={`nc-SectionSliderCardNftVideo ${className}`}>
       <MySlider
-        itemPerRow={4}
+        itemPerRow={5}
         hideNextPrev
         renderSectionHeading={({
           onClickPrev,

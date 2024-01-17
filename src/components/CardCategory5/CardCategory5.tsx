@@ -6,8 +6,7 @@ import { StaticImageData } from "next/image";
 
 export interface CardCategory5Props {
   className?: string;
-  featuredImage?: string | StaticImageData;
-  name: string;
+  
   index: number;
   item:any
 }
@@ -27,8 +26,7 @@ const COLORS = [
 
 const CardCategory5: FC<CardCategory5Props> = ({
   className = "",
-  featuredImage = images1,
-  name,
+  
   index,
   item
 }) => { 
@@ -56,9 +54,9 @@ const CardCategory5: FC<CardCategory5Props> = ({
       </div>
       <div className="mt-4 flex items-center">
         {/* <div className={`w-10 h-10 rounded-full ${COLORS[index]}`}></div> */}
-        <div className="">
+        <div className="w-[200px]">
           <h2
-            className={`text-base sm:text-lg text-neutral-900 dark:text-neutral-100 font-medium truncate`}
+            className={`text-sm text-neutral-900 capitalize dark:text-neutral-100 font-medium truncate`}
           >
             {item.name}
           </h2>

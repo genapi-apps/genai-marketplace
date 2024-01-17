@@ -36,7 +36,7 @@ const Heading: React.FC<HeadingProps> = ({
   className = "mb-8 lg:mb-8 text-neutral-900 dark:text-neutral-50",
   isCenter = false,
   hasNextPrev = false,
-  fontClass = "text-2xl md:text-2xl font-semibold gap-5",
+  fontClass = "text-2xl font-semibold gap-5",
   rightPopoverText,
   rightPopoverOptions = solutions,
   ...args

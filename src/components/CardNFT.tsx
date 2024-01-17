@@ -57,12 +57,12 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
   return (
     <div className={`nc-CardNFT relative flex flex-col group ${className}`}>
       <div className="relative flex-shrink-0 ">
-        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0">
+        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-xl overflow-hidden z-0">
          
             {item && item.imageUrls ? item.imageUrls.map((ite:any, i:any)=>{
          
           return ite.type === "thumbnail" &&       <NcImage
-            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
+            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-xl overflow-hidden z-0"
              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
@@ -90,7 +90,7 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
         <div className="absolute top-3 inset-x-3 flex"></div>
       </div>
 
-      <div className="px-2 py-5 space-y-3">
+      <div className="px-2 py-5 space-y-1">
         {/* <div className="flex justify-between">
           {renderAvatars()}
           <span className="text-neutral-700 dark:text-neutral-400 text-xs">
