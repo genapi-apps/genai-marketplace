@@ -16,33 +16,32 @@ const MonthTrending: FC<CardCategory5Props>  = ({data}) => {
     <h2 className='text-xs text-gray-600 font-semibold  mb-3'>Top Prompt This Week</h2>
        <div className='flex flex-col gap-5'>
    
-      {data && data.slice(0, 5).map((item:any,i:any)=>{
+      {data && data.length>0 ? data.slice(0, 5).map((item:any,i:any)=>{
         return      <div className={`nc-CardNFT relative flex gap-2 group `}>
       <div className="relative flex-shrink-0 ">
         <div className="flex w-36 h-18  rounded-xl  overflow-hidden z-0">
 
-          <NcImage
+          {/* <NcImage
             containerClassName="flex w-36 h-18  overflow-hidden z-0"
             src={`https://assets.promptbase.com/DALLE_IMAGES%2FVAXItKojEQXmXUs4prJNIftWE6T2%2Fresized%2F1704720519740_150x150.webp?alt=media&token=99aa9a1b-476c-40f3-8e7e-1e7b4a876a1c`}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
-          />
+          /> */}
 
-               {/* {item && item.imageUrls ? item.imageUrls.map((ite:any, i:any)=>{
+               {item && item.imageUrls ? item.imageUrls.map((ite:any, i:any)=>{
          
           return ite.type === "thumbnail" &&       <NcImage
-            containerClassName="flex w-36 h-18 w-full h-0 rounded-xl overflow-hidden z-0"
-           src={`https://assets.promptbase.com/DALLE_IMAGES%2FVAXItKojEQXmXUs4prJNIftWE6T2%2Fresized%2F1704720519740_150x150.webp?alt=media&token=99aa9a1b-476c-40f3-8e7e-1e7b4a876a1c`}
+            containerClassName="flex w-36 h-18 rounded-xl overflow-hidden z-0"
+         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
           
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
         }) : 
           <NcImage
-            containerClassName="flex w-36 h-18 w-full h-0 rounded-3xl overflow-hidden z-0"
-               src={`https://assets.promptbase.com/DALLE_IMAGES%2FVAXItKojEQXmXUs4prJNIftWE6T2%2Fresized%2F1704720519740_150x150.webp?alt=media&token=99aa9a1b-476c-40f3-8e7e-1e7b4a876a1c`}
-          
+            containerClassName="flex w-36 h-18  rounded-3xl overflow-hidden z-0"
+             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.thumbnail}`}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
-        }   */}
+        }  
 
         </div>
 
@@ -63,7 +62,35 @@ const MonthTrending: FC<CardCategory5Props>  = ({data}) => {
       <Link href={`/collection`} className="absolute inset-0"></Link>
     </div>
   
-      })}
+      }):
+      
+          [1, 1, 1, 1, 1].map((item, indx) => (
+            <div className={`nc-CardNFT relative flex gap-2 group `} key={indx}>
+              <div className="relative flex-shrink-0 ">
+                <div className="flex w-36 h-18  rounded-xl animate-fade overflow-hidden z-0">
+                  <NcImage
+                    containerClassName="flex w-36 h-18  rounded-xl overflow-hidden z-0"
+                    src="https://www.aputf.org/wp-content/uploads/2015/06/default-placeholder1-1024x1024-570x321.png"
+                    className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
+                  />
+
+
+                </div>
+
+                <div className="absolute top-3 inset-x-3 flex"></div>
+              </div>
+
+              <div className="flex flex-col gap-1 animate-fade  w-[150px]">
+                <h2 className="   text-xs bg-white  text-gray-600 font-semibold animate-fade h-5 w-full truncate"> </h2>
+                <h2 className={`text-xs  text-gray-600 animate-fade w-full h-5`}> </h2>
+                <h2 className={`text-xs text-gray-600 m-0 p-0 h-5 w-full flex items-center gap-1 animate-fade`}>
+                </h2>
+              </div>
+
+              <Link href={`/collection`} className="absolute inset-0"></Link>
+            </div>
+
+          ))}
   
     
    </div>

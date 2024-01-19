@@ -5,6 +5,8 @@ import NcImage from "@/shared/NcImage/NcImage";
 import Badge from "@/shared/Badge/Badge";
 import Input from "@/shared/Input/Input";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 
 export interface SectionSubscribe2Props {
   className?: string;
@@ -45,9 +47,17 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
             <ArrowSmallRightIcon className="w-5 h-5" />
           </ButtonCircle>
         </form> */}
+         <form className="mt-10 relative max-w-sm">
+          <ButtonPrimary
+            type="submit"
+            className="absolute transform top-1/2 -translate-y-1/2 right-1"
+          >
+           Go   <ArrowSmallRightIcon className="w-5 h-5" />
+          </ButtonPrimary>
+          </form>
       </div>
       <div className="flex-grow">
-        <NcImage src={"https://assets.promptbase.com/DALLE_IMAGES%2FxC2uY4tkvpGigeTENYmM%2Fresized%2F1681447119136_500x500.webp?alt=media&token=0bf52b6e-9977-4aef-98d4-3660474ac954"} />
+        <NcImage src={"/letconnect.png"} />
       </div>
     </div>
   );

@@ -1,10 +1,16 @@
 "use client"
-import NftDetailPage from '@/app/nft-detail/page'
-import React, { useEffect, useState } from 'react'
+import NftDetailPage from '@/components/nft-detail/page'
+import React, {FC, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
  
-const PageDetail = ({id,name}) => { 
+export interface CardDetailProps {
+ 
+  id: number;
+  name:string
+}
+
+const PageDetail: FC<CardDetailProps> = ({id,name}) => { 
   const params = useParams<{ id:string;name: string; }>()
  
    const [moduleDetail, setModuleDetail] = useState()

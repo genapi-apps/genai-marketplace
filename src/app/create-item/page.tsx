@@ -69,6 +69,7 @@ const PageUploadItem = ({ }) => {
     }));
   };
  const getCategoryList = async () => {
+  console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
 
         try {
 
@@ -76,6 +77,7 @@ const PageUploadItem = ({ }) => {
             const response = await axios.get(apiUrl, {
                 headers: {
                     "Content-Type": "application/json",
+                     Authorization: localStorage.getItem("marketplacegenaitoken")
                 },
             });
 

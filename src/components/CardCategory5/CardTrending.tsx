@@ -38,7 +38,7 @@ const CardTrending: FC<CardTrendingProps> = ({
       className={`nc-CardCategory5 flex flex-col ${className}`}
     >
       <div
-        className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow rounded overflow-hidden group`}
+        className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow bg-blue-400 rounded overflow-hidden group`}
       >
         {/* <NcImage
              containerClassName=""

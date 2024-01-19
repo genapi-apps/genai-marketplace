@@ -69,6 +69,9 @@ module.exports = {
           900: customColors("--c-neutral-900"),
         },
       },
+        animation: {
+      'fade': 'fade 1s ease-in-out infinite',
+    }
     },
   },
   variants: {
@@ -80,3 +83,4 @@ module.exports = {
     require("@tailwindcss/aspect-ratio"),
   ],
 };
+ 

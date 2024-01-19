@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React, {useState, useEffect} from 'react'
 
 const CreatorTrending = () => {
- const [a, setAA]= useState()
+ const [a, setAA]= useState([])
   useEffect(() => {
         const getModule = async () => {
       
@@ -29,7 +29,7 @@ const CreatorTrending = () => {
 
     <h2 className='text-xs text-gray-600 font-semibold mb-3'>Top Creators</h2>
     <div className='flex flex-col gap-5'>
-  {a && a.map((item:any,i:any)=> {
+  {a && a.length>0 ? a.map((item:any,i:any)=> {
     return  <div className={`nc-CardNFT relative flex gap-2 group items-center `} key={i}>
       <div className="relative flex-shrink-0 ">
         <div className="flex w-12 h-12  rounded-full  overflow-hidden z-0">
@@ -57,7 +57,36 @@ const CreatorTrending = () => {
 
       {/* <Link href={`/collection`} className="absolute inset-0"></Link> */}
     </div>
-  }) }</div>
+  }) :
+  
+      [1, 1, 1, 1, 1].map((item, indx) => (
+           <div className={`nc-CardNFT relative flex gap-2 group items-center `} key={indx}>
+      <div className="relative flex-shrink-0 ">
+        <div className="flex w-12 h-12  rounded-full animate-fade overflow-hidden z-0">
+
+          <NcImage
+            containerClassName="flex w-12 h-12 overflow-hidden z-0"
+            src="https://www.aputf.org/wp-content/uploads/2015/06/default-placeholder1-1024x1024-570x321.png" className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
+          />
+
+        </div>
+
+        <div className="absolute top-3 inset-x-3 flex"></div>
+      </div>
+
+      <div className="flex flex-col gap-1 animate-fade"> 
+        <h2 className={`text-xs  text-gray-600 animate-fade `}> </h2>
+        <h2 className={`text-xs text-gray-600 m-0 p-0 flex items-center gap-1 animate-fade`}>   
+         
+
+          </h2> 
+      </div>
+
+      {/* <Link href={`/collection`} className="absolute inset-0"></Link> */}
+    </div>
+
+          ))
+  }</div>
    
    
     </>

@@ -1,6 +1,6 @@
 
 "use client"
-import React,{useState, useEffect} from "react";
+import React,{FC,useState, useEffect} from "react";
 import NcImage from "@/shared/NcImage/NcImage";
 import collectionBanner from "@/images/nfts/collectionBanner.png";
 import { nftsImgs } from "@/contains/fakeData";
@@ -18,8 +18,11 @@ import SectionSliderCardNftVideo from "@/components/SectionSliderCardNftVideo";
 import { useParams } from 'next/navigation'
 import axios from "axios";
  
-
-const PageCollection = ({name}) => { 
+export interface CardListingProps {
+  
+  name:string
+}
+const PageCollection:FC<CardListingProps> = ({name}) => { 
   
   const params = useParams<{ name: string; }>()
   
@@ -64,7 +67,7 @@ const PageCollection = ({name}) => {
           
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
-            {categoryList && categoryList.map((item:any, index:any) => (
+            {categoryList && categoryList.length>0 && categoryList.map((item:any, index:any) => (
               <CardNFT key={index} item={item}/>
             ))}
           </div>

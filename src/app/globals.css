@@ -11,5 +11,53 @@
     width: 100%;
     transition: .3s;
     background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fshowcase_3_stabbed_webp_small.webp?alt=media&token=404027e7-28ee-458c-afab-fedcc2207c1c);
-    border-radius: 8px;
+       background-position: center;
+    border-radius: 8px; 
+      background-repeat: no-repeat;
 }
+
+@keyframes fade {
+  0%, 100% { opacity: .5; }
+  50% { opacity: 0.3; }
+}
+
+.bggradient:before{
+ /* background: radial-gradient(circle, rgba(219,222,236,1) 0%, rgba(112,135,136,1) 100%); */
+      content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 50% at center,transparent,#222236);
+    z-index: 1;
+    border-radius: inherit;
+    border-radius: 2px;
+}
+
+.bannerHero2{
+    opacity: 1;
+    bottom: 0;
+    z-index: 1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: .3s;
+    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fsales_banner_webp_small.webp?alt=media&token=e3e92683-984a-415c-8f1e-a3227ed78781);
+      background-position: center;
+    border-radius: 8px; 
+    background-repeat: no-repeat;
+}
+
+
+.bannerHero3{
+    opacity: 1;
+    bottom: 0;
+    z-index: 1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: .3s;
+    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fhire_stabbed_2_webp_small.webp?alt=media&token=5b2a18d4-8a22-4a24-8f38-b81d814ed300);
+       background-position: center;
+    border-radius: 8px; 
+      background-repeat: no-repeat;
+}
+

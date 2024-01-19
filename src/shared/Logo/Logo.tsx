@@ -26,7 +26,7 @@ const Logo: React.FC<LogoProps> = ({
           className={`block h-8 sm:h-10 w-auto ${
             imgLight ? "dark:hidden" : ""
           }`}
-          src={"/logo.png"}
+          src={"/zenAi.png"}
           alt="Logo"
           sizes="200px"
           priority

@@ -78,13 +78,14 @@ function PageHome() {
     }, [])
 
     const getCategoryList = async () => {
-
+console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
         try {
 
             const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-category-modules`;
             const response = await axios.get(apiUrl, {
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("marketplacegenaitoken")
                 },
             });
 
@@ -106,7 +107,7 @@ function PageHome() {
         <div className="nc-PageHome relative overflow-hidden">
 
             <div className="container   relative my-5">
-                <SectionHero2 title="Gen AI Marketplace" desc="Search 100,000+ AI prompts from the world best AI creators Midjourney, ChatGPT, DALL·E, Stable Diffusion & more" />
+                <SectionHero2 id="1" title="Gen AI Marketplace" desc="Search 100,000+ AI prompts from the world best AI creators Midjourney, ChatGPT, DALL·E, Stable Diffusion & more" />
             </div>
 
 
@@ -116,13 +117,14 @@ function PageHome() {
                 {/* <SectionLargeTrending title="Trending Prompt" moduleList={trendingList} />
                  */}
                    <SectionTrending title="Trending Prompt" moduleList={trendingList} />
-                <SectionHero2 title="Sell your prompts on Gen AI" desc="Upload your prompt, connect with Stripe, and become a seller in just 2 minutes" />
+                      <SectionNew />
+                <SectionHero2 id="2" title="Sell your prompts on Gen AI" desc="Upload your prompt, connect with Stripe, and become a seller in just 2 minutes"  />
 
                 {/* <SectionSliderCardNftVideo title="Newest Prompt" moduleList={moduleList} /> */}
                 <SectionTrending title="Featured Prompt" moduleList={featuredList} />
                 <SectionTrending title="Newest Prompt" moduleList={newestList} />
-                <SectionHero2 title="Hire an AI creator for your next project" desc="Commission custom prompts and solutions from top prompt engineers" />
-                <SectionNew />
+                <SectionHero2 id="3" title="Hire an AI creator for your next project" desc="Commission custom prompts and solutions from top prompt engineers" />
+              
 
  
             </div>
