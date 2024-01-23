@@ -37,7 +37,7 @@ const SectionNew: FC<SectionTrendingProps> = ({ }) => {
         getTrendingData()
     }, [])
   return (
-    <div className={`nc-SectionSliderCategories flex gap-5 w-full`}>
+    <div className={`nc-SectionSliderCategories flex lg:flex-row flex-col gap-5 w-full`}>
      <div className="lg:w-1/2 w-full border border-gray-50 shadow rounded-xl px-2 py-5 flex flex-col gap-2">  <WeekTrending data={weekData}/></div>
      <div className="lg:w-1/2 w-full border border-gray-50 shadow rounded-xl px-2 py-5 flex flex-col gap-2">  <MonthTrending data={monthData}/></div>
      <div className="lg:w-1/2 w-full border border-gray-50 shadow rounded-xl  px-2 py-5 flex flex-col gap-2">  <CreatorTrending/></div>

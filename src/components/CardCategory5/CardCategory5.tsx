@@ -40,7 +40,7 @@ const CardCategory5: FC<CardCategory5Props> = ({
       >
         {/* <NcImage
           containerClassName=""
-          src={"https://assets.promptbase.com/DALLE_IMAGES%2FVAXItKojEQXmXUs4prJNIftWE6T2%2Fresized%2F1704400212730_600x600.webp?alt=media&token=b6492ba0-181e-43f3-85dc-3df75c792e9b"}
+          src={"https://assets.promptbase.com/DALLE_IMAGES%2FeG1AhVWVTJOX4SqxE1AUFLv1bC73%2Fresized%2F1705680233343_500x500.webp?alt=media&token=c029a218-7e31-4682-8acd-224e5b3c9193"}
           className="object-cover rounded-2xl z-0"
           fill
         /> */}

@@ -19,6 +19,7 @@ const SectionHero3 = () => {
             sizeClass="px-6 py-3 lg:px-8 lg:py-4"
             fontSize="text-sm sm:text-base lg:text-lg font-medium"
             href="/search"
+            // onClick={()=> console.log("send message")}
           >
             Start your search
           </ButtonPrimary>

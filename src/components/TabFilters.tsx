@@ -13,6 +13,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux"
 import { setModuleList } from "@/redux/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
+import { BulbIcon } from "@/icons";
 // DEMO DATA
 const typeOfSales = [
   {
@@ -77,21 +78,23 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
   };
 
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(["all"]);
   const handleChangeCategoryType = (checked: boolean, category: string) => {
     setSelectedCategories((prevCategories) =>
       checked
-        ? [...new Set([...prevCategories, category])]
+        ? [...new Set([...prevCategories, category])] //getting this error: "Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher."
         : prevCategories.filter((item) => item !== category)
     );
   };
+
+  
 
   const handleApplyButtonClick = async () => {
    
    {clearAll}
     try {
       let categoriesToSend;
-      if (selectedCategories.includes("all")) {
+      if (selectedCategories.includes('All Category Types')) {
         categoriesToSend = ["all"];
       } else {
         categoriesToSend = selectedCategories;
@@ -103,14 +106,19 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
         },
       }); 
       dispatch(setModuleList(response.data.data))
-    
-
+     
     } catch (error) {
       console.error("Error making API call:", error);
     }
   };
+ 
 
-  
+    const handleClearCategory = (indexToRemove:any) => {
+    const updatedCategories = [...selectedCategories];
+    updatedCategories.splice(indexToRemove, 1);
+    setSelectedCategories(updatedCategories);
+    handleApplyButtonClick()
+  };
 
   const renderXClear = () => {
     return (
@@ -119,7 +127,7 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
           xmlns="http://www.w3.org/2000/svg"
           className="h-3 w-3"
           viewBox="0 0 20 20"
-          fill="currentColor"
+          fill="white"
         >
           <path
             fillRule="evenodd"
@@ -132,13 +140,13 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
   };
 
  
-  const renderTabsTypeOfSales = () => {
+  const renderTabsCategory = () => {
     return (
       <Popover className="relative">
         {({ open, close }) => (
           <>
             <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none
+              className={`flex items-center justify-center px-4 py-2 text-sm  rounded-xl border focus:outline-none
                ${open
                   ? "!border-primary-500 "
                   : "border-neutral-300 dark:border-neutral-700"
@@ -149,38 +157,10 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
                 }
                 `}
             >
-              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M10 6.575L9.10838 8.125C8.90838 8.46666 9.07505 8.75 9.46672 8.75H10.525C10.925 8.75 11.0834 9.03333 10.8834 9.375L10 10.925"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M6.91672 15.0333V14.0667C5.00005 12.9083 3.42505 10.65 3.42505 8.25C3.42505 4.125 7.21672 0.891671 11.5 1.825C13.3834 2.24167 15.0334 3.49167 15.8917 5.21667C17.6334 8.71667 15.8 12.4333 13.1084 14.0583V15.025C13.1084 15.2667 13.2 15.825 12.3084 15.825H7.71672C6.80005 15.8333 6.91672 15.475 6.91672 15.0333Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.08325 18.3333C8.99159 17.7917 11.0083 17.7917 12.9166 18.3333"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+               <BulbIcon/>
 
               <span className="ml-2">Category</span>
-              {!selectedCategories.length ? (
-                <ChevronDownIcon className="w-4 h-4 ml-3" />
-              ) : (
-                <span onClick={() => setSelectedCategories(["all"])}>
-                  {renderXClear()}
-                </span>
-              )}
+              <ChevronDownIcon className="w-4 h-4 ml-3" />
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -192,30 +172,31 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
+                <div className="overflow-hidden rounded-xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
+                  <div className="relative flex text-xs flex-col px-5 py-6 space-y-2">
                    <div className="capitalize text-sm">
                         <Checkbox
                           name={"all"}
                           label={"all"}
-                          onChange={(checked) =>   setSelectedCategories([])}
+                          onChange={(checked) =>   setSelectedCategories(['all'])}
                           className="text-sm"
                         />
                       </div>
-                    {categoryList && categoryList.length>0 && categoryList.map((item: any) => (
-                      <div key={item.name} className="capitalize text-sm">
+                    {categoryList && categoryList.length>0 && categoryList.map((item: any) => {
+                     
+                       return  <div key={item.name} className="capitalize text-xs">
                         <Checkbox
                           name={item.name}
                           label={item.name}
                           defaultChecked={selectedCategories.includes(item.name)}
                           onChange={(checked) => handleChangeCategoryType(checked, item.name)}
-                          className="text-sm"
+                          className="text-xs"
                         />
                       </div>
-                    ))}
+                     })}
                   </div>
                   <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
+                  <div className="p-3 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       onClick={() => {
                         close(); 
@@ -369,13 +350,13 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
   };
 
   // OK
-  const renderTabsFileTypes = () => {
+  const renderTabsTypes = () => {
     return (
       <Popover className="relative">
         {({ open, close }) => (
           <>
             <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none 
+              className={`flex items-center justify-center px-4 py-2 text-sm rounded-xl border focus:outline-none 
               ${open ? "!border-primary-500 " : ""}
                 ${!!fileTypesState.length
                   ? "!border-primary-500 bg-primary-50 text-primary-900"
@@ -427,14 +408,8 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
                 />
               </svg>
 
-              <span className="ml-2">File Types</span>
-              {!fileTypesState.length ? (
-                <ChevronDownIcon className="w-4 h-4 ml-3" />
-              ) : (
-                <span onClick={() => setfileTypesState([])}>
-                  {renderXClear()}
-                </span>
-              )}
+              <span className="ml-2">File Types</span> <ChevronDownIcon className="w-4 h-4 ml-3" />
+             
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -446,8 +421,8 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
+                <div className="overflow-hidden rounded-xl text-sm shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
+                  <div className="relative flex flex-col px-5 py-6 space-y-3">
                     {fileTypes.map((item) => (
                       <div key={item.name} className="">
                         <Checkbox
@@ -457,11 +432,12 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
                           onChange={(checked) =>
                             handleChangeFileTypes(checked, item.name)
                           }
+                          className="text-sm"
                         />
                       </div>
                     ))}
                   </div>
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
+                  <div className="p-3 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       onClick={() => {
                         close();
@@ -896,7 +872,7 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
                     <ButtonThird
                       onClick={() => {
                         setRangePrices([0.01, 10]);
-                        setSelectedCategories([]);
+                        setSelectedCategories(["all"]);
                         setfileTypesState([]);
                         setSortOrderStates("");
                         closeModalMoreFilter();
@@ -922,12 +898,23 @@ const TabFilters: FC<TabFiltersProps>  = ({ moduleList }) => {
   };
 
   return (
-    <div className="flex lg:space-x-4">
+    <div className="flex   flex-col gap-3">
+     
      <div className="lg:flex space-x-4">
-        {renderTabsTypeOfSales()}
-       
+        {renderTabsCategory()}
+        {/* {renderTabsTypes()} */}
+        
       </div>
-
+     <div className="flex gap-5 pt-4 m-0">
+        {selectedCategories.map((item,i)=> {
+          return <span key={i} className={`flex items-center  !leading-none font-medium whitespace-nowrap text-[13px] px-5 py-2.5  sm:px-6 sm:py-3 capitalize rounded-xl  bg-gray-100 border border-sky-600  dark:bg-slate-100 text-slate-800 dark:text-slate-900  focus:outline-none`} >
+                    {item}
+                   {item !== "all" && <span onClick={() => handleClearCategory(i)} className="text-gray-700 ">
+                          {renderXClear()}
+                    </span>}
+                  </span>
+        })}
+      </div>
     
     </div>
   );

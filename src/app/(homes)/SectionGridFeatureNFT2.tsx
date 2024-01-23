@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import HeaderFilterSection from "@/components/HeaderFilterSection";
 import CardNFT2 from "@/components/CardNFT2";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import Link from "next/link";
 
 //
 export interface SectionGridFeatureNFT2Props {}
@@ -16,7 +17,7 @@ const SectionGridFeatureNFT2: FC<SectionGridFeatureNFT2Props> = () => {
         ))}
       </div>
       <div className="flex mt-16 justify-center items-center">
-        <ButtonPrimary loading>Show me more</ButtonPrimary>
+        {/* <Link loading onClick={()=> console.log("send message")}>Show me more</ButtonPrimary> */}
       </div>
     </div>
   );

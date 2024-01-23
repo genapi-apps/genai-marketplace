@@ -78,10 +78,10 @@ function PageHome() {
     }, [])
 
     const getCategoryList = async () => {
-console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
+// console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
         try {
 
-            const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-category-modules`;
+            const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-category-modules`;
             const response = await axios.get(apiUrl, {
                 headers: {
                     "Content-Type": "application/json",
@@ -116,12 +116,12 @@ console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting"
                 <SectionSliderCategories categoryList={categoryList} />
                 {/* <SectionLargeTrending title="Trending Prompt" moduleList={trendingList} />
                  */}
-                   <SectionTrending title="Trending Prompt" moduleList={trendingList} />
+                 {trendingList &&  <SectionTrending title="Trending Prompt" moduleList={trendingList} />}
                       <SectionNew />
                 <SectionHero2 id="2" title="Sell your prompts on Gen AI" desc="Upload your prompt, connect with Stripe, and become a seller in just 2 minutes"  />
 
                 {/* <SectionSliderCardNftVideo title="Newest Prompt" moduleList={moduleList} /> */}
-                <SectionTrending title="Featured Prompt" moduleList={featuredList} />
+              {featuredList &&  <SectionTrending title="Featured Prompt" moduleList={featuredList} />}
                 <SectionTrending title="Newest Prompt" moduleList={newestList} />
                 <SectionHero2 id="3" title="Hire an AI creator for your next project" desc="Commission custom prompts and solutions from top prompt engineers" />
               

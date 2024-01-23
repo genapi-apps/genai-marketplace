@@ -85,6 +85,7 @@ export default function MySlider<T>({
   if (!numberOfItems) {
     return <div> </div>
   }
+  
   return (
     <div className={`nc-MySlider ${className}`}>
       {renderSectionHeading &&
@@ -127,22 +128,23 @@ export default function MySlider<T>({
                     {renderItem(item, indx)}
                   </motion.li>
                 )) :
-               data.length === 0 &&   [1, 1, 1, 1, 1].map((item, indx) => (
-                    <div className="relative flex-shrink-0 inline-block px-1 xl:px-2 whitespace-normal  " key={item}>
-                      <div className="flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow bg-blue-400 rounded overflow-hidden group  ">
-                        <NcImage containerClassName="" src="https://www.aputf.org/wp-content/uploads/2015/06/default-placeholder1-1024x1024-570x321.png" className="object-cover rounded z-0" fill />
-                        <span className="absolute top-2 left-2 z-10 text-[10px] p-2 h-[18px] flex items-center w-fit truncate bg-gray-700 text-white rounded capitalize  ">loading...</span>
-                        <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity  "></span>
-                      </div>
-                      <div className="mt-4 flex items-center animate-fade">
-                        <div className="w-[200px] animate-fade flex flex-col gap-2">
-                          <h2 className="text-sm text-neutral-900 dark:text-neutral-100 font-semibold h-5 bg-gray-300 whitespace-nowrap truncate overflow-hidden overflow-ellipsis"></h2>
-                          <h2 className="text-xs capitalize text-neutral-900 dark:text-neutral-100 h-5 bg-gray-300 truncate overflow-hidden"></h2>
-                        </div>
-                      </div>
-                    </div>
+            //  [1, 1, 1, 1, 1].map((item, indx) => (
+            //         <div className="relative flex-shrink-0 inline-block px-1 xl:px-2 whitespace-normal  " key={item}>
+            //           <div className="flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow bg-blue-400 rounded overflow-hidden group  ">
+            //             <NcImage containerClassName="" src="https://www.aputf.org/wp-content/uploads/2015/06/default-placeholder1-1024x1024-570x321.png" className="object-cover rounded z-0" fill />
+            //             <span className="absolute top-2 left-2 z-10 text-[10px] p-2 h-[18px] flex items-center w-fit truncate bg-gray-700 text-white rounded capitalize  ">loading...</span>
+            //             <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity  "></span>
+            //           </div>
+            //           <div className="mt-4 flex items-center animate-fade">
+            //             <div className="w-[200px] animate-fade flex flex-col gap-2">
+            //               <h2 className="text-sm text-neutral-900 dark:text-neutral-100 font-semibold h-5 bg-gray-300 whitespace-nowrap truncate overflow-hidden overflow-ellipsis"></h2>
+            //               <h2 className="text-xs capitalize text-neutral-900 dark:text-neutral-100 h-5 bg-gray-300 truncate overflow-hidden"></h2>
+            //             </div>
+            //           </div>
+            //         </div>
 
-                  ))
+            //       ))
+            null
 
                 }
 

@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 interface FormData {
   name: string,
   description: string,
-  category_module_id: number,
+  category_module_id: string,
   short_description: string,
   full_description: string,
    tag: string,
@@ -36,7 +36,7 @@ const PageUploadItem = ({ }) => {
 
     name: "",
     description: "",
-    category_module_id: 1,
+    category_module_id: "",
     short_description: "",
     full_description: "",
     
@@ -52,14 +52,14 @@ const PageUploadItem = ({ }) => {
     
   });
 
-  const [thumbnail, setThumbnail] = useState(null)
+  const [thumbnail, setThumbnail] = useState({name:''})
 
-  const [logo, setLogo] = useState(null)
+  const [logo, setLogo] = useState({name:''})
 
-  const [screenShot, setScreenShot] = useState(null)
-  const [homeList, setHomeList] = useState()
+  const [screenShot, setScreenShot] = useState({name:''})
+  const [homeList, setHomeList] = useState([])
     
-  const [video, setVideo] = useState(null)
+  const [video, setVideo] = useState({name:''})
   ///create-modules
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -69,11 +69,11 @@ const PageUploadItem = ({ }) => {
     }));
   };
  const getCategoryList = async () => {
-  console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
+  // console.log(localStorage.getItem("marketplacegenaitoken"),"token is not getting")
 
         try {
 
-            const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-category-modules`;
+            const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-category-modules`;
             const response = await axios.get(apiUrl, {
                 headers: {
                     "Content-Type": "application/json",
@@ -100,10 +100,10 @@ const PageUploadItem = ({ }) => {
     e.preventDefault();
     const NewformData = new FormData()
     
-    logo && NewformData.append('logo', logo);
-    thumbnail && NewformData.append('thumbnail', thumbnail);
-    video && NewformData.append('video', video);
-    logo && NewformData.append('logo', logo);
+    logo && NewformData.append('logo', logo.name);
+    thumbnail && NewformData.append('thumbnail', thumbnail.name);
+    video && NewformData.append('video', video.name);
+    logo && NewformData.append('logo', logo.name);
      
   
    NewformData.append("name", formData.name)  
@@ -462,7 +462,7 @@ const PageUploadItem = ({ }) => {
               <ButtonSecondary href="/nft-detail" className="flex-1">
                 Preview item
               </ButtonSecondary> */}
-              <ButtonPrimary onClick={(e: any) => handleSubmit(e)}>Create</ButtonPrimary>
+              <button onClick={(e: any) => handleSubmit(e)} className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">Create</button>
             </div>
           </div>
         </div>

@@ -57,12 +57,12 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
   return (
     <div className={`nc-CardNFT relative flex flex-col group ${className}`}>
       <div className="relative flex-shrink-0 ">
-        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-xl overflow-hidden z-0">
+        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded overflow-hidden z-0">
          
             {item && item.imageUrls ? item.imageUrls.map((ite:any, i:any)=>{
          
           return ite.type === "thumbnail" &&       <NcImage
-            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-xl overflow-hidden z-0"
+            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded overflow-hidden z-0"
              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
@@ -91,25 +91,12 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
       </div>
 
       <div className="px-2 py-5 space-y-1">
-        {/* <div className="flex justify-between">
-          {renderAvatars()}
-          <span className="text-neutral-700 dark:text-neutral-400 text-xs">
-            99 in stock
-          </span>
-        </div> */}
        
-          <h2 className={`text-lg font-medium`}>{item && item.name}</h2>
-             <h2 className={`text-sm font-medium m-0 p-0`}>{item && item.short_description}</h2>
+       
+          <h2 className={`text-sm font-medium truncate`}>{item && item.name}</h2>
+             <h2 className={`text-xs font-normal m-0 p-0 truncate`}>{item && item.short_description}</h2>
 
-        {/* <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700"></div> */}
-
-        {/* <div className="flex justify-between items-end">
-          <Prices labelTextClassName="bg-white dark:bg-neutral-900" />
-          <div className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
-            <ClockIcon className="w-4 h-4" />
-            <span className="ml-1 mt-0.5">14 hours left</span>
-          </div>
-        </div> */}
+      
       </div>
 
     {item &&  <Link href={`/collection/${item.name}/${item.id}`} className="absolute inset-0"></Link>}

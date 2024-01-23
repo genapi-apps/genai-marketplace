@@ -1,5 +1,5 @@
 {
-  "name": "ciscryp-nextjs",
+  "name": "zenai-market-place",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -38,6 +38,7 @@
     "react-use": "^17.4.0",
     "redux": "^5.0.1",
     "sass": "^1.69.5",
+    "sharp": "^0.33.2",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.2.0",
     "typescript": "5.2.2"

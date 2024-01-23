@@ -1,22 +1,14 @@
 
 "use client"
 import React,{FC,useState, useEffect} from "react";
-import NcImage from "@/shared/NcImage/NcImage";
-import collectionBanner from "@/images/nfts/collectionBanner.png";
-import { nftsImgs } from "@/contains/fakeData";
-import ButtonDropDownShare from "@/components/ButtonDropDownShare";
-import NftMoreDropdown from "@/components/NftMoreDropdown";
-import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import SectionSliderCollections from "@/components/SectionSliderCollections";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import Pagination from "@/shared/Pagination/Pagination";
+import NcImage from "@/shared/NcImage/NcImage"; 
 import CardNFT from "@/components/CardNFT";
-import TabFilters from "@/components/TabFilters";
-import SectionSliderCardNftVideo from "@/components/SectionSliderCardNftVideo";
-
+import TabFilters from "@/components/TabFilters"; 
 import { useParams } from 'next/navigation'
 import axios from "axios";
+import Link from "next/link";
+import { useAppSelector } from "@/redux/hooks";
+import SectionTrending from "@/components/SectionSliderCategories/SectionTrending";
  
 export interface CardListingProps {
   
@@ -25,8 +17,10 @@ export interface CardListingProps {
 const PageCollection:FC<CardListingProps> = ({name}) => { 
   
   const params = useParams<{ name: string; }>()
-  
-    const [categoryList, setCategoryList] = useState()
+   const {  trendingList  } = useAppSelector((state) => state.auth);
+
+    
+    const [categoryList, setCategoryList] = useState([])
     
    
      useEffect(() => {
@@ -52,7 +46,7 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
         <div className="relative w-full h-40 md:h-60 2xl:h-72">
           <NcImage
             containerClassName="absolute inset-0"
-            src={"https://ciscryp-nextjs.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FcollectionBanner.3dde3dd2.png&w=1920&q=75"}
+            src={"https://c1.wallpaperflare.com/path/652/531/737/wood-aerial-background-beverage-1f3a98ab1a7d84e3d9fde190733d4c1c.jpg"}
             className="object-cover"
             fill
             sizes="100vw"
@@ -62,20 +56,34 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
       </div>
    
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-20 lg:space-y-28">
-        <main>
+      {categoryList ?  <main>
           <TabFilters moduleList={categoryList}/>
+           
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
+            {categoryList &&  categoryList!== undefined && categoryList.length>0 ? categoryList.map((item:any, index:any) => (
+              <CardNFT key={index} item={item}/>
+            )):
+            "No result found"}
+          </div>
+
+         
+        </main>:
+
+         <main>
+          
           
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
-            {categoryList && categoryList.length>0 && categoryList.map((item:any, index:any) => (
-              <CardNFT key={index} item={item}/>
-            ))}
+          <div className="grid  w-full grid-cols-1 gap-2  mt-8 lg:mt-10">
+           No result found ! 
+           <Link href={"/"} className="text-blue-600">Go Home</Link>
           </div>
 
          
         </main>
+        }
  
         <div className="relative  ">
+          <SectionTrending title="Trending Prompt" moduleList={trendingList} />
        {/* <SectionSliderCardNftVideo title="Newest Prompt" /> */}
        </div>
 

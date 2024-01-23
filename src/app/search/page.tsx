@@ -22,8 +22,11 @@ const PageSearch = ({ }) => {
   const dispatch = useDispatch()
   const getModule = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules?page=1&limit=10`,
+         const userId = JSON.parse(localStorage.getItem("marketusername") as string)
+
+           
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules`, { user_id: userId && userId.id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +46,7 @@ const PageSearch = ({ }) => {
     try {
       if (keyword.trim() !== "") {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/search/${keyword}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${keyword}`,
           {
             headers: {
               "Content-Type": "application/json",

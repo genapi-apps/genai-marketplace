@@ -2,27 +2,20 @@
 "use client"
 import React,{useState, useEffect} from "react";
 import NcImage from "@/shared/NcImage/NcImage";
-import collectionBanner from "@/images/nfts/collectionBanner.png";
-import { nftsImgs } from "@/contains/fakeData";
-import ButtonDropDownShare from "@/components/ButtonDropDownShare";
-import NftMoreDropdown from "@/components/NftMoreDropdown";
-import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import SectionSliderCollections from "@/components/SectionSliderCollections";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import Pagination from "@/shared/Pagination/Pagination";
+ 
 import CardNFT from "@/components/CardNFT";
-import TabFilters from "@/components/TabFilters";
-import SectionSliderCardNftVideo from "@/components/SectionSliderCardNftVideo";
+import TabFilters from "@/components/TabFilters"; 
 
 import { useAppSelector } from "@/redux/hooks";
+import SectionTrending from "@/components/SectionSliderCategories/SectionTrending";
  
 
-const PageCollection = () => {
-  const [collection, ssetCollection]= useState()
+const PageCollection = () => { 
   const { moduleList } = useAppSelector((state) => state.auth);
-  
+   const {  trendingList  } = useAppSelector((state) => state.auth);
+
   ///modules/filter/:categories
+ 
   return (
     <div className={`nc-PageCollection`}>
      
@@ -30,7 +23,7 @@ const PageCollection = () => {
         <div className="relative w-full h-40 md:h-60 2xl:h-72">
           <NcImage
             containerClassName="absolute inset-0"
-            src={"https://ciscryp-nextjs.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FcollectionBanner.3dde3dd2.png&w=1920&q=75"}
+            src={"https://c0.wallpaperflare.com/path/550/573/147/business-concept-consulting-illustration-2b6ed282d9d4614883589321d2666a7f.jpg"}
             className="object-cover"
             fill
             sizes="100vw"
@@ -45,16 +38,16 @@ const PageCollection = () => {
           
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
-            {moduleList && moduleList.map((item:any, index:any) => (
+            {moduleList && moduleList!== undefined && moduleList.length>0 ? moduleList.map((item:any, index:any) => (
               <CardNFT key={index} item={item} />
-            ))}
+            )):"NO result found"}
           </div>
 
          
         </main>
  
         <div className="relative  ">
-       {/* <SectionSliderCardNftVideo title="Newest Prompt" /> */}
+        <SectionTrending title="Trending Prompt" moduleList={trendingList} />
        </div>
 
         {/* <SectionBecomeAnAuthor /> */}

@@ -13,7 +13,7 @@ const MonthTrending: FC<CardCategory5Props>  = ({data}) => {
   return (
     <>
 
-    <h2 className='text-xs text-gray-600 font-semibold  mb-3'>Top Prompt This Week</h2>
+    <h2 className='text-xs text-gray-600 font-semibold  mb-3'>Top Prompt This Month</h2>
        <div className='flex flex-col gap-5'>
    
       {data && data.length>0 ? data.slice(0, 5).map((item:any,i:any)=>{

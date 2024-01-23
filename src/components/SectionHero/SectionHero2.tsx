@@ -5,6 +5,8 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Image from "next/image";
 import HeroSearchForm from "../HeroSearchForm/HeroSearchForm";
 import { RightArrowIcon } from "@/icons";
+import { getButtonData } from "@/hooks/getVerifyToken";
+import Link from "next/link";
 
 export interface SectionHero2Props {
   children?: React.ReactNode;
@@ -30,12 +32,13 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "", children ,title,d
           </h2>
           
           <div className="flex gap-3">
-          <ButtonPrimary href="/collection">
+          <Link href="/collection" className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" //onClick={()=> getButtonData()}
+          >
             <span>Explore More</span>
             <span className="ml-2">
                <RightArrowIcon/>
             </span>
-          </ButtonPrimary>
+          </Link>
           </div>
         </div>
         

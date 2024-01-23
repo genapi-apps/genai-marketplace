@@ -8,3 +8,7 @@ export const getToken = () => {
   return localStorage.getItem("marketplaceZenAI")
 }
 
+export const getButtonData = () => {
+  return console.log("consle")
+}
+

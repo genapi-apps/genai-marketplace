@@ -14,6 +14,7 @@ import collectionPng from "@/images/nfts/collection.png";
 import VerifyIcon from "@/components/VerifyIcon";
 import Link from "next/link";
 import { StaticImageData } from "next/image";
+import { getButtonData } from "@/hooks/getVerifyToken";
 
 export interface CardLarge1Props {
   className?: string;
@@ -97,7 +98,8 @@ const CardLarge1: FC<CardLarge1Props> = ({
 
           {/* DESCRIPTION */}
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-            <ButtonPrimary href={"/nft-detail"} className="flex-1">
+            <ButtonPrimary href={"/nft-detail"} className="flex-1" //onClick={()=> getButtonData()}
+            >
               Place a bid
             </ButtonPrimary>
             <ButtonSecondary href={"/nft-detail"} className="flex-1">

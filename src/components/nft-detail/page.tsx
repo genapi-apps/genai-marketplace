@@ -30,15 +30,15 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
 
     
   const renderSection1 = (moduleDetail: any) => {
-
+ 
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-         
+       
         <div className={`pb-9 space-y-5  ${moduleDetail[0].type_name === ("text" || "code") && "border-2 border-gray-200 rounded p-5 "}`}>
           {moduleDetail[0].type_name === "image" && <div className="imageslist h-[700px] overflow-y-auto overflow-x-hidden  "> 
             <div className="flex flex-col gap-3">
               {moduleDetail[0].imageUrls && moduleDetail[0].imageUrls.map((item:any,i:any)=>{
-                return item.type === "images_gallery" &&  item.url.length>0 && item.url.map((image, index)=>{
+                return item.type === "images_gallery" &&  item.url.length>0 && item.url.map((image:any, index:any)=>{
                   return  <NcImage key={i}
                       containerClassName="aspect-w-1 aspect-h-1 relative"
                       className="absolute inset-0 object-cover  rounded  "
@@ -97,7 +97,8 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
                   wordWrap: "break-word",
                   fontFamily: "Roboto, sans-serif"
                 }}>
-                  {moduleDetail[0].example_text}
+                  {moduleDetail[0].example_output
+}
               
             
               </pre>
@@ -157,7 +158,7 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
                   wordWrap: "break-word",
                   fontFamily: "Roboto, sans-serif"
                 }}>
-                  {moduleDetail[0].example_text}
+                  {moduleDetail[0].example_output}
               
             
               </pre>
