@@ -31,7 +31,7 @@ const SectionHero: FC<SectionHeroProps> = ({
             {subHeading}
           </span>
           <div className="pt-7 flex  space-x-4">
-            <ButtonPrimary href="/search"// onClick={()=> getButtonData()}
+            <ButtonPrimary href="/search" onClick={ getButtonData()}
             >
               <span className="">Explore</span>
               <MagnifyingGlassIcon className="w-5 h-5 ml-2.5" />

@@ -38,18 +38,18 @@ const CardCategory5: FC<CardCategory5Props> = ({
       <div
         className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0         bg-gray-100 shadow rounded-2xl overflow-hidden group`}
       >
-        {/* <NcImage
+        <NcImage
           containerClassName=""
           src={"https://assets.promptbase.com/DALLE_IMAGES%2FeG1AhVWVTJOX4SqxE1AUFLv1bC73%2Fresized%2F1705680233343_500x500.webp?alt=media&token=c029a218-7e31-4682-8acd-224e5b3c9193"}
           className="object-cover rounded-2xl z-0"
           fill
-        /> */}
-                <NcImage
+        />
+                {/* <NcImage
           containerClassName=""
            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.imageUrl}`}
             className="object-cover rounded-2xl z-0 bg-gray-100"
           fill
-        />
+        /> */}
         <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"></span>
       </div>
       <div className="mt-4 flex items-center">

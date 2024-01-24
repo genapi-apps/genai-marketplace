@@ -155,8 +155,8 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
       </div>
       <div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">
         <ButtonSecondary>Show me more </ButtonSecondary>
-        <button className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"//onClick={()=> getButtonData()} 
-        >Become a author</button>
+        <ButtonPrimary onClick={ getButtonData()} 
+        >Become a author</ButtonPrimary>
       </div>
     </div>
   );

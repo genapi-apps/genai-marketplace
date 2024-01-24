@@ -10,7 +10,7 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fshowcase_3_stabbed_webp_small.webp?alt=media&token=404027e7-28ee-458c-afab-fedcc2207c1c);
+    background: url('/sell.png');
        background-position: center;
     border-radius: 8px; 
       background-repeat: no-repeat;
@@ -40,7 +40,7 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fsales_banner_webp_small.webp?alt=media&token=e3e92683-984a-415c-8f1e-a3227ed78781);
+    background: url('/buy.png');
       background-position: center;
     border-radius: 8px; 
     background-repeat: no-repeat;
@@ -55,9 +55,21 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url(https://assets.promptbase.com/SiteAssets%2FPromoBanners%2Fhire_stabbed_2_webp_small.webp?alt=media&token=5b2a18d4-8a22-4a24-8f38-b81d814ed300);
+    background: url('/creator.png');
        background-position: center;
     border-radius: 8px; 
       background-repeat: no-repeat;
 }
 
+.contect{
+      border-radius: inherit;
+}
+ .bannerHero:before, .bannerHero2:before, .bannerHero3:before, .contect:before{
+     content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 50% at center,transparent,#3d3d44);
+    z-index: 1;
+    border-radius: inherit;
+    border-radius: 8px;
+}

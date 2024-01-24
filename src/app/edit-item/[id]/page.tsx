@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React, { FC, useEffect, useState } from "react";
 import Label from "@/components/Label/Label";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
@@ -14,6 +13,7 @@ import NcImage from "@/shared/NcImage/NcImage";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import { useParams } from 'next/navigation'
 interface FormData {
   name: string,
   description: string,
@@ -33,9 +33,11 @@ interface FormData {
   price: number
 
 }
-
-const PageUploadItem = ({ }) => {
-  const [formData, setFormData] = useState<FormData>({
+ 
+const PageCollection = () => { 
+  
+  const params = useParams<{ id: string; }>()
+    const [formData, setFormData] = useState<FormData>({
     name: '',
     description: '',
     category_module_id: 0,
@@ -72,6 +74,24 @@ const PageUploadItem = ({ }) => {
       [name]: value,
     }));
   };
+       console.log(params)
+   useEffect(() => {
+    const getModule = async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules-details/${JSON.parse(params.id)}`,
+        { 
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getToken()}`
+          }
+        }
+      )  
+ console.log(response.data.data, "response.data.data")
+      setFormData(response.data.data[0]) 
+    }
+      
+    getModule()
+  }, [])
   const getCategoryList = async () => {
 
     try {
@@ -151,14 +171,14 @@ const PageUploadItem = ({ }) => {
     NewformData.append('price', formData.price); 
 
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`, NewformData, {
+    const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/edit-modules/${JSON.parse(params.id)}`, NewformData, {
       headers: {
         "Content-Type": "multipart/form-data",
         // Authorization: `Bearer ${getToken()}`
       }
     })
     if (response.data.success) {
-      toast("Item Created Successfully!")
+      toast("Item Updated Successfully!")
     }
   };
   const handleThumbnailChange = (e: any) => {
@@ -175,15 +195,14 @@ const PageUploadItem = ({ }) => {
   const handleScreenShotChange = (e: any) => {
     setScreenShot(e.target.files[0])
   } 
-  // console.log(logo)
   return (
-    <div className={`nc-PageUploadItem`}>
+   <div className={`nc-PageUploadItem`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24 max-w-4xl mx-auto space-y-8 sm:space-y-10">
           {/* HEADING */}
           <div className="max-w-2xl">
             <h2 className="text-3xl sm:text-4xl font-semibold">
-              Create New Item
+              Edit Item
             </h2>
 
           </div>
@@ -422,7 +441,7 @@ const PageUploadItem = ({ }) => {
               <ButtonSecondary href="/nft-detail" className="flex-1">
                 Preview item
               </ButtonSecondary> */}
-              <button onClick={(e: any) => handleSubmit(e)} className="nc-Button relative h-auto inline-flex items-center justify-center rounded-xl transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">Create</button>
+              <button onClick={(e: any) => handleSubmit(e)} className="nc-Button relative h-auto inline-flex items-center justify-center rounded-xl transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">Update</button>
             </div>
           </div>
         </div>
@@ -431,19 +450,4 @@ const PageUploadItem = ({ }) => {
   );
 };
 
-function CheckIcon(props: any) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
-      <path
-        d="M7 13l3 3 7-7"
-        stroke="#fff"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-export default PageUploadItem;
+export default PageCollection;

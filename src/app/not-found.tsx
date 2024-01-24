@@ -14,7 +14,7 @@ const Page404 = () => (
           {`THE PAGE YOU WERE LOOKING FOR DOESN'T EXIST.`}{" "}
         </span>
         <div className="pt-8">
-          <Link href="/" className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" >Return Home Page</Link>
+          <ButtonPrimary href="/" onClick={console.log("return home")} >Return Home Page</ButtonPrimary>
         </div>
       </header>
     </div>

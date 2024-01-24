@@ -7,7 +7,7 @@ import googleSvg from "@/images/Google.svg";
 import Input from "@/shared/Input/Input";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Image from "next/image";
-import Link from "next/link"; 
+import Link from "next/link";
 import { useRouter } from "next/navigation"
 import axios from "axios";
 import { toast } from "react-toastify"
@@ -31,12 +31,12 @@ const loginSocials = [
 ];
 
 const PageLogin = () => {
-   const [inputs, setInputs] = useState({ email: "", password: "" })
+  const [inputs, setInputs] = useState({ email: "", password: "" })
   const [errors, setErrors] = useState({ email: "", password: "" })
   const [loading, setLoading] = useState(false)
- const [msg, setMsg] = useState("")
+  const [msg, setMsg] = useState("")
   const router = useRouter()
-   const handleChange = (e: any) => {
+  const handleChange = (e: any) => {
     setMsg("")
     const name = e.target.name
     const value = e.target.value
@@ -71,15 +71,15 @@ const PageLogin = () => {
       )
 
       if (signin.data.status === true) {
-        if (signin.data.email) { 
+        if (signin.data.email) {
           // push("/two-way-authentication")
         } else {
           localStorage.setItem("marketplacegenaitoken", signin.data.data.access_token)
           localStorage.setItem("id", signin.data.data.id)
           localStorage.setItem("marketusername", JSON.stringify(signin.data.data))
-     
+
           toast("SignIn Successful!")
-         
+
           setTimeout(() => {
             router.push(`/`)
             setLoading(false)
@@ -141,31 +141,31 @@ const PageLogin = () => {
               <Input
                 type="email"
                 placeholder="example@example.com"
-                      name="email" 
+                name="email"
                 value={inputs.email || ""}
                 onChange={handleChange}
-                className={`mt-1 ${  errors.email && "border-red-600"}`}
+                className={`mt-1 ${errors.email && "border-red-600"}`}
               />
             </label>
             <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
                 Password
-               
+
               </span>
-              <Input type="password" 
+              <Input type="password"
                 name="password"
                 placeholder="Password"
                 value={inputs.password || ""}
                 onChange={handleChange}
-                  className={`mt-1 ${  errors.password && "border-red-600"}`}
-                 />
-               <Link href="/forgot-password" className="text-sm text-green-600 float-right">
-                  Forgot password?
-                </Link>
+                className={`mt-1 ${errors.password && "border-red-600"}`}
+              />
+              <Link href="/forgot-password" className="text-sm text-green-600 float-right">
+                Forgot password?
+              </Link>
             </label>
-            <button type="submit" className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"   disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</button>
+            <ButtonPrimary type="submit" disabled={loading && true} onClick={(e: any) => handleSubmit(e)}>Continue</ButtonPrimary>
           </form>
-  {msg && (
+          {msg && (
             <div className="text-sm bg-red-200 absolute p-2 -bottom-[31px]  text-center w-[80%] rounded">
               {msg}
             </div>

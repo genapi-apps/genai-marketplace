@@ -34,7 +34,13 @@ interface FormData {
 
 }
 
-const PageUploadItem = ({ }) => {
+
+
+export interface CardNFTProps {
+  id:any
+}
+
+const ModuleEditPopup: FC<CardNFTProps> = ({any }) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     description: '',
@@ -175,9 +181,9 @@ const PageUploadItem = ({ }) => {
   const handleScreenShotChange = (e: any) => {
     setScreenShot(e.target.files[0])
   } 
-  // console.log(logo)
-  return (
-    <div className={`nc-PageUploadItem`}>
+
+    return (
+     <div className={`nc-PageUploadItem absolute top-1/2 left/1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] shadow z-[99] bg-white h-[600px] overflow-y-auto`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24 max-w-4xl mx-auto space-y-8 sm:space-y-10">
           {/* HEADING */}
@@ -428,22 +434,9 @@ const PageUploadItem = ({ }) => {
         </div>
       </div>
     </div>
-  );
+    );
 };
 
-function CheckIcon(props: any) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
-      <path
-        d="M7 13l3 3 7-7"
-        stroke="#fff"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
-export default PageUploadItem;
+
+export default ModuleEditPopup;

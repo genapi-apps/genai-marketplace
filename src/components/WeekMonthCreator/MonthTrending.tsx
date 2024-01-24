@@ -19,7 +19,7 @@ const MonthTrending: FC<CardCategory5Props>  = ({data}) => {
       {data && data.length>0 ? data.slice(0, 5).map((item:any,i:any)=>{
         return      <div className={`nc-CardNFT relative flex gap-2 group `}>
       <div className="relative flex-shrink-0 ">
-        <div className="flex w-36 h-18  rounded-xl  overflow-hidden z-0">
+        <div className="flex w-36 h-[75px] rounded-xl  overflow-hidden z-0">
 
           {/* <NcImage
             containerClassName="flex w-36 h-18  overflow-hidden z-0"

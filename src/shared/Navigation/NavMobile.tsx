@@ -187,12 +187,12 @@ const NavMobile: React.FC<NavMobileProps> = ({
       </div>
       <ul className="flex flex-col py-6 px-2 space-y-1">
         {/* {data.map(_renderItem)} */}
-              <Link
-                href={"/create-item"}
-                className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 self-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
+              <ButtonPrimary
+                href={"/create-category"}
+                onClick={console.log("hello")}
               >
                 Create
-              </Link>
+              </ButtonPrimary>
               
       </ul>
      

@@ -19,17 +19,17 @@ const WeekTrending: FC<CardCategory5Props> = ({ data }) => {
         {data && data.length > 0 ? data.slice(0, 5).map((item: any, i: any) => {
           return   <div className={`nc-CardNFT relative flex gap-2 group `}>
                           <div className="relative flex-shrink-0 ">
-                            <div className="flex w-36 h-18  rounded-xl  overflow-hidden z-0">
+                            <div className="flex w-36 h-[75px]  rounded-xl  overflow-hidden z-0">
                               {item && item.imageUrls ? item.imageUrls.map((ite: any, i: any) => {
 
                                 return ite.type === "thumbnail" && <NcImage
-                                  containerClassName="flex w-36 h-18  rounded-xl overflow-hidden z-0"
+                                  containerClassName="flex w-36 h-[75px]  rounded-xl overflow-hidden z-0"
                                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
                                   className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
                                 />
                               }) :
                                 <NcImage
-                                  containerClassName="flex w-36 h-18  rounded-3xl overflow-hidden z-0"
+                                  containerClassName="flex w-36 h-[75px]  rounded-3xl overflow-hidden z-0"
                                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thumbnail/${item.thumbnail}`}
                                   className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
                                 />

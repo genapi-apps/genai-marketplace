@@ -224,7 +224,7 @@ const PageSignUp = () => {
             <div className="text-sm bg-red-200 absolute p-2 -bottom-[38px] text-center w-[80%] rounded">
               {msg}
               </div>)}
-            <button type="submit" className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"    disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</button>
+            <ButtonPrimary type="submit"   disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
           </form>
 
           {/* ==== */}

@@ -16,7 +16,7 @@ export interface MainNav2LoggedProps {}
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
    const [openSearchBox, setOpenSearchBox] = useState(false)
-   const [searchQuery, setSearchQuery] = useState("text");
+   const [searchQuery, setSearchQuery] = useState("Search here...");
    const [searchList, setSearchList] = useState([]);
 // let handleSearchSubmit:any;
  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,9 +120,14 @@ console.log(typeof searchQuery ,"searchQuery")
           </div>
           <div className="flex-shrink-0 flex justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
             <div className="hidden xl:flex space-x-2">
-            
+                  <Link
+                href={"/module-list"}
+                className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 self-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
+              >
+               All Module
+              </Link>
                <Link
-                href={"/create-item"}
+                href={"/create-category"}
                 className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 self-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
               >
                 Create

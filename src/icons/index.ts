@@ -3,3 +3,4 @@ export * from "./openeye"
 export * from "./rightarrow"
 export * from "./heart"
 export * from './bulb'
+export * from './edit'
