@@ -60,7 +60,7 @@ const ModuleCard: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
         <h2 className={`text-sm font-medium truncate`}>{item && item.name}</h2>
         <h2 className={`text-xs font-normal m-0 p-0 truncate`}>{item && item.short_description}</h2>
 
-        <div onClick={() => handleEdit(item.id)} className="absolute right-0 top-2 cursor-pointer"><EditIcon /></div>
+       {!item.is_verified && <div onClick={() => handleEdit(item.id)} className="absolute right-0 top-2 cursor-pointer"><EditIcon /></div>}
       </div>
     </div>
   );

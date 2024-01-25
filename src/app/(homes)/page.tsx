@@ -107,12 +107,12 @@ function PageHome() {
         <div className="nc-PageHome relative overflow-hidden">
 
             <div className="container   relative my-5">
-                <SectionHero2 id="1" title="Gen AI Marketplace" desc="Search 100,000+ AI prompts from the world best AI creators Midjourney, ChatGPT, DALL·E, Stable Diffusion & more" />
+                <SectionHero2 id="1" title="Gen AI Marketplace" desc="Search 100,000+ AI model from the world best AI creators"  />
             </div>
 
 
 
-            <div className="container relative space-y-16 my-16 lg:space-y-16 lg:my-16">
+            <div className="container relative space-y-6 my-6 lg:space-y-6 lg:my-6">
                 <SectionSliderCategories categoryList={categoryList} />
                 {/* <SectionLargeTrending title="Trending Prompt" moduleList={trendingList} />
                  */}

@@ -4,3 +4,4 @@ export * from "./rightarrow"
 export * from "./heart"
 export * from './bulb'
 export * from './edit'
+export * from './cart'

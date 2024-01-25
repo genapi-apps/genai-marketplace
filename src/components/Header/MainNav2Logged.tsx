@@ -11,6 +11,10 @@ import Navigation from "@/shared/Navigation/Navigation";
 import Link from "next/link";
 import SearchBoxList from "./SearchBoxList";
 import axios from "axios";
+import { CartIcon } from "@/icons";
+import { SearchIcon } from "@/icons/search";
+import Badge from "@/shared/Badge/Badge";
+import CartSidebar from "./CartSidebar";
 
 export interface MainNav2LoggedProps {}
 
@@ -18,6 +22,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
    const [openSearchBox, setOpenSearchBox] = useState(false)
    const [searchQuery, setSearchQuery] = useState("Search here...");
    const [searchList, setSearchList] = useState([]);
+   const [openCartSide, setOpenCartSide] = useState(false)
 // let handleSearchSubmit:any;
  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -26,46 +31,46 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
  
 
-useEffect(()=>{
- const handleSearchSubmit = async() => {
-  // Assuming you have an array of items
- // const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+// useEffect(()=>{
+//  const handleSearchSubmit = async() => {
+//   // Assuming you have an array of items
+//  // const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  //  console.log(value)
+//   //  console.log(value)
 
-   if(searchQuery ==="text"){
-    setOpenSearchBox(false)
-    setSearchList([])
-   }else{ 
-  //  setOpenSearchBox(false) 
-   setOpenSearchBox(true)
-    try {
+//    if(searchQuery ==="text"){
+//     setOpenSearchBox(false)
+//     setSearchList([])
+//    }else{ 
+//   //  setOpenSearchBox(false) 
+//    setOpenSearchBox(true)
+//     try {
     
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
-      const response = await axios.get(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }); 
+//       const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
+//       const response = await axios.get(apiUrl, {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }); 
 
   
-    setSearchList(response.data.data)
+//     setSearchList(response.data.data)
      
-    } catch (error) {
-      console.error("Error making API call:", error);
-    }
+//     } catch (error) {
+//       console.error("Error making API call:", error);
+//     }
      
-   }
+//    }
  
   
    
   
-};
+// };
 
-handleSearchSubmit()
-},[searchQuery])
+// handleSearchSubmit()
+// },[searchQuery])
 
-console.log(typeof searchQuery ,"searchQuery")
+// console.log(typeof searchQuery ,"searchQuery")
 
   return (
     <>
@@ -74,8 +79,8 @@ console.log(typeof searchQuery ,"searchQuery")
         <div className="h-20 flex justify-between space-x-4 xl:space-x-8">
           <div className="self-center flex justify-start flex-grow space-x-3 sm:space-x-8 lg:space-x-10">
             <Logo />
-            <div className="hidden sm:block flex-grow max-w-xs">
-              <div className="relative">   
+            <div className="hidden sm:block flex-grow">
+              <div className="relative ">   
                <Input
                   type="search"
                   placeholder="Search items"
@@ -88,27 +93,7 @@ console.log(typeof searchQuery ,"searchQuery")
                 // onClick={()=> { 
                 //                handleSearchSubmit()}}
                                >
-                  <svg
-                    className="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M22 22L20 20"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                 <SearchIcon/>
                 </Link>
                 <input type="submit" hidden value="" />
                  {openSearchBox &&
@@ -118,26 +103,30 @@ console.log(typeof searchQuery ,"searchQuery")
                 </div> 
             </div>
           </div>
-          <div className="flex-shrink-0 flex justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
-            <div className="hidden xl:flex space-x-2">
-                  <Link
-                href={"/module-list"}
-                className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 self-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
-              >
-               All Module
-              </Link>
-               <Link
-                href={"/create-category"}
-                className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 self-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
-              >
-                Create
-              </Link>
-              <div></div>
+          <div className="flex-shrink-0 flex items-center  justify-end text-neutral-700 dark:text-neutral-100 ">
+            <div className="hidden xl:flex space-x-1">
+         
+              <Link href="/module-list"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Marketplace</Link>
+              <Link href="/create-category"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Generate</Link>
+              <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Hire</Link>
+              <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Sell</Link>
+             <div onClick={()=> setOpenCartSide(true)}   className="nc-Button cursor-pointer relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">
+               
+                <CartIcon/>
+                 <Badge name="1" className="absolute top-0 right-2 text-[8px] h-5 w-4 bg-primary-6000 text-white p-1" />
+              </div>
+            
               <AvatarDropdown />
+             
             </div>
             <div className="flex items-center space-x-1 xl:hidden">
+                <div onClick={()=> setOpenCartSide(true)}   className="nc-Button cursor-pointer relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">
+               
+                <CartIcon/>
+                 <Badge name="1" className="absolute top-0 right-2 text-[8px] h-5 w-4 bg-primary-6000 text-white p-1" />
+              </div>
                <AvatarDropdown />
-              <MenuBar />
+               <MenuBar />
             </div>
           </div>
         </div>
@@ -151,6 +140,13 @@ console.log(typeof searchQuery ,"searchQuery")
           ></div>
         
     }
+        
+       {openCartSide && <CartSidebar setOpenCartSide={setOpenCartSide}/>}
+       {openCartSide &&   <div
+            className="absolute top-0 w-full h-[100vh] left-0  bottom-0 z-[9] bg-sky-900 bg-opacity-30   flex items-center justify-center"
+            onClick={() => setOpenCartSide(false)}
+          ></div>}
+        
     </>
   );
 };

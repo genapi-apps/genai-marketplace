@@ -55,12 +55,12 @@ const CardTrending: FC<CardTrendingProps> = ({
           fill
             />
         })}  
-             {item.category_name &&    <span className=" absolute top-2 left-2 z-10 text-[10px] p-2 h-[18px] flex items-center w-fit truncate bg-gray-700 text-white rounded  capitalize  ">
+             {item.category_name &&    <span className=" absolute top-2 left-2 z-10 text-[10px] p-2 h-[18px] flex items-center w-fit truncate bg-white text-gray-800 hover:bg-slate-100 rounded  capitalize  ">
             {item.category_name}
           </span>}
         <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"></span>
       </div>
-      <div className="mt-4 flex items-center">
+      <div className="mt-2 flex items-center">
         {/* <div className={`w-10 h-10 rounded-full ${COLORS[index]}`}></div> */}
         <div className="w-[200px]"> 
            <h2

@@ -106,12 +106,12 @@ export default function MySlider<T>({
           <div className={`flow-root overflow-hidden  `}>
             <motion.ul
               initial={false}
-              className="relative flex whitespace-nowrap -mx-1 xl:-mx-2 "
+              className="relative flex whitespace-nowrap mx-1"
             >
               <AnimatePresence initial={false} custom={direction}>
                 {data && data.length > 0 ? data.map((item, indx) => (
                   <motion.li
-                    className={`relative flex-shrink-0 inline-block px-1 xl:px-2 whitespace-normal`}
+                    className={`relative flex-shrink-0 inline-block px-1   whitespace-normal`}
                     custom={direction}
                     initial={{
                       x: `${(currentIndex - 1) * -100}%`,

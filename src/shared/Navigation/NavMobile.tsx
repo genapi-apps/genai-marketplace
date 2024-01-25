@@ -186,13 +186,11 @@ const NavMobile: React.FC<NavMobileProps> = ({
         {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
       <ul className="flex flex-col py-6 px-2 space-y-1">
-        {/* {data.map(_renderItem)} */}
-              <ButtonPrimary
-                href={"/create-category"}
-                onClick={console.log("hello")}
-              >
-                Create
-              </ButtonPrimary>
+           <Link href="/module-list"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Marketplace</Link>
+              <Link href="/create-category"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Generate</Link>
+              <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Hire</Link>
+              <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Sell</Link>
+             
               
       </ul>
      

@@ -33,10 +33,10 @@ const solutions = [
 const Heading: React.FC<HeadingProps> = ({
   children,
   desc = "",
-  className = "mb-8 lg:mb-8 text-neutral-900 dark:text-neutral-50",
+  className = "mb-3 mx-1.5 lg:mb-3 text-neutral-900 dark:text-neutral-50 cursor-pointer",
   isCenter = false,
   hasNextPrev = false,
-  fontClass = "text-2xl font-semibold gap-5",
+  fontClass = "text-xl font-semibold gap-2",
   rightPopoverText,
   rightPopoverOptions = solutions,
   ...args

@@ -42,7 +42,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
               disableNext={!showNext}
               disablePrev={!showPrev}
             >
-              {heading}       <Link href="/collection"><span className="text-sm mt-1 font-normal bg-blue-100 p-1 rounded cursor-pointer" >explore more</span></Link> 
+              {heading}       <Link href="/collection"><span className="text-[10px] mt-1 tracking-wide font-normal bg-primary-6000 hover:bg-primary-700 text-neutral-50 p-1 rounded cursor-pointer" >Explore More</span></Link> 
           
             </Heading>
           );

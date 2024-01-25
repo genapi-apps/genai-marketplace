@@ -73,3 +73,17 @@
     border-radius: inherit;
     border-radius: 8px;
 }
+
+.mnhimg{
+   opacity: 1;
+    bottom: 0;
+    z-index: 1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: .3s;
+    background: url('/bg.png');
+      background-position: center;
+    border-radius: 8px; 
+    background-repeat: no-repeat;
+}
