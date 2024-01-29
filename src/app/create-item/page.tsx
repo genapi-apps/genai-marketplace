@@ -1,19 +1,14 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
-import Label from "@/components/Label/Label";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import React, { FC, useEffect, useState } from "react"; 
 import Input from "@/shared/Input/Input";
 import Textarea from "@/shared/Textarea/Textarea";
-import FormItem from "@/components/FormItem";
-import { RadioGroup } from "@headlessui/react";
-import { nftsImgs } from "@/contains/fakeData";
-import MySwitch from "@/components/MySwitch";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import NcImage from "@/shared/NcImage/NcImage";
+import FormItem from "@/components/FormItem"; 
 import axios from "axios";
 import { toast } from "react-toastify";
-
+ import authFetch from "@/utils/interceptor"
+import { frameData } from "framer-motion";
+import { UploadIcon } from "@/icons";
 interface FormData {
   name: string,
   description: string,
@@ -29,7 +24,7 @@ interface FormData {
   example_output: string,
   timeline: string,
   user_id: number,
-  type_id: number,
+  type_id: any,
   price: number
 
 }
@@ -48,22 +43,22 @@ const PageUploadItem = ({ }) => {
     token_size: '',
     example_input: '',
     example_output: '',
-    timeline: '',
+    timeline: '00:00',
     user_id: 0,
-    type_id: 0,
+    type_id: '1',
     price: 0
    
   });
 
-  const [thumbnail, setThumbnail] = useState({ name: '' })
+  const [thumbnail, setThumbnail] = useState()
 
-  const [logo, setLogo] = useState({ name: '' })
+  const [logo, setLogo] = useState()
 
-  const [screenShot, setScreenShot] = useState({ name: '' })
+  const [screenShot, setScreenShot] = useState([])
   const [homeList, setHomeList] = useState([])
   const [typeList, setTypeList] = useState([])
 
-  const [video, setVideo] = useState({ name: '' })
+  const [video, setVideo] = useState()
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -77,7 +72,7 @@ const PageUploadItem = ({ }) => {
     try {
 
       const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-category-modules`;
-      const response = await axios.get(apiUrl, {
+      const response = await authFetch.get(apiUrl, {
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("marketplacegenaitoken")
@@ -98,7 +93,7 @@ const PageUploadItem = ({ }) => {
     try {
 
       const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-type-modules`;
-      const response = await axios.get(apiUrl, {
+      const response = await authFetch.get(apiUrl, {
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("marketplacegenaitoken")
@@ -120,7 +115,7 @@ const PageUploadItem = ({ }) => {
 
   }, [])
 
-  console.log(formData.type_id,"type   ")
+  // console.log(formData.type_id,"type   ")
 
 
   const handleSubmit = async (e: any) => {
@@ -129,8 +124,11 @@ const PageUploadItem = ({ }) => {
 
     logo && NewformData.append('logo', logo);
     thumbnail && NewformData.append('thumbnail', thumbnail);
-    // video && NewformData.append('video', video);
-    // logo && NewformData.append('logo', logo);
+    // screenShot && NewformData.append('images_gallery', screenShot)
+    screenShot.forEach((file, index) => { 
+      NewformData.append('images_gallery', file);
+    
+    });
 
 
     NewformData.append("name", formData.name)
@@ -150,8 +148,8 @@ const PageUploadItem = ({ }) => {
     NewformData.append('type_id', formData.type_id);
     NewformData.append('price', formData.price); 
 
-
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`, NewformData, {
+  
+    const response = await authFetch.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/create-modules`, NewformData, {
       headers: {
         "Content-Type": "multipart/form-data",
         // Authorization: `Bearer ${getToken()}`
@@ -172,12 +170,17 @@ const PageUploadItem = ({ }) => {
 
 
   }
-  const handleScreenShotChange = (e: any) => {
-    setScreenShot(e.target.files[0])
-  } 
-  // console.log(logo)
+const handleScreenShotChange = (e: any) => { 
+  const newFile = e.target.files[0];
+
+  if (newFile) { 
+    setScreenShot(prevFiles => [...prevFiles, newFile]);
+ 
+  }
+}
+ 
   return (
-    <div className={`nc-PageUploadItem`}>
+    <div className={`PageItem`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24 max-w-4xl mx-auto space-y-8 sm:space-y-10">
           {/* HEADING */}
@@ -299,18 +302,18 @@ const PageUploadItem = ({ }) => {
               <Input defaultValue="0" placeholder="00.00" id="timeline" name="timeline" type="time" value={formData.timeline} onChange={handleChange} />
             </FormItem>
 
-            <FormItem label="Token Size">
+           <FormItem label="Token Size">
               <Input defaultValue="0" placeholder="$0.00" id="token_size" name="token_size" type="text" value={formData.token_size} onChange={handleChange} />
             </FormItem>
 
-             <FormItem
+          {formData.type_id !== "2" &&     <FormItem
               label="Example Input"  >
               <Textarea rows={6} className="mt-1.5" placeholder="Add input here..." id="example_input" name="example_input" value={formData.example_input} onChange={handleChange} />
-            </FormItem>
-               <FormItem
+            </FormItem>}
+          {formData.type_id !=="2" &&       <FormItem
               label="Example Output"  >
               <Textarea rows={6} className="mt-1.5" placeholder="Add output here..." id="example_output" name="example_output" value={formData.example_output} onChange={handleChange} />
-            </FormItem>
+            </FormItem>}
 
             <div className="w-full border-b-2 border-neutral-100 dark:border-neutral-700"></div>
          
@@ -318,34 +321,19 @@ const PageUploadItem = ({ }) => {
             <div>
               <h3 className="text-lg font-semibold">
                 Logo
-                {/* , Video, Audio, or 3D Model */}
+                
               </h3>
               <span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG
-                
-                Max size: 100 MB
+                File types supported: JPG, PNG  Max size: 100 MB
               </span>
               <div className="mt-5 ">
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
-                  <div className="space-y-1 text-center">
-                    <svg
-                      className="mx-auto h-12 w-12 text-neutral-400"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>
-                    </svg>
-                    <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
+                <div className="mt-1 flex justify-start  border-2   border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                   <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm px-2 pt-3 pb-3 flex-col w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
                       <label
                         htmlFor="logo"
-                        className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer  text-center   rounded-md font-medium text-primary-6000 hover:text-primary-500  "
                       >
                         <span>Upload a file</span>
                         <input
@@ -353,13 +341,13 @@ const PageUploadItem = ({ }) => {
                           type="file"
                           className="sr-only" name="logo" id="logo" onChange={handleLogoChange}
                         />
-
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    <p className="text-xs text-neutral-500  text-center  dark:text-neutral-400">
                       {logo ? logo.name : " PNG, JPG, GIF up to 10MB"}
                     </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+                    </div>
+                   
                   </div>
                 </div>
               </div>
@@ -368,34 +356,17 @@ const PageUploadItem = ({ }) => {
             <div>
               <h3 className="text-lg font-semibold">
                 Thumbnail
-                {/* , Video, Audio, or 3D Model */}
+               
               </h3>
-              <span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG
-                
-                Max size: 100 MB
-              </span>
+             
               <div className="mt-5 ">
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
-                  <div className="space-y-1 text-center">
-                    <svg
-                      className="mx-auto h-12 w-12 text-neutral-400"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>
-                    </svg>
-                    <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
+                <div className="mt-1 flex justify-start  border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                    <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm flex-col px-2 pt-3 pb-3 text-center w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
                       <label
                         htmlFor="thumbnail"
-                        className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer text-center  rounded-md font-medium text-primary-6000 hover:text-primary-500  "
                       >
                         <span>Upload a file</span>
                         <input
@@ -403,25 +374,57 @@ const PageUploadItem = ({ }) => {
                           type="file"
                           className="sr-only" name="thumbnail" id="thumbnail" onChange={handleThumbnailChange}
                         />
-
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    <p className="text-xs text-center text-neutral-500 dark:text-neutral-400">
                       {thumbnail ? thumbnail.name : " PNG, JPG, GIF up to 10MB"}
                     </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+                    </div>
+                   
                   </div>
                 </div>
               </div>
             </div>
 
+         {formData.type_id === "2" &&    <div>
+              <h3 className="text-lg font-semibold">
+                Upload Multiple Image 
+              </h3>
+               
+              <div className="mt-5 ">
+                <div className="mt-1 flex justify-start  border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                   <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm  px-6 pt-6 pb-6 flex-col text-center w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
+                      <label
+                        htmlFor="screenShot"
+                        className="relative cursor-pointer text-center  rounded-md font-medium text-primary-6000 hover:text-primary-500  "
+                      >
+                        <span>Upload a file</span>
+                        <input
+
+                          type="file"
+                          className="sr-only" name="screenShot" id="screenShot" onChange={handleScreenShotChange}
+                        />
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                      {screenShot.length > 0 
+                          ? screenShot.map(file => file.name).join(', ')  
+                          : "PNG, JPG, GIF up to 10MB"
+                        }
+                    </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+
+
+            </div>}
+ 
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
-              {/* <ButtonPrimary href="/nft-detail" className="flex-1">
-                Upload item
-              </ButtonPrimary>
-              <ButtonSecondary href="/nft-detail" className="flex-1">
-                Preview item
-              </ButtonSecondary> */}
+            
               <button onClick={(e: any) => handleSubmit(e)} className="nc-Button relative h-auto inline-flex items-center justify-center rounded-xl transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">Create</button>
             </div>
           </div>

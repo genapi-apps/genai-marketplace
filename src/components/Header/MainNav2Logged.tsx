@@ -15,10 +15,12 @@ import { CartIcon } from "@/icons";
 import { SearchIcon } from "@/icons/search";
 import Badge from "@/shared/Badge/Badge";
 import CartSidebar from "./CartSidebar";
+import { useAppSelector } from "@/redux/hooks";
 
 export interface MainNav2LoggedProps {}
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
+  const { items } = useAppSelector((state) => state.cart);
    const [openSearchBox, setOpenSearchBox] = useState(false)
    const [searchQuery, setSearchQuery] = useState("Search here...");
    const [searchList, setSearchList] = useState([]);
@@ -31,47 +33,68 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
  
 
-// useEffect(()=>{
-//  const handleSearchSubmit = async() => {
-//   // Assuming you have an array of items
-//  // const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+useEffect(()=>{
+ const handleSearchSubmit = async() => {
+  
 
-//   //  console.log(value)
-
-//    if(searchQuery ==="text"){
-//     setOpenSearchBox(false)
-//     setSearchList([])
-//    }else{ 
-//   //  setOpenSearchBox(false) 
-//    setOpenSearchBox(true)
-//     try {
+   if(searchQuery ==="text"){
+    setOpenSearchBox(false)
+    setSearchList([])
+   }else{  
+   setOpenSearchBox(true)
+    try {
     
-//       const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
-//       const response = await axios.get(apiUrl, {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }); 
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }); 
 
   
-//     setSearchList(response.data.data)
+    setSearchList(response.data.data)
      
-//     } catch (error) {
-//       console.error("Error making API call:", error);
-//     }
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
      
-//    }
+   }
  
   
    
   
-// };
+};
 
-// handleSearchSubmit()
-// },[searchQuery])
+handleSearchSubmit()
+},[searchQuery])
+ 
 
-// console.log(typeof searchQuery ,"searchQuery")
+  const [totalItem, setTotalItem] = useState([]);
+   
+    const getItem = async () => {
+    try {
+        const userId = localStorage.getItem("id")
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/cart`, { userId:userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getToken()}`
+          },
+        }
+      );
+      
+      setTotalItem(response.data.data)
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+   useEffect(() => {
+    getItem();
+  }, []);
+   
   return (
     <>
     <div className={`nc-MainNav2Logged relative z-10`}>
@@ -113,7 +136,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
              <div onClick={()=> setOpenCartSide(true)}   className="nc-Button cursor-pointer relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">
                
                 <CartIcon/>
-                 <Badge name="1" className="absolute top-0 right-2 text-[8px] h-5 w-4 bg-primary-6000 text-white p-1" />
+           {totalItem ?       <Badge name={totalItem.length} className="absolute top-0 right-2 text-[8px] h-5 w-6 bg-primary-6000 text-white  flex items-center justify-center" />: 0}
               </div>
             
               <AvatarDropdown />
@@ -123,7 +146,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
                 <div onClick={()=> setOpenCartSide(true)}   className="nc-Button cursor-pointer relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">
                
                 <CartIcon/>
-                 <Badge name="1" className="absolute top-0 right-2 text-[8px] h-5 w-4 bg-primary-6000 text-white p-1" />
+               {totalItem ?       <Badge name={totalItem.length} className="absolute top-0 right-2 text-[8px] h-5 w-6 bg-primary-6000 text-white flex items-center justify-center" />: 0}
               </div>
                <AvatarDropdown />
                <MenuBar />

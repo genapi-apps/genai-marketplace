@@ -11,15 +11,14 @@ import ItemTypeVideoIcon from "./ItemTypeVideoIcon";
 import Link from "next/link";
 import useGetRandomData from "@/hooks/useGetRandomData";
 
-export interface CardNFTProps {
+export interface CardProps {
   className?: string;
   isLiked?: boolean;
   item:any
 }
 
-const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
-  const { nftImageRd, titleRd } = useGetRandomData();
-
+const Card: FC<CardProps> = ({ className = "", isLiked,item }) => {
+  
   const [itemType, setItemType] = useState<"video" | "audio" | "default">(
     "default"
   );
@@ -55,7 +54,7 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
     );
   }; 
   return (
-    <div className={`nc-CardNFT relative flex flex-col group ${className}`}>
+    <div className={`Card relative flex flex-col group ${className}`}>
       <div className="relative flex-shrink-0 ">
         <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded overflow-hidden z-0">
          
@@ -104,4 +103,4 @@ const CardNFT: FC<CardNFTProps> = ({ className = "", isLiked,item }) => {
   );
 };
 
-export default CardNFT;
+export default Card;

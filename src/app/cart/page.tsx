@@ -12,10 +12,9 @@ const PageCart = ({}) => {
  const [moduleList, setModuleList] = useState([]);
      const getModule = async () => {
     try {
-         const userId = JSON.parse(localStorage.getItem("marketusername") as string)
-    
+       const userId = localStorage.getItem("id")
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/cart`, { userId: 7 },
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/cart`, { userId:userId},
         {
           headers: {
             "Content-Type": "application/json",
@@ -37,7 +36,7 @@ const PageCart = ({}) => {
   }, []);
 
   return (
-    <div className={`nc-PageConnectWallet`}>
+    <div className={`PageCart`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24    space-y-8 sm:space-y-10">
          
@@ -53,7 +52,7 @@ const PageCart = ({}) => {
           <div className="mt-10 md:mt-0 space-y-5 sm:space-y-6 md:sm:space-y-8">
             <div className="space-y-3">
                   {moduleList && moduleList.map((cartItem,i)=>{
-                                        return  <div className={`nc-CardNFT relative flex w-full flex-col group `} key={i}>
+                                        return  <div className={`Cart relative flex w-full flex-col group `} key={i}>
                                         <div className="relative flex-shrink-0 flex gap-5">
                                             <div className="flex w-36 h-20 rounded overflow-hidden z-0">
                                             

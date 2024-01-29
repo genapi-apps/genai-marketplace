@@ -49,6 +49,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
         }}
         data={categoryList}
         renderItem={(item, index) => {
+         
           return (
             <CardCategory5
               key={index}

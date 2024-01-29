@@ -1,5 +1,5 @@
 "use client"
-import NftDetailPage from '@/components/nft-detail/page'
+import DetailPage from '@/components/Detail/page'
 import React, {FC, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
@@ -36,7 +36,7 @@ const PageDetail: FC<CardDetailProps> = ({id,name}) => {
   }, [])
  
   return (
-   <NftDetailPage moduleDetail={moduleDetail} />
+   <DetailPage moduleDetail={moduleDetail} />
   )
 }
 

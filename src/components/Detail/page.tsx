@@ -20,23 +20,26 @@ import { HeartIcon } from "@heroicons/react/24/solid";
 import SectionTrending from "../SectionSliderCategories/SectionTrending";
 import { useAppSelector } from "@/redux/hooks";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addToCarts } from "@/redux/cart/cartSlice";
+import { toast } from "react-toastify";
 
 export interface SectionLargeSliderProps {
 
   moduleDetail: any
 }
 
-const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
+const DetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
   const { trendingList } = useAppSelector((state) => state.auth);
-
-
+  
+  const dispatch = useDispatch()
   const renderSection1 = (moduleDetail: any) => {
 
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
 
         <div className={`pb-9 space-y-5  ${moduleDetail[0].type_name === ("text" || "code") && "border-2 border-gray-200 rounded p-5 "}`}>
-          {moduleDetail[0].type_name === "image" && <div className="imageslist h-[700px] overflow-y-auto overflow-x-hidden  ">
+          {moduleDetail[0].type_name ==="Images" && <div className="imageslist h-[700px] overflow-y-auto overflow-x-hidden  ">
             <div className="flex flex-col gap-3">
               {moduleDetail[0].imageUrls && moduleDetail[0].imageUrls.map((item: any, i: any) => {
                 return item.type === "images_gallery" && item.url.length > 0 && item.url.map((image: any, index: any) => {
@@ -51,7 +54,7 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
               })}
             </div>
           </div>}
-          {moduleDetail[0].type_name === "text" && <div className="text-xs flex flex-col gap-4 texttt">
+          {moduleDetail[0].type_name === "Text" && <div className="text-xs flex flex-col gap-4 texttt">
 
             <div className="text-neutral-900 dark:text-neutral-200 font-semibold flex text-base items-center">
               Prompt Details
@@ -112,7 +115,7 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
 
           </div>}
 
-          {moduleDetail[0].type_name === "code" && <div className="text-xs flex flex-col gap-4 texttt">
+          {moduleDetail[0].type_name === "Code" && <div className="text-xs flex flex-col gap-4 texttt">
 
             <div className="text-neutral-900 dark:text-neutral-200 font-semibold flex text-base items-center">
               Prompt Details
@@ -182,15 +185,15 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
 
   const addToCart=async(moduleDetail:any)=>{
     //add-to-cart
-    
-        const userId = JSON.parse(localStorage.getItem("marketusername") as string)
+     
+      const userId = localStorage.getItem("id")
         const moduleId = moduleDetail[0].id
-        const quanity = 1
+       
        
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/add-to-cart`,
-        {userId:userId && userId.id, moduleId:moduleId, quantity :quanity},
+        {userId:userId && userId, moduleId:moduleId},
         { 
           headers: {
             "Content-Type": "application/json",
@@ -199,22 +202,23 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
         }
       )  
  
+       toast(response.data.message)
       console.log(response) 
 
 
-
+  dispatch(addToCarts(moduleId))
     
 
   }
 
   const addFavorite =async(data:any)=>{
-        const userId = JSON.parse(localStorage.getItem("marketusername") as string)
+   const userId = localStorage.getItem("id")
         const moduleId = data[0].id
         const quanity = true
 
         const response = await axios.post(
                         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/like_module`,
-                        {user_id:userId && userId.id, module_id:moduleId, favorite :quanity},
+                        {user_id:userId && userId, module_id:moduleId, favorite :quanity},
                         {   
                           headers: {
                             "Content-Type": "application/json",
@@ -355,4 +359,4 @@ const NftDetailPage: FC<SectionLargeSliderProps> = ({ moduleDetail }) => {
   );
 };
 
-export default NftDetailPage;
+export default DetailPage;

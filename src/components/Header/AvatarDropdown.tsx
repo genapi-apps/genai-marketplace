@@ -12,14 +12,13 @@ export default function AvatarDropdown() {
      const router = useRouter()
    const [users, setUsers] = useState()
  const handleLogout=()=>{
-   localStorage.removeItem("marketusername")
-   localStorage.removeItem("marketplacegenaitoken")
+   localStorage.removeItem("id") 
     router.push("/login")
   }
   useEffect(() => {
-    const b = localStorage.getItem("marketusername")
+    const b = localStorage.getItem("id")
     let a=  JSON.parse( b)
-     setUsers(a)
+     setUsers(b)
   }, [])
   return (
     <div className="AvatarDropdown relative flex">
@@ -50,8 +49,8 @@ export default function AvatarDropdown() {
                       <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
 
                       <div className="flex-grow">
-                         <h4 className="font-semibold">{users.name}</h4>
-                        <p className="text-xs mt-0.5">{users.email}</p>
+                         <h4 className="font-semibold">Jyoti Kumari</h4>
+                        <p className="text-xs mt-0.5">jyoti.kumari@jaiinfoway.com</p>
                       </div>
                     </div>
 

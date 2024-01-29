@@ -1,16 +1,9 @@
 "use client";
 
 import React, { FC, useEffect, useState } from "react";
-import Label from "@/components/Label/Label";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import Textarea from "@/shared/Textarea/Textarea";
 import FormItem from "@/components/FormItem";
-import { RadioGroup } from "@headlessui/react";
-import { nftsImgs } from "@/contains/fakeData";
-import MySwitch from "@/components/MySwitch";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import NcImage from "@/shared/NcImage/NcImage";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -74,7 +67,7 @@ const PageUploadItem = ({ }) => {
   }
    
   return (
-    <div className={`nc-PageUploadItem`}>
+    <div className={`PageTypeItem`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24 max-w-4xl mx-auto space-y-8 sm:space-y-10">
          

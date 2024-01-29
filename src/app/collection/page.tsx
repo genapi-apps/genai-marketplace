@@ -3,21 +3,23 @@
 import React,{useState, useEffect} from "react";
 import NcImage from "@/shared/NcImage/NcImage";
  
-import CardNFT from "@/components/CardNFT";
+import Card from "@/components/Card";
 import TabFilters from "@/components/TabFilters"; 
 
 import { useAppSelector } from "@/redux/hooks";
 import SectionTrending from "@/components/SectionSliderCategories/SectionTrending";
- 
+//  import authFetch from "@/utils/interceptor"
+
 
 const PageCollection = () => { 
   const { moduleList } = useAppSelector((state) => state.auth);
    const {  trendingList  } = useAppSelector((state) => state.auth);
-
-  ///modules/filter/:categories
+    // const response = await authFetch.get(
+    //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/get-model-and-engine-list`,
+    // )
  
   return (
-    <div className={`nc-PageCollection`}>
+    <div className={`PageCollection`}>
      
       <div className="w-full">
         <div className="relative w-full h-40 md:h-60 2xl:h-72">
@@ -39,7 +41,7 @@ const PageCollection = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
             {moduleList && moduleList!== undefined && moduleList.length>0 ? moduleList.map((item:any, index:any) => (
-              <CardNFT key={index} item={item} />
+              <Card key={index} item={item} />
             )):"NO result found"}
           </div>
 

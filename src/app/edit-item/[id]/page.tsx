@@ -1,19 +1,14 @@
 "use client"
-import React, { FC, useEffect, useState } from "react";
-import Label from "@/components/Label/Label";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import React, { FC, useEffect, useState } from "react"; 
 import Input from "@/shared/Input/Input";
 import Textarea from "@/shared/Textarea/Textarea";
-import FormItem from "@/components/FormItem";
-import { RadioGroup } from "@headlessui/react";
-import { nftsImgs } from "@/contains/fakeData";
-import MySwitch from "@/components/MySwitch";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import NcImage from "@/shared/NcImage/NcImage";
+import FormItem from "@/components/FormItem"; 
 import axios from "axios";
 import { toast } from "react-toastify";
 
 import { useParams } from 'next/navigation'
+import { UploadIcon } from "@/icons";
+import NcImage from "@/shared/NcImage/NcImage";
 interface FormData {
   name: string,
   description: string,
@@ -29,7 +24,7 @@ interface FormData {
   example_output: string,
   timeline: string,
   user_id: number,
-  type_id: number,
+  type_id: string,
   price: number
 
 }
@@ -50,22 +45,26 @@ const PageCollection = () => {
     token_size: '',
     example_input: '',
     example_output: '',
-    timeline: '',
+    timeline: '00.00',
     user_id: 0,
-    type_id: 0,
+    type_id: '1',
     price: 0
    
   });
 
-  const [thumbnail, setThumbnail] = useState({ name: '' })
+  const [thumbnail, setThumbnail] = useState()
 
-  const [logo, setLogo] = useState({ name: '' })
+  const [logo, setLogo] = useState()
 
-  const [screenShot, setScreenShot] = useState({ name: '' })
+  const [screenShot, setScreenShot] = useState([])
   const [homeList, setHomeList] = useState([])
   const [typeList, setTypeList] = useState([])
 
-  const [video, setVideo] = useState({ name: '' })
+  const [thumbnail1, setThumbnail1] = useState()
+
+  const [logo1, setLogo1] = useState()
+
+  const [screenShot1, setScreenShot1] = useState([])
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -73,8 +72,8 @@ const PageCollection = () => {
       ...prevData,
       [name]: value,
     }));
-  };
-       console.log(params)
+  }; 
+
    useEffect(() => {
     const getModule = async () => {
       const response = await axios.get(
@@ -86,8 +85,12 @@ const PageCollection = () => {
           }
         }
       )  
- console.log(response.data.data, "response.data.data")
+      console.log(response.data.data, "response.data.data")
       setFormData(response.data.data[0]) 
+
+      setThumbnail1(response.data.data[0].thumbnail)
+      setLogo1(response.data.data[0].logo)
+      setScreenShot1(response.data.data[0].imageUrls)
     }
       
     getModule()
@@ -112,7 +115,7 @@ const PageCollection = () => {
       console.error("Error making API call:", error);
     }
   }
-
+console.log( screenShot1)
    const getTypeList = async () => {
 
     try {
@@ -140,8 +143,7 @@ const PageCollection = () => {
 
   }, [])
 
-  console.log(formData.type_id,"type   ")
-
+  
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -149,8 +151,10 @@ const PageCollection = () => {
 
     logo && NewformData.append('logo', logo);
     thumbnail && NewformData.append('thumbnail', thumbnail);
-    // video && NewformData.append('video', video);
-    // logo && NewformData.append('logo', logo);
+    screenShot.forEach((file, index) => { 
+      NewformData.append('images_gallery', file);
+    
+    });
 
 
     NewformData.append("name", formData.name)
@@ -192,11 +196,17 @@ const PageCollection = () => {
 
 
   }
-  const handleScreenShotChange = (e: any) => {
-    setScreenShot(e.target.files[0])
-  } 
+const handleScreenShotChange = (e: any) => { 
+  const newFile = e.target.files[0];
+
+  if (newFile) { 
+    setScreenShot(prevFiles => [...prevFiles, newFile]);
+ 
+  }
+}
+ console.log(formData.type_id,"formData.type_id")
   return (
-   <div className={`nc-PageUploadItem`}>
+   <div className={`PageEditItem`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24 max-w-4xl mx-auto space-y-8 sm:space-y-10">
           {/* HEADING */}
@@ -241,7 +251,7 @@ const PageCollection = () => {
 
               </select>
             </FormItem>
-            {/* ---- */}
+           
             <FormItem label="Name">
               <Input defaultValue="Name" placeholder="prompt" id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
             </FormItem>
@@ -262,14 +272,7 @@ const PageCollection = () => {
             </FormItem>
             <FormItem
               label="Short Description"
-              // desc={
-              //   <div>
-              //     {`The description will be included on the item's detail page
-              //     underneath its image.`}{" "}
-              //     <span className="text-green-500">Markdown</span> syntax is
-              //     supported.
-              //   </div>
-              // }
+            
 
             >
               <Textarea rows={6} className="mt-1.5" placeholder="Add description here..." id="short_description" name="short_description" value={formData.short_description} onChange={handleChange} />
@@ -279,8 +282,7 @@ const PageCollection = () => {
  
             <FormItem
               label="External link"
-            // desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
-            >
+             >
               <div className="flex">
                 <span className="inline-flex items-center px-3 rounded border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   https://
@@ -290,8 +292,7 @@ const PageCollection = () => {
             </FormItem>
             <FormItem
               label="Support Email"
-            //   desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
-            >
+             >
               <div className="flex">
                 <span className="inline-flex items-center px-3 rounded border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   https://
@@ -301,8 +302,7 @@ const PageCollection = () => {
             </FormItem>
              <FormItem
               label="Website"
-            //   desc="Zen AI will include a link to this URL on this item's detail page, so that users can click to learn more about it. You are welcome to link to your own webpage with more details."
-            >
+             >
               <div className="flex">
                 <span className="inline-flex items-center px-3 rounded border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   https://
@@ -322,49 +322,33 @@ const PageCollection = () => {
               <Input defaultValue="0" placeholder="$0.00" id="token_size" name="token_size" type="text" value={formData.token_size} onChange={handleChange} />
             </FormItem>
 
-             <FormItem
+            {formData.type_id !=="2" && <FormItem
               label="Example Input"  >
               <Textarea rows={6} className="mt-1.5" placeholder="Add input here..." id="example_input" name="example_input" value={formData.example_input} onChange={handleChange} />
-            </FormItem>
-               <FormItem
+            </FormItem>}
+            {formData.type_id !=="2" &&   <FormItem
               label="Example Output"  >
               <Textarea rows={6} className="mt-1.5" placeholder="Add output here..." id="example_output" name="example_output" value={formData.example_output} onChange={handleChange} />
-            </FormItem>
+            </FormItem>}
 
             <div className="w-full border-b-2 border-neutral-100 dark:border-neutral-700"></div>
          
-           
-            <div>
+                <div>
               <h3 className="text-lg font-semibold">
                 Logo
-                {/* , Video, Audio, or 3D Model */}
+                
               </h3>
               <span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG
-                
-                Max size: 100 MB
+                File types supported: JPG, PNG  Max size: 100 MB
               </span>
               <div className="mt-5 ">
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
-                  <div className="space-y-1 text-center">
-                    <svg
-                      className="mx-auto h-12 w-12 text-neutral-400"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>
-                    </svg>
-                    <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
+                <div className="mt-1 flex justify-start  border-2   border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                   <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm px-2 pt-3 pb-3 flex-col w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
                       <label
                         htmlFor="logo"
-                        className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer  text-center   rounded-md font-medium text-primary-6000 hover:text-primary-500  "
                       >
                         <span>Upload a file</span>
                         <input
@@ -372,49 +356,41 @@ const PageCollection = () => {
                           type="file"
                           className="sr-only" name="logo" id="logo" onChange={handleLogoChange}
                         />
-
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    <p className="text-xs text-neutral-500  text-center  dark:text-neutral-400">
                       {logo ? logo.name : " PNG, JPG, GIF up to 10MB"}
                     </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+               
+                    </div>
+                   
                   </div>
-                </div>
+                </div>  
+               {!logo &&   <p className="flex gap-1 mt-2">    {logo1 && 
+                     <NcImage 
+                    containerClassName=" w-12 h-12 relative"
+                    className="absolute inset-0 border border-gray-100 shadow object-cover  rounded  "
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/logo/${logo1}`}
+                    alt={"logo"}
+                    
+                  /> }</p> }
               </div>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold">
                 Thumbnail
-                {/* , Video, Audio, or 3D Model */}
+               
               </h3>
-              <span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG
-                
-                Max size: 100 MB
-              </span>
+             
               <div className="mt-5 ">
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
-                  <div className="space-y-1 text-center">
-                    <svg
-                      className="mx-auto h-12 w-12 text-neutral-400"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>
-                    </svg>
-                    <div className="flex text-sm text-neutral-6000 dark:text-neutral-300">
+                <div className="mt-1 flex justify-start  border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                    <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm flex-col px-2 pt-3 pb-3 text-center w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
                       <label
                         htmlFor="thumbnail"
-                        className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer text-center  rounded-md font-medium text-primary-6000 hover:text-primary-500  "
                       >
                         <span>Upload a file</span>
                         <input
@@ -422,25 +398,83 @@ const PageCollection = () => {
                           type="file"
                           className="sr-only" name="thumbnail" id="thumbnail" onChange={handleThumbnailChange}
                         />
-
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                      {thumbnail ? thumbnail.name : " PNG, JPG, GIF up to 10MB"}
+                    <p className="text-xs text-center text-neutral-500 dark:text-neutral-400">
+                      {thumbnail ? thumbnail.name  : " PNG, JPG, GIF up to 10MB"}
                     </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+                   
+                    </div>
+                   
                   </div>
-                </div>
+                </div> 
+               {!thumbnail &&   <p className="flex gap-1 mt-2">     {thumbnail1 && 
+                     <NcImage 
+                    containerClassName=" w-12 h-12 relative"
+                    className="absolute inset-0 object-cover border border-gray-100 shadow rounded  "
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thumbnail/${thumbnail1}`}
+                    alt={"logo"}
+                    
+                  />
+                
+                      }</p> }
               </div>
             </div>
+         
+              {formData.type_id === "2"  &&    <div>
+              <h3 className="text-lg font-semibold">
+                Upload Multiple Image 
+              </h3>
+               
+              <div className="mt-5 ">
+                <div className="mt-1 flex justify-start  border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded">
+                  <div className="flex items-center  w-full gap-5">
+                   <UploadIcon className="border-r-2 w-[65px] p-[6px]"/>
+                    <div className="flex text-sm  px-6 pt-6 pb-6 flex-col text-center w-full justify-center items-center text-neutral-6000 dark:text-neutral-300">
+                      <label
+                        htmlFor="screenShot"
+                        className="relative cursor-pointer text-center  rounded-md font-medium text-primary-6000 hover:text-primary-500  "
+                      >
+                        <span>Upload a file</span>
+                        <input
+
+                          type="file"
+                          className="sr-only" name="screenShot" id="screenShot" onChange={handleScreenShotChange}
+                        />
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                      {screenShot.length > 0 
+                          ? screenShot.map(file => file.name).join(', ') 
+                          : "PNG, JPG, GIF up to 10MB"
+                        }
+                    </p>
+                      </label>
+                      {/* <p className="pl-1">or drag and drop</p> */}
+                 
+                    </div>
+                   
+                  </div> 
+                 
+                </div> 
+              {screenShot.length<1 &&  <p className="flex gap-1 mt-2">
+                    {  screenShot1 && screenShot1.map((screen: any, index: any) => {
+                   return screen.type==="images_gallery" && screen.url.map((it:any,i:any)=>{
+                    return <NcImage key={index}
+                    containerClassName="w-12 h-12 relative"
+                    className="absolute inset-0 object-cover border shadow border-gray-100 rounded  "
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${it}`}
+                    alt={"title"}
+                    sizes="(max-width: 768px) 100vw, 840px"
+                  />
+                  }) 
+                })}</p>}
+              </div>
+
+
+            </div>}
+ 
 
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
-              {/* <ButtonPrimary href="/nft-detail" className="flex-1">
-                Upload item
-              </ButtonPrimary>
-              <ButtonSecondary href="/nft-detail" className="flex-1">
-                Preview item
-              </ButtonSecondary> */}
+              
               <button onClick={(e: any) => handleSubmit(e)} className="nc-Button relative h-auto inline-flex items-center justify-center rounded-xl transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">Update</button>
             </div>
           </div>

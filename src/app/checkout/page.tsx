@@ -10,7 +10,7 @@ const PageCheckout = ({}) => {
    
 
   return (
-    <div className={`nc-PageConnectWallet`}>
+    <div className={`PageCheckout`}>
       <div className="container">
         <div className="my-12 sm:lg:my-16 lg:my-24    space-y-8 sm:space-y-10">
          

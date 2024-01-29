@@ -2,7 +2,7 @@
 
 import { useAppSelector } from "@/redux/hooks";
 import React, { FC, Fragment, useEffect, useState } from "react";
-import CardNFT from "../CardNFT";
+import Card from "../Card";
 
 
 export interface PromptPageProps {
@@ -23,7 +23,7 @@ const PromptPage: FC<PromptPageProps> = ({ }) => {
                 <div className="flex gap-5  m-0">
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-6   ">
             {moduleList && moduleList!== undefined && moduleList.length>0 ? moduleList.map((item:any, index:any) => (
-              <CardNFT key={index} item={item} />
+              <Card key={index} item={item} />
             )):"NO result found"}
           </div>
                 </div>

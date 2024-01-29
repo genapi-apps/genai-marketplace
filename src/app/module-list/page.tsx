@@ -1,14 +1,7 @@
 
 "use client"
-import React,{FC,useState, useEffect} from "react";
-import NcImage from "@/shared/NcImage/NcImage"; 
-import CardNFT from "@/components/CardNFT";
-import TabFilters from "@/components/TabFilters"; 
-import { useParams } from 'next/navigation'
-import axios from "axios";
-import Link from "next/link";
-import { useAppSelector } from "@/redux/hooks";
-import SectionTrending from "@/components/SectionSliderCategories/SectionTrending";
+import React,{FC,useState, useEffect} from "react"; 
+import axios from "axios"; 
 import ModuleCard from "@/components/CardNFT2";
  
  
@@ -19,11 +12,10 @@ const ModuleList = () => {
    
     const getModule = async () => {
     try {
-         const userId = JSON.parse(localStorage.getItem("marketusername") as string)
-
+       const userId = localStorage.getItem("id")
            
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules`, { user_id: userId && userId.id },
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules`, { user_id: userId && userId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +36,7 @@ const ModuleList = () => {
   }, []);
   
   return (
-    <div className={`nc-PageCollection`}>
+    <div className={`PageModuleList`}>
      
       
        

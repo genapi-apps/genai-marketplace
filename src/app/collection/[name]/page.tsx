@@ -2,7 +2,7 @@
 "use client"
 import React,{FC,useState, useEffect} from "react";
 import NcImage from "@/shared/NcImage/NcImage"; 
-import CardNFT from "@/components/CardNFT";
+import Card from "@/components/Card";
 import TabFilters from "@/components/TabFilters"; 
 import { useParams } from 'next/navigation'
 import axios from "axios";
@@ -40,7 +40,7 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
     }, [])
   ///modules/filter/:categories
   return (
-    <div className={`nc-PageCollection`}>
+    <div className={`PageCollectionName`}>
      
       <div className="w-full">
         <div className="relative w-full h-40 md:h-60 2xl:h-72">
@@ -61,7 +61,7 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
            
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
             {categoryList &&  categoryList!== undefined && categoryList.length>0 ? categoryList.map((item:any, index:any) => (
-              <CardNFT key={index} item={item}/>
+              <Card key={index} item={item}/>
             )):
             "No result found"}
           </div>

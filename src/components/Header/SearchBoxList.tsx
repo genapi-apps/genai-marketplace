@@ -12,7 +12,7 @@ const SearchBoxList: FC<SearchBoxListProps> = ({ setOpenSearchBox ,searchList}) 
     return (
 
         <>  
-            <div className="absolute text-sm top-[45px] z-[99] rounded p-3 h-fit flex gap-3 flex-col  w-full bg-white shadow">
+            <div className="absolute text-sm top-[45px] z-[9999] rounded p-3 h-fit flex gap-3 flex-col  w-full bg-white shadow">
                 {searchList && searchList.length>0 ? searchList.map((item:any, i:any) => {
                     return <div className={` relative flex gap-2 group items-center `} key={i}>
                         <div className="relative flex-shrink-0 ">
