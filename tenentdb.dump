@@ -1,0 +1,400 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: m_company; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.m_company (
+    company_id integer NOT NULL,
+    tenent_id integer NOT NULL,
+    company_code character varying(50),
+    company_name character varying(100),
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE public.m_company OWNER TO postgres;
+
+--
+-- Name: m_company_company_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.m_company_company_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.m_company_company_id_seq OWNER TO postgres;
+
+--
+-- Name: m_company_company_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.m_company_company_id_seq OWNED BY public.m_company.company_id;
+
+
+--
+-- Name: m_fy; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.m_fy (
+    fy_id integer NOT NULL,
+    company_id integer NOT NULL,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone
+);
+
+
+ALTER TABLE public.m_fy OWNER TO postgres;
+
+--
+-- Name: m_fy_fy_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.m_fy_fy_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.m_fy_fy_id_seq OWNER TO postgres;
+
+--
+-- Name: m_fy_fy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.m_fy_fy_id_seq OWNED BY public.m_fy.fy_id;
+
+
+--
+-- Name: m_gst_state; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.m_gst_state (
+    state_gst_id integer NOT NULL,
+    state_name character varying(50),
+    state_gst_code integer
+);
+
+
+ALTER TABLE public.m_gst_state OWNER TO postgres;
+
+--
+-- Name: m_gst_state_state_gst_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.m_gst_state_state_gst_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.m_gst_state_state_gst_id_seq OWNER TO postgres;
+
+--
+-- Name: m_gst_state_state_gst_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.m_gst_state_state_gst_id_seq OWNED BY public.m_gst_state.state_gst_id;
+
+
+--
+-- Name: m_tenents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.m_tenents (
+    tenent_id integer NOT NULL,
+    tenent_code character varying(50),
+    tenent_name character varying(100),
+    db_name character varying(100),
+    address_address1 character varying(100),
+    address_address2 character varying(100),
+    address_city character varying(50),
+    address_state integer,
+    address_country character varying(50),
+    address_pin character varying(50),
+    contact_no character varying(50),
+    email_id character varying(50),
+    gstin character varying(50),
+    active boolean DEFAULT true,
+    is_composite boolean DEFAULT false
+);
+
+
+ALTER TABLE public.m_tenents OWNER TO postgres;
+
+--
+-- Name: m_tenents_tenent_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.m_tenents_tenent_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.m_tenents_tenent_id_seq OWNER TO postgres;
+
+--
+-- Name: m_tenents_tenent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.m_tenents_tenent_id_seq OWNED BY public.m_tenents.tenent_id;
+
+
+--
+-- Name: m_users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.m_users (
+    user_id integer NOT NULL,
+    user_name character varying(100) NOT NULL,
+    full_name character varying(100) NOT NULL,
+    is_admin boolean DEFAULT true,
+    email_id character varying(50),
+    contact_no character varying(20),
+    hash character varying(200),
+    salt character varying(200),
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE public.m_users OWNER TO postgres;
+
+--
+-- Name: m_users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.m_users_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.m_users_user_id_seq OWNER TO postgres;
+
+--
+-- Name: m_users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.m_users_user_id_seq OWNED BY public.m_users.user_id;
+
+
+--
+-- Name: m_company company_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_company ALTER COLUMN company_id SET DEFAULT nextval('public.m_company_company_id_seq'::regclass);
+
+
+--
+-- Name: m_fy fy_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_fy ALTER COLUMN fy_id SET DEFAULT nextval('public.m_fy_fy_id_seq'::regclass);
+
+
+--
+-- Name: m_gst_state state_gst_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_gst_state ALTER COLUMN state_gst_id SET DEFAULT nextval('public.m_gst_state_state_gst_id_seq'::regclass);
+
+
+--
+-- Name: m_tenents tenent_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_tenents ALTER COLUMN tenent_id SET DEFAULT nextval('public.m_tenents_tenent_id_seq'::regclass);
+
+
+--
+-- Name: m_users user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_users ALTER COLUMN user_id SET DEFAULT nextval('public.m_users_user_id_seq'::regclass);
+
+
+--
+-- Data for Name: m_company; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.m_company (company_id, tenent_id, company_code, company_name, active) FROM stdin;
+16	1	jai	jaiinfoway	t
+24	1	saddam	irake's	t
+26	1	irake	Saddam Irake	t
+27	1	chandni	Chandni Industries	t
+11	1	krishna	Krishna Inn	t
+\.
+
+
+--
+-- Data for Name: m_fy; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.m_fy (fy_id, company_id, start_date, end_date) FROM stdin;
+16	16	2023-04-01 00:00:00	2024-03-31 23:59:59.059
+24	24	2023-04-01 00:00:00	2024-03-31 23:59:59.059
+26	26	2023-04-01 00:00:00	2024-03-31 23:59:59.059
+27	27	2023-04-01 00:00:00	2024-03-31 23:59:59.059
+87	11	2022-04-01 00:00:00	2023-03-31 23:59:59.059
+\.
+
+
+--
+-- Data for Name: m_gst_state; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.m_gst_state (state_gst_id, state_name, state_gst_code) FROM stdin;
+\.
+
+
+--
+-- Data for Name: m_tenents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.m_tenents (tenent_id, tenent_code, tenent_name, db_name, address_address1, address_address2, address_city, address_state, address_country, address_pin, contact_no, email_id, gstin, active, is_composite) FROM stdin;
+1	irake	Saddam Irake	irake	Piska	piska	Ranchi	37	India	825642	4587586952	saddam.irake@jaiinfoway.com	8451253687965	t	\N
+\.
+
+
+--
+-- Data for Name: m_users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.m_users (user_id, user_name, full_name, is_admin, email_id, contact_no, hash, salt, active) FROM stdin;
+1	jai	jai	t	\N	\N	303507ffa96bee0c436efa954fbfd5c4a11dbd31b5f2873ed76b9a3f0babd8ec0389ce87766fda3329402281ff8a0022d0a2abdfb7634262bcaa122a5ff2c99c	feb296711b6238a673eae618152e0456	t
+\.
+
+
+--
+-- Name: m_company_company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.m_company_company_id_seq', 27, true);
+
+
+--
+-- Name: m_fy_fy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.m_fy_fy_id_seq', 27, true);
+
+
+--
+-- Name: m_gst_state_state_gst_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.m_gst_state_state_gst_id_seq', 1, false);
+
+
+--
+-- Name: m_tenents_tenent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.m_tenents_tenent_id_seq', 1, true);
+
+
+--
+-- Name: m_users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.m_users_user_id_seq', 1, true);
+
+
+--
+-- Name: m_company m_company_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_company
+    ADD CONSTRAINT m_company_pkey PRIMARY KEY (company_id);
+
+
+--
+-- Name: m_fy m_fy_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_fy
+    ADD CONSTRAINT m_fy_pkey PRIMARY KEY (fy_id);
+
+
+--
+-- Name: m_gst_state m_gst_state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_gst_state
+    ADD CONSTRAINT m_gst_state_pkey PRIMARY KEY (state_gst_id);
+
+
+--
+-- Name: m_tenents m_tenents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_tenents
+    ADD CONSTRAINT m_tenents_pkey PRIMARY KEY (tenent_id);
+
+
+--
+-- Name: m_users m_users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_users
+    ADD CONSTRAINT m_users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: m_company m_company_tenent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_company
+    ADD CONSTRAINT m_company_tenent_id_fkey FOREIGN KEY (tenent_id) REFERENCES public.m_tenents(tenent_id);
+
+
+--
+-- Name: m_fy m_fy_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.m_fy
+    ADD CONSTRAINT m_fy_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.m_company(company_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
