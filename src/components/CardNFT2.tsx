@@ -30,18 +30,18 @@ const ModuleCard: FC<CardNFTProps> = ({ className = "", isLiked, item }) => {
   return (
     <div className={`nc-CardNFT relative flex flex-col group ${className}`}>
       <div className="relative flex-shrink-0 ">
-        <div className="flex aspect-w-11 aspect-h-12 w-full h-0 rounded overflow-hidden z-0">
+        <div className="flex w-full h-52 rounded overflow-hidden z-0">
 
           {item && item.imageUrls ? item.imageUrls.map((ite: any, i: any) => {
 
             return ite.type === "thumbnail" && <NcImage
-              containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded overflow-hidden z-0"
+              containerClassName="flex w-full h-56 rounded overflow-hidden z-0"
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${ite.url}`}
               className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
             />
           }) :
             <NcImage
-              containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
+              containerClassName="flex w-full h-56 rounded-3xl overflow-hidden z-0"
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/thumbnail/${item.thumbnail}`}
               className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
             />

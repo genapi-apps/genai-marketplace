@@ -9,14 +9,16 @@ export interface LikeButtonProps {
 
 const LikeButton: React.FC<LikeButtonProps> = ({
   className = "",
-  liked = false,
+  liked 
 }) => {
   const [isLiked, setIsLiked] = useState(liked);
-
+console.log(isLiked,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
   // make random for demo
-  useEffect(() => {
-    setIsLiked(Math.random() > 0.5);
-  }, []);
+useEffect(() => {
+    setIsLiked(liked);
+  }, [liked]);
+
+   console.log(isLiked, "Current like state");
 
   return (
     <button

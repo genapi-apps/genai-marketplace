@@ -33,7 +33,7 @@ const CardCategory5: FC<CardCategory5Props> = ({
   return (
     <Link
       href={`/collection/${item.name}`}
-      className={`nc-CardCategory5 flex flex-col ${className}`}
+      className={`CardCategory5 flex flex-col ${className}`}
     >
       <div
         className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0         bg-gray-100 shadow rounded overflow-hidden group`}

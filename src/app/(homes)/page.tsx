@@ -14,6 +14,10 @@ function PageHome() {
 
     const dispatch = useDispatch()
     const { categoryList, trendingList, newestList, featuredList } = useAppSelector((state) => state.auth);
+    const [bannerList, setBannerList] = useState([])
+    const [banner1, setBanner1] = useState([])
+    const [banner2, setBanner2] = useState([])
+    const [banner3, setBanner3] = useState([])
 
     useEffect(() => {
         const getModule = async () => {
@@ -68,6 +72,25 @@ function PageHome() {
 
         }
 
+        const getBannerDetail = async () => {
+
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/getallDataDetails`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+            setBannerList(response.data)
+            const data = response.data.data;
+            // console.log(data[0], data[1], data)
+            setBanner1(data[0])
+            setBanner2(data[2])
+            setBanner3(data[1])
+        }
+
+        getBannerDetail()
         getModule()
         getTrending()
         getNewest()
@@ -102,32 +125,26 @@ function PageHome() {
     return (
         <div className="nc-PageHome relative overflow-hidden">
 
-            <div className="container   relative my-5">
-                <SectionHero2 id="1" title="Gen AI Marketplace" desc="Search 100,000+ AI model from the world best AI creators" />
+            {banner1 && <div className="container   relative my-5">
+                <SectionHero2 banner={banner1} />
             </div>
-
-
-
+            }
             <div className="container relative space-y-6 my-6 lg:space-y-6 lg:my-6">
                 <SectionSliderCategories categoryList={categoryList} />
 
-                {trendingList && <SectionTrending title="Trending Prompt" moduleList={trendingList} />}
+                {trendingList && <SectionTrending title="Trending Prompt" type="trending" moduleList={trendingList} />}
                 <SectionNew />
-                <SectionHero2 id="2" title="Sell your prompts on Gen AI" desc="Upload your prompt, connect with Stripe, and become a seller in just 2 minutes" />
+               {banner2 && <SectionHero2 banner={banner2} />}
 
-                {featuredList && <SectionTrending title="Featured Prompt" moduleList={featuredList} />}
-                <SectionTrending title="Newest Prompt" moduleList={newestList} />
-                <SectionHero2 id="3" title="Hire an AI creator for your next project" desc="Commission custom prompts and solutions from top prompt engineers" />
-
-
-
+                {featuredList && <SectionTrending title="Featured Prompt" type="featured" moduleList={featuredList} />}
+                {newestList && <SectionTrending title="Newest Prompt" type="newest" moduleList={newestList} />}
+               {banner3 && <SectionHero2 banner={banner3} />}
             </div>
             <div className="bg-gray-50">
-
                 <div className="container   relative py-20">
-
-                    <SectionSubscribe2 />
-                </div></div>
+                 <SectionSubscribe2 />
+                </div>
+            </div>
         </div>
     );
 }

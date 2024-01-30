@@ -37,9 +37,9 @@ const PageCollection = () => {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-20 lg:space-y-28">
         <main>
           <TabFilters moduleList={moduleList} />
-          
+           <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700 my-5"></div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-4  mt-8 lg:mt-10">
             {moduleList && moduleList!== undefined && moduleList.length>0 ? moduleList.map((item:any, index:any) => (
               <Card key={index} item={item} />
             )):"NO result found"}
@@ -49,7 +49,7 @@ const PageCollection = () => {
         </main>
  
         <div className="relative  ">
-        <SectionTrending title="Trending Prompt" moduleList={trendingList} />
+        <SectionTrending title="Trending Prompt" type="trending" moduleList={trendingList} />
        </div>
 
         {/* <SectionBecomeAnAuthor /> */}

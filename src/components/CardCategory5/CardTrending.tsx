@@ -35,7 +35,7 @@ const CardTrending: FC<CardTrendingProps> = ({
   return (
     <Link
       href={`/collection/${item.name}/${item.id}`}
-      className={`nc-CardCategory5 flex flex-col ${className}`}
+      className={`CardCategory5 flex flex-col ${className}`}
     >
       <div
         className={`flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow bg-blue-400 rounded overflow-hidden group`}

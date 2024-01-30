@@ -18,7 +18,7 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
   
   const params = useParams<{ name: string; }>()
    const {  trendingList  } = useAppSelector((state) => state.auth);
-
+console.log(params,"category name list")
     
     const [categoryList, setCategoryList] = useState([])
     
@@ -36,8 +36,59 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
           setCategoryList(response.data.data) 
         }
 
-        getModule()
-    }, [])
+           const getTrending = async () => {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-favorite`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+            setCategoryList(response.data.data)
+
+        }
+
+        const getNewest = async () => {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules-by-created-at`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+            setCategoryList(response.data.data)
+
+        }
+        const getFeatured = async () => {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules-details-count`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+           setCategoryList(response.data.data)
+
+        }
+ 
+        if(params.name==="trending"){
+            getTrending()
+        }else if(params.name === 'newest'){
+             getNewest()
+        }else if(params.name === 'featured'){
+           getFeatured()
+        }else{
+             getModule()
+        }
+      
+     
+       
+
+     
+    }, [params])
   ///modules/filter/:categories
   return (
     <div className={`PageCollectionName`}>
@@ -58,8 +109,9 @@ const PageCollection:FC<CardListingProps> = ({name}) => {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-20 lg:space-y-28">
       {categoryList ?  <main>
           <TabFilters moduleList={categoryList}/>
+           <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700 my-5"></div>
            
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10  mt-8 lg:mt-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-4  mt-8 lg:mt-10">
             {categoryList &&  categoryList!== undefined && categoryList.length>0 ? categoryList.map((item:any, index:any) => (
               <Card key={index} item={item}/>
             )):

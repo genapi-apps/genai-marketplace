@@ -1,43 +1,49 @@
 "use client"
 import React, { FC, useState } from 'react';
 import Link from 'next/link';
+import { ChevronDoubleDownIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 export interface MainNav2LoggedProps { }
 
-const NavbarMega: FC<MainNav2LoggedProps> = () => {
+const MobileNavbarMega: FC<MainNav2LoggedProps> = () => {
     const [hoverIndex, setHoverIndex] = useState(null);
     const [selectedLeftSideItem, setSelectedLeftSideItem] = useState(null);
 
       const DropdownMenu = ({ item }) => (
-        <div className={`absolute top-full left-0 w-full flex transition-all duration-200  right-0 inset-0 z-[99] shadow-lg transform ${item ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
+        <div className={`w-full flex  transition-all duration-200  right-0 inset-0 z-[99] shadow-lg transform ${item ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
             <div
-                className={`flex w-full gap-8 bg-sky-800 h-fit  rounded shadow p-5 `}
+                className={`flex flex-col w-full gap-8 bg-gray-50 h-fit  rounded shadow p-5 `}
                 style={{ background: "", color: "white", zIndex: 9999 }}
             >
-                <div className='flex flex-col gap-5 w-[300px] border-r border-white'>
+                <div className='flex flex-col gap-5 w-[300px] border-white'>
                     {item.leftSide.map((ite:any, i:any) => (
                         <div 
                             key={i} 
-                            className='px-2 text-sm text-white hover:text-blue-300 cursor-pointer'
-                            onClick={() => setSelectedLeftSideItem(ite.name)} // Update the selected item state
+                            className='px-2 text-sm flex justify-between items-center text-gray-700 hover:text-blue-300 cursor-pointer'
+                          
                         >
-                            <div className='font-bold'>{ite.name}</div>
-                            {/* <div className='text-xs'>{ite.heading}</div> */}
+                            <div className='font-bold'  onClick={() => setSelectedLeftSideItem(ite.name)} >{ite.name}</div>
+                               {selectedLeftSideItem  ?    <ChevronDownIcon className="w-4 h-4 ml-3 cursor-pointer"  onClick={() => setSelectedLeftSideItem(item.name)} />: <ChevronUpIcon  className="w-4 h-4 ml-3 cursor-pointer"  onClick={() => setSelectedLeftSideItem(null)}/>}
+                                    
+                            
                         </div>
                     ))}
                 </div>
-                <div className='flex-1 flex w-full flex-wrap gap-5  '>
-                    {selectedLeftSideItem ?  item.rightSide.map((category:any, i:any) =>  {
-                       
-                        return category.name === selectedLeftSideItem &&  <div key={i} className='px-2 w-full text-sm text-white '>
-                            <div className='font-semibold mb-4 text-xl hover:text-blue-300'>{category.name}</div>
-                            <div className='grid grid-cols-3 gap-3 w-full'>
-                               {category.content.map((ite:any,it:any)=>{
-                                return <div className=' hover:text-blue-300'>{ite.name}</div>
-                               })}
+                {selectedLeftSideItem && (
+                <div className='flex-1 flex w-full flex-wrap gap-5'>
+                    {item.rightSide.map((category:any, i:any) => (
+                        category.name === selectedLeftSideItem && (
+                            <div key={i} className='px-2 w-full text-sm text-gray-700'>
+                                <div className='font-semibold mb-4 text-xl hover:text-blue-300'>{category.name}</div>
+                                <div className='grid grid-cols-2 sm:grid-cols-3 gap-3 w-full'>
+                                    {category.content.map((ite:any,it:any) => (
+                                        <div key={it} className='hover:text-blue-300'>{ite.name}</div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>}
-                    ):<div  className='px-2 text-sm text-white hover:text-blue-300 w-[500px]'>Select Any Model</div>}
+                        )
+                    ))}
                 </div>
+            )}
             </div>
         </div>
     );
@@ -46,21 +52,23 @@ const NavbarMega: FC<MainNav2LoggedProps> = () => {
         <>
             <div className={`nc-MainNav2Logged relative z-9`}>
                 <div className="container">
-                    <div className="flex justify-center space-x-4 xl:space-x-8">
-                        <div className="flex-shrink-0 relative flex items-center max-w-[1440px] justify-end text-neutral-700 dark:text-neutral-100 ">
-                            <div className="hidden xl:flex space-x-4">
+                    <div className="flex justify-center ">
+                        <div className="flex-shrink-0 relative flex items-center w-full justify-between text-neutral-700 dark:text-neutral-100 ">
+                            <div className="w-full flex flex-col  py-6 px-2 space-y-1">
                                 {MegaMenu.map((item, index) => (
                                     <div
-                                        className="h-auto inline-flex items-center justify-center rounded gap-2 px-3 py-1.5 text-sm font-medium cursor-pointer bg-white hover:bg-primary-100 text-gray-600 self-center group"
+                                        className="h-auto w-full  inline-flex flex-col items-center justify-between rounded gap-2  py-1.5 text-sm font-medium cursor-pointer bg-white hover:bg-primary-100 text-gray-600 self-center group"
                                         key={index}
-                                        onMouseEnter={() => setHoverIndex(item.name)}
-                                        onMouseLeave={() => setHoverIndex(null)}
+                                        // onClick={() => setHoverIndex(item.name)}
+                                        // onMouseLeave={() => setHoverIndex(null)}
                                     >
-                                        <div className="rounded gap-2 px-3 flex items-center py-1.5 text-sm font-medium cursor-pointer text-gray-600 self-center">
+                                        <div className='flex w-full justify-between'>
+                                        <div onClick={() => setHoverIndex(item.name)} className="rounded gap-2 px-3 flex items-center py-1.5 text-sm font-medium cursor-pointer text-gray-600 self-center">
                                             <img src={item.logo} alt="menu" className="h-5 w-5" />
                                             {item.name}
-                                        </div>
-                                        {hoverIndex === item.name &&
+                                        </div> 
+                                       {hoverIndex !== item.name ?    <ChevronDownIcon className="w-4 h-4 ml-3 cursor-pointer"  onClick={() => setHoverIndex(item.name)} />: <ChevronUpIcon  className="w-4 h-4 ml-3 cursor-pointer"  onClick={() => setHoverIndex(null)}/>}
+                                       </div> {hoverIndex === item.name &&
                                             <DropdownMenu item={item} />
                                         }
                                          {/* <DropdownMenu item={item} /> */}
@@ -75,7 +83,7 @@ const NavbarMega: FC<MainNav2LoggedProps> = () => {
     );
 };
 
-export default NavbarMega;
+export default MobileNavbarMega;
 
 
 
@@ -795,7 +803,7 @@ const MegaMenu = [
         ]
     },
        {
-        "name": "Use Case",
+        "name": "Use Case1",
         "link": "",
         "logo": "https://promptbase.com/assets/icons/3d_outline.svg",
         "leftSide": [
@@ -1330,7 +1338,7 @@ const MegaMenu = [
         ]
     },
        {
-        "name": "Gallery",
+        "name": "Gallery1",
         "link": "",
         "logo": "https://promptbase.com/assets/icons/3d_outline.svg",
         "leftSide": [

@@ -51,7 +51,7 @@ const CartSidebar: FC<MainNav2LoggedProps> = ({setOpenCartSide}) => {
                             <div className="flex flex-col w-full">
                                <div className='flex justify-between border-b pb-5 p-5'>
                                 <h1 className='font-semibold text-gray-600'>My Cart  
-                                {/* <span className='font-semibold ml-2 text-blue-600'>(${hoverIndex})</span> */}
+                               {moduleList && <span className='font-semibold ml-2 text-blue-600'>({moduleList.length})</span>}
                                 </h1>
                               
                                 <CloseIcon onClick={()=> setOpenCartSide(false)} className='h-6 w-6'/>
@@ -88,13 +88,14 @@ const CartSidebar: FC<MainNav2LoggedProps> = ({setOpenCartSide}) => {
                                           <CloseIcon className='absolute right-0 top-0'/>
                                         </div>
                                       
-                                       <Link href={`/cart`} className="absolute inset-0"></Link>
+                                      
+                                        {cartItem &&  <Link href={`/collection/${cartItem.name}/${cartItem.cart_item_id}`} className="absolute inset-0 hover:shadow  rounded"></Link>}
                                         </div>
                                     })}
                                     
                                 </div>
                                 <div className='flex justify-between'>Total: <span className='font-semibold text-xl text-blue-600'>(${hoverIndex})</span> </div>
-                                <div className='fixed bottom-10 w-[40%] h-[70px] flex flex-col justify-center items-center p-5 gap-2'>
+                                <div className='fixed bottom-10 lg:w-[20%] w-[40%] h-[70px] flex flex-col justify-center items-center p-5 gap-2'>
                                 <div className='flex justify-between w-full'>Total: <span className='font-semibold text-2xl text-blue-600'>${hoverIndex}</span> </div>
                                <div className='flex gap-5 w-full'>
                                 <ButtonSecondary href='/cart' className='w-full'>Go to Cart</ButtonSecondary> 

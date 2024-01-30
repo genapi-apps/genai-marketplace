@@ -14,7 +14,8 @@ export interface SectionTrendingProps {
   heading?: string;
   subHeading?: string;
   moduleList: any,
-  title: string
+  title: string,
+  type:any
 }
 
 
@@ -24,7 +25,7 @@ const SectionTrending: FC<SectionTrendingProps> = ({
   subHeading = "",
   className = "",
   moduleList,
-  title
+  title, type
 }) => {
   return (
     <div className={`nc-SectionSliderCategories ${className}`}>
@@ -46,7 +47,7 @@ const SectionTrending: FC<SectionTrendingProps> = ({
               disableNext={!showNext}
               disablePrev={!showPrev}
             >
-              {title}       <Link href={`/collection`}><span className="text-[10px] mt-1 tracking-wide font-normal bg-primary-6000 hover:bg-primary-700 text-neutral-50 p-1 rounded cursor-pointer" >Explore More</span></Link>
+              {title}       <Link href={`/collection/${type}`}><span className="text-[10px] mt-1 tracking-wide font-normal bg-primary-6000 hover:bg-primary-700 text-neutral-50 p-1 rounded cursor-pointer" >Explore More</span></Link>
 
             </Heading>
           );

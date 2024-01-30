@@ -10,7 +10,7 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url('/sell.png');
+    /* background: url('/sell.png'); */
        background-position: center;
     border-radius: 8px; 
       background-repeat: no-repeat;
@@ -40,7 +40,7 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url('/buy.png');
+    /* background: url('/buy.png'); */
       background-position: center;
     border-radius: 8px; 
     background-repeat: no-repeat;
@@ -55,7 +55,7 @@
     height: 100%;
     width: 100%;
     transition: .3s;
-    background: url('/creator.png');
+    /* background: url('/creator.png'); */
        background-position: center;
     border-radius: 8px; 
       background-repeat: no-repeat;

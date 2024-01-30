@@ -3,6 +3,7 @@ import DetailPage from '@/components/Detail/page'
 import React, {FC, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
+import authFetch from '@/utils/interceptor'
  
 export interface CardDetailProps {
  
@@ -15,12 +16,18 @@ const PageDetail: FC<CardDetailProps> = ({id,name}) => {
  
    const [moduleDetail, setModuleDetail] = useState()
   
- 
+  const ids= JSON.parse(params.id) || params.id
+  console.log(JSON.parse(params.id) , params.id)
 
     useEffect(() => {
     const getModule = async () => {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules-details/${JSON.parse(params.id)}`,
+    const userid=  localStorage.getItem("id")
+      const response = await authFetch.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules-details`,
+        { module_id:ids,
+       user_id:userid
+}
+        ,
         { 
           headers: {
             "Content-Type": "application/json",
@@ -28,6 +35,7 @@ const PageDetail: FC<CardDetailProps> = ({id,name}) => {
           }
         }
       )  
+      console.log(response.data.data)
  
       setModuleDetail(response.data.data) 
     }

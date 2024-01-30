@@ -38,7 +38,7 @@ const HeaderFilterSearchPage: FC<HeaderFilterSearchPageProps> = ({
             )
           )}
         </Nav> */}
-        <span className="block flex-shrink-0 text-right">
+        {/* <span className="block flex-shrink-0 text-right">
           <button
             className="w-auto !pr-16 nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
          //   sizeClass="pl-4 py-2.5 sm:pl-6"
@@ -86,20 +86,20 @@ const HeaderFilterSearchPage: FC<HeaderFilterSearchPageProps> = ({
               />
             </span>
           </button>
-        </span>
+        </span> */}
       </div>
 
       <Transition
-        show={isOpen}
+        show={true}
         enter="transition-opacity duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"
         leave="transition-opacity duration-150"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
-      >
-        <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700 my-8"></div>
-        <TabFilters moduleList={moduleList} />
+      >   <TabFilters moduleList={moduleList} />
+        <div className="w-full border-b border-neutral-200/70 dark:border-neutral-700 my-5"></div>
+     
       </Transition>
     </div>
   );
