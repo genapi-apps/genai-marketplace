@@ -61,7 +61,7 @@ const CartSidebar: FC<MainNav2LoggedProps> = ({setOpenCartSide}) => {
                                     {moduleList && moduleList.map((cartItem,i)=>{
                                         return  <div className={`nc-CardNFT relative flex w-full flex-col group  border-b border-gray-300 pb-4`} key={i}>
                                         <div className="relative flex-shrink-0 flex gap-2 items-center">
-                                            <div className="flex w-36 h-20 rounded overflow-hidden z-0">
+                                            <div className="flex w-36 h-20 rounded overflow-hidden z-0 shadow">
                                             
                                               
                                             {cartItem && cartItem.imageUrls ? cartItem.imageUrls.map((ite: any, i: any) => {
@@ -80,7 +80,7 @@ const CartSidebar: FC<MainNav2LoggedProps> = ({setOpenCartSide}) => {
                                             }
                                             
                                             </div>
-                                          <div className='flex flex-col'>
+                                          <div className='flex flex-col cursor-pointer '>
                                             <h2 className=" z-10 text-xs  text-gary-800 font-medium  capitalize ">{cartItem && cartItem.name}</h2>
                                             <p className=" z-10 text-xs  text-gray-700 truncate  w-[150px]">{cartItem && cartItem.short_description}</p>
                                             <div className=" inset-x-3 text-xs font-semibold flex text-blue-700">$ {cartItem.price}</div>

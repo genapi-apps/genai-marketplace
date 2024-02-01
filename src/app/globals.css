@@ -87,3 +87,7 @@
     border-radius: 8px; 
     background-repeat: no-repeat;
 }
+
+.bg-gradientlng {
+  background: linear-gradient(23.01deg, #2b5cfd 14.9%, #1d3faf 85.1%);
+}

@@ -13,7 +13,7 @@ export default function AvatarDropdown() {
    const [users, setUsers] = useState()
  const handleLogout=()=>{
    localStorage.removeItem("id") 
-    router.push("/login")
+    router.push("/signin")
   }
   useEffect(() => {
     const b = localStorage.getItem("id")
@@ -97,7 +97,7 @@ export default function AvatarDropdown() {
                     </div>
                   </div>:
                <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
-                       <Link  href="/login"
+                       <Link  href="/signin"
                       className="flex items-center p-2 cursor-pointer -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -132,7 +132,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Login"}</p>
+                        <p className="text-sm font-medium ">{"Sign In"}</p>
                       </div>
                       </Link>
                       </div>}

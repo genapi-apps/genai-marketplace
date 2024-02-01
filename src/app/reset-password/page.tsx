@@ -82,7 +82,7 @@ const PageForgotPassword = () => {
       const resetpassword = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/changepassword`, inputs);
       if (resetpassword.data.status === true) {
          toast("Password Changed Successful!")
-         push('/login');
+         push('/signin');
           } else {
             setMsg(resetpassword.data.message)
             setLoading(false)

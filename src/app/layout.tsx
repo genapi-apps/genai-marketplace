@@ -94,6 +94,11 @@ export default function RootLayout({
     const interval = setInterval(getNewAccessToken, 8 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const noHeaderFooterPaths = ["/signin", "/signup", "/forgot-password", "/otp-authentication"];
+ 
+  const showHeaderFooter = !noHeaderFooterPaths.includes(pathname);
+
   return (
 
     <html lang="en" className={poppins.className}>
@@ -101,10 +106,10 @@ export default function RootLayout({
        
         <ToolkitProvider>
           <ReactQueryProvider> 
-            <SiteHeader />
+               {showHeaderFooter && <SiteHeader />} 
             {children}
           </ReactQueryProvider>
-           <Footer />
+          {showHeaderFooter && <Footer />}
         </ToolkitProvider>
        
         <ToastContainer

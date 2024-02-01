@@ -13,7 +13,7 @@ import { useEffect, useState } from "react"
        setLoading(false)
         router.push("/")
     }else{
-        router.push("/login")
+        router.push("/signin")
     }
   }
     getNewToken()
