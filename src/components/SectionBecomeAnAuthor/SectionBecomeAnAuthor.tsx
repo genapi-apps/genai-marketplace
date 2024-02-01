@@ -27,7 +27,7 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
           A creative agency that lead and inspire.
         </span>
         <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
-          <ButtonPrimary href="/create-category" className=""onClick={ getButtonData()}
+          <ButtonPrimary href="/create-item" className=""onClick={ getButtonData()}
           >
             Create item
           </ButtonPrimary>

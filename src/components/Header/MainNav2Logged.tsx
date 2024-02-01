@@ -22,51 +22,86 @@ export interface MainNav2LoggedProps { }
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const { items } = useAppSelector((state) => state.cart);
   const [openSearchBox, setOpenSearchBox] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("Search here...");
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [openCartSide, setOpenCartSide] = useState(false)
   // let handleSearchSubmit:any;
-  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-    // handleSearchSubmit(event.target.value)
-  };
+const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const query = event.target.value;
+  setSearchQuery(query);
+
+  if (query.trim().length > 0) {
+    setOpenSearchBox(true);
+  } else {
+    setOpenSearchBox(false);
+    setSearchList([]); // Clear the search list when the input is empty
+  }
+};
+
+  // useEffect(() => {
+  //   const handleSearchSubmit = async () => {
 
 
+  //     if (searchQuery === "text") {
+  //       setOpenSearchBox(false)
+  //       setSearchList([])
+  //     } else {
+  //       setOpenSearchBox(true)
+  //       try {
+
+  //         const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
+  //         const response = await axios.get(apiUrl, {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         });
+
+
+  //         setSearchList(response.data.data)
+
+  //       } catch (error) {
+  //         console.error("Error making API call:", error);
+  //       }
+
+  //     }
+
+
+
+
+  //   };
+
+  //   handleSearchSubmit()
+  // }, [searchQuery])
 
   useEffect(() => {
-    const handleSearchSubmit = async () => {
+  const handleSearchSubmit = async () => {
+    if (searchQuery.trim().length === 0) {
+      setOpenSearchBox(false);
+      setSearchList([]);
+      return;
+    }
 
+    setOpenSearchBox(true);
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      if (searchQuery === "text") {
-        setOpenSearchBox(false)
-        setSearchList([])
-      } else {
-        setOpenSearchBox(true)
-        try {
+      setSearchList(response.data.data);
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  };
 
-          const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search/${searchQuery}`;
-          const response = await axios.get(apiUrl, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+  const delayDebounce = setTimeout(() => {
+    handleSearchSubmit();
+  }, 300); // Debounce time of 300ms
 
-
-          setSearchList(response.data.data)
-
-        } catch (error) {
-          console.error("Error making API call:", error);
-        }
-
-      }
-
-
-
-
-    };
-
-    handleSearchSubmit()
-  }, [searchQuery])
+  return () => clearTimeout(delayDebounce);
+}, [searchQuery]);
 
 
   const [totalItem, setTotalItem] = useState([]);
@@ -130,7 +165,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               <div className="hidden xl:flex space-x-1">
 
                 <Link href="/module-list" className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Marketplace</Link>
-                <Link href="/create-category" className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Create</Link>
+                <Link href="/create-item" className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Create</Link>
                 {/* <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Hire</Link>
               <Link href="/"     className="nc-Button relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Sell</Link> */}
                 <div onClick={() => setOpenCartSide(true)} className="nc-Button cursor-pointer relative h-auto inline-flex items-center justify-center rounded transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">

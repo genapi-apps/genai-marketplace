@@ -188,16 +188,14 @@ const PageLogin = () => {
         <div className="flex flex-col justify-center flex-grow xl:p-[60px] sm:p-[60px] p-[30px] items-center">
           <div className="rounded-lg mx-9  xl:mx-auto sm:mx-6 bg-white p-8 xl:w-[580px] w-full border border-[#e5e7eb]">
             <div className="text-center pb-5">
-              <div className="mb-3">
-                <a href="/" className="flex justify-center">
-                  <Image
-                    src={companyLogoSrc}
+                <div className="mb-5">
+                <Link href="/" className="flex justify-center">
+                  <img
+                    src={"/logoNew.png"}
                     alt="zen ai"
-                    width={500}
-                    height={500}
-                    className="h-full w-[100px]"
+                    className="h-[full] w-[100px]"
                   />
-                </a>
+                </Link>
               </div>
               <h3 className="xl:text-3xl text-xl mb-2 text-col font-bold leading-[1.6] ">
                 Sign In to your account

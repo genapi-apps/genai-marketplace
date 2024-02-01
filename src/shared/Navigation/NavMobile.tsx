@@ -182,7 +182,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <ul className="flex w-full flex-col py-6 px-2 space-y-1">
 
         <Link href="/module-list" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Marketplace</Link>
-        <Link href="/create-category" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Generate</Link>
+        <Link href="/create-item" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Generate</Link>
         <Link href="/" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Hire</Link>
         <Link href="/" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Sell</Link>
 
