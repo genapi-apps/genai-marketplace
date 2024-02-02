@@ -82,7 +82,7 @@ const PageForgotPassword = () => {
       const resetpassword = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/changepassword`, inputs);
       if (resetpassword.data.status === true) {
          toast("Password Changed Successful!")
-         push('/login');
+         push('/signin');
           } else {
             setMsg(resetpassword.data.message)
             setLoading(false)
@@ -96,7 +96,7 @@ const PageForgotPassword = () => {
     }
   }
   return (
-    <div className={`nc-PageLogin`} data-nc-id="PageLogin">
+    <div className={`PageReset`} data-nc-id="PageReset">
       <div className="container mb-24 lg:mb-32">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
          Reset Password
@@ -177,7 +177,7 @@ const PageForgotPassword = () => {
             </span>
             </label>
             
-            <ButtonPrimary type="submit"   disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
+            <ButtonPrimary type="submit"       disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
           </form>
   {msg && (
             <div className="text-sm bg-red-200 absolute p-2 -bottom-[31px]  text-center w-[80%] rounded">

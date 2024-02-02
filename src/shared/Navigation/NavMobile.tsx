@@ -11,6 +11,9 @@ import SocialsList from "@/shared/SocialsList/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "@/shared/SwitchDarkMode/SwitchDarkMode";
 import Link from "next/link";
+import AvatarDropdown from "@/components/Header/AvatarDropdown";
+import NavbarMega from "@/components/Header/NavbarMega";
+import MobileNavbarMega from "@/components/Header/MobileMegaMenu";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -163,35 +166,34 @@ const NavMobile: React.FC<NavMobileProps> = ({
   };
 
   return (
-    <div className="overflow-y-auto w-full h-screen py-2 transition transform shadow-lg ring-1 dark:ring-neutral-700 bg-white dark:bg-neutral-900 divide-y-2 divide-neutral-100 dark:divide-neutral-800">
+    <div className="overflow-y-auto w-[400px] h-screen py-2 transition transform shadow-lg ring-1 dark:ring-neutral-700 bg-white dark:bg-neutral-900 divide-y-2 divide-neutral-100 dark:divide-neutral-800">
       <div className="py-6 px-5">
-        <Logo />
-        <div className="flex flex-col mt-5 text-slate-600 dark:text-slate-300 text-sm">
-          <span>
-            Discover the most outstanding articles on all topics of life. Write
-            your stories and share them
-          </span>
-
-          <div className="flex justify-between items-center mt-4">
-            <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />
-            <span className="block">
-              <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
-            </span>
-          </div>
+        <div className="flex gap-3">
+          <Logo /> <AvatarDropdown />
         </div>
+
+
         <span className="absolute right-2 top-2 p-1">
           <ButtonClose onClick={onClickClose} />
         </span>
 
-        <div className="mt-5">{renderSearchForm()}</div>
       </div>
-      <ul className="flex flex-col py-6 px-2 space-y-1">
-        {data.map(_renderItem)}
+      <MobileNavbarMega />
+      <ul className="flex w-full flex-col py-6 px-2 space-y-1">
+
+        <Link href="/module-list" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Marketplace</Link>
+        <Link href="/create-item" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Generate</Link>
+        <Link href="/" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Hire</Link>
+        <Link href="/" className="nc-Button w-full relative h-auto inline-flex items-center justify-start rounded transition-colors text-sm  font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70  hover:bg-primary-100 text-gray-600 self-center  ">Sell</Link>
+
+
       </ul>
-      <div className="flex items-center justify-between py-6 px-5 space-x-2">
-        <ButtonPrimary href={"/"} className="!px-10">
-          Buy this template
-        </ButtonPrimary>
+
+      <div className="flex justify-center items-center mt-4">
+        <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />
+        {/* <span className="block">
+              <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
+            </span> */}
       </div>
     </div>
   );

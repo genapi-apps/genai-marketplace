@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonThird from "@/shared/Button/ButtonThird";
@@ -12,6 +12,9 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useDispatch } from "react-redux"
 import { setModuleList } from "@/redux/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { BulbIcon } from "@/icons";
+import authFetch from "@/utils/interceptor";
 // DEMO DATA
 const typeOfSales = [
   {
@@ -48,56 +51,119 @@ const sortOrderRadios = [
   { name: "Most favorited", id: "Most-favorited" },
 ];
 
-//
-const TabFilters = ({ moduleList }) => {
- 
+export interface TabFiltersProps {
+
+  moduleList: any
+}
+
+
+const TabFilters: FC<TabFiltersProps> = ({ moduleList }) => {
+
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
-  //
+
   const [isVerifiedCreator, setIsVerifiedCreator] = useState(true);
   const [rangePrices, setRangePrices] = useState([0.01, 10]);
   const [fileTypesState, setfileTypesState] = useState<string[]>([]);
-  const [saleTypeStates, setSaleTypeStates] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
+  const [clearAll, setClearAll] = useState<string>("");
 
- 
   const closeModalMoreFilter = () => setisOpenMoreFilter(false);
   const openModalMoreFilter = () => setisOpenMoreFilter(true);
   const dispatch = useDispatch()
-  
-  const handleChangeFileTypes = (checked: boolean, name: string) => {
-    checked
-      ? setfileTypesState([...fileTypesState, name])
-      : setfileTypesState(fileTypesState.filter((i) => i !== name));
-  };
+  const [homeList, setHomeList] = useState([])
+  const [typeList, setTypeList] = useState([])
+
+  const getCategoryList = async () => {
+
+    try {
+
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-category-modules`;
+      const response = await authFetch.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("marketplacegenaitoken")
+        },
+      });
+
+      setHomeList(response.data.data)
 
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const handleChangeSaleType = (checked: boolean, category: string) => {
-    setSelectedCategories((prevCategories) =>
-      checked
-        ? [...new Set([...prevCategories, category])]
-        : prevCategories.filter((item) => item !== category)
-    );
+
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  }
+
+  const getTypeList = async () => {
+
+    try {
+
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-type-modules`;
+      const response = await authFetch.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("marketplacegenaitoken")
+        },
+      });
+
+      setTypeList(response.data.data)
+
+
+
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  }
+
+  useEffect(() => {
+    getCategoryList()
+    getTypeList()
+
+  }, [])
+
+
+
+  const [selectedCategories, setSelectedCategories] = useState({
+    categories: [],
+    type: [],
+    model: ""
+  });
+
+
+  const handleChangeCategoryTypes = (checked: boolean, category: string, listType: 'categories' | 'type') => {
+
+    setSelectedCategories((prevCategories) => {
+      const updatedList = checked
+        ? Array.from(new Set([...prevCategories[listType], category])) // Convert Set back to Array
+        : prevCategories[listType].filter((item) => item !== category);
+
+      return {
+        ...prevCategories,
+        [listType]: updatedList,
+      };
+    });
   };
+
 
   const handleApplyButtonClick = async () => {
+    const formattedCategories = selectedCategories.categories.join(',') as string;
+    const formattedTypes = selectedCategories.type.join(',');
+
+    const dataToSubmit = {
+      categories: formattedCategories,
+      type: formattedTypes,
+      //model: selectedCategories.model, // This seems to be empty or not handled in your current implementation
+    };
+
     try {
-      let categoriesToSend;
-      if (selectedCategories.includes("All Category Types")) {
-        categoriesToSend = ["all"];
-      } else {
-        categoriesToSend = selectedCategories;
-      }
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/modules/filter/${categoriesToSend.join(',')}`;
-      const response = await axios.get(apiUrl, {
+
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/modules/filter`;
+      const response = await axios.post(apiUrl, dataToSubmit, {
         headers: {
           "Content-Type": "application/json",
         },
       });
- 
-      console.log(response)
       dispatch(setModuleList(response.data.data))
-    
 
     } catch (error) {
       console.error("Error making API call:", error);
@@ -105,7 +171,13 @@ const TabFilters = ({ moduleList }) => {
   };
 
 
-  // OK
+  // const handleClearCategory = (indexToRemove:any) => {
+  // const updatedCategories = [...selectedCategories];
+  // updatedCategories.splice(indexToRemove, 1);
+  // setSelectedCategories(updatedCategories);
+  // handleApplyButtonClick()
+
+
   const renderXClear = () => {
     return (
       <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary-500 text-white flex items-center justify-center ml-3 cursor-pointer">
@@ -113,7 +185,7 @@ const TabFilters = ({ moduleList }) => {
           xmlns="http://www.w3.org/2000/svg"
           className="h-3 w-3"
           viewBox="0 0 20 20"
-          fill="currentColor"
+          fill="white"
         >
           <path
             fillRule="evenodd"
@@ -125,58 +197,27 @@ const TabFilters = ({ moduleList }) => {
     );
   };
 
-  // OK
-  const uniqueCategories = moduleList && Array.from(new Set(moduleList.map(item => item.category)));
 
-  const renderTabsTypeOfSales = () => {
+  const renderTabsCategory = () => {
     return (
       <Popover className="relative">
         {({ open, close }) => (
           <>
             <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none
+              className={`flex items-center justify-center px-4 py-2 text-sm  rounded-xl border focus:outline-none
                ${open
                   ? "!border-primary-500 "
                   : "border-neutral-300 dark:border-neutral-700"
                 }
-                ${!!saleTypeStates.length
-                  ? "!border-primary-500 bg-primary-50 text-primary-900"
-                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
-                }
+               
+                  "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+               
                 `}
             >
-              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M10 6.575L9.10838 8.125C8.90838 8.46666 9.07505 8.75 9.46672 8.75H10.525C10.925 8.75 11.0834 9.03333 10.8834 9.375L10 10.925"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M6.91672 15.0333V14.0667C5.00005 12.9083 3.42505 10.65 3.42505 8.25C3.42505 4.125 7.21672 0.891671 11.5 1.825C13.3834 2.24167 15.0334 3.49167 15.8917 5.21667C17.6334 8.71667 15.8 12.4333 13.1084 14.0583V15.025C13.1084 15.2667 13.2 15.825 12.3084 15.825H7.71672C6.80005 15.8333 6.91672 15.475 6.91672 15.0333Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.08325 18.3333C8.99159 17.7917 11.0083 17.7917 12.9166 18.3333"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* <BulbIcon/> */}
 
               <span className="ml-2">Category</span>
-              {!saleTypeStates.length ? (
-                <ChevronDownIcon className="w-4 h-4 ml-3" />
-              ) : (
-                <span onClick={() => setSaleTypeStates([])}>
-                  {renderXClear()}
-                </span>
-              )}
+              <ChevronDownIcon className="w-4 h-4 ml-3" />
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -187,26 +228,44 @@ const TabFilters = ({ moduleList }) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {["All Category Types", ...uniqueCategories].map((item: any) => (
-                      <div key={item} className="">
+              <Popover.Panel className="absolute z-40 w-80 px-4 mt-3 left-0 sm:px-0 ">
+                <div className="overflow-hidden rounded shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
+                  <div className="relative flex text-xs flex-col px-5 py-6 space-y-2">
+                    {/* <div className="capitalize text-sm">
                         <Checkbox
-                          name={item}
-                          label={item}
-                          defaultChecked={selectedCategories.includes(item)}
-                          onChange={(checked) => handleChangeSaleType(checked, item)}
+                          name={"all"}
+                          label={"all"}
+                          onChange={(checked) =>   setSelectedCategories()}
+                          className="text-sm"
+                        />
+                      </div> */}
+                    {homeList && homeList.length > 0 && homeList.map((item: any) => {
+
+                      return <div key={item.name} className="capitalize text-xs">
+                        <Checkbox
+                          name={item.name}
+                          label={item.name}
+                          defaultChecked={selectedCategories.categories.includes(item.name)}
+
+                          onChange={(checked) => handleChangeCategoryTypes(checked, item.name, 'categories')}
+                          className="text-xs"
                         />
                       </div>
-                    ))}
+                    })}
                   </div>
                   <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
+                  <div className="p-3 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       onClick={() => {
                         close();
-                        setSelectedCategories([]);
+                        setSelectedCategories({
+                          categories: [],
+                          type: [],
+                          model: ""
+                        });
+
+
+                        handleApplyButtonClick();
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
@@ -216,7 +275,7 @@ const TabFilters = ({ moduleList }) => {
                       onClick={() => {
                         handleApplyButtonClick();
                         close();
-                        setSelectedCategories([]);
+                        // setSelectedCategories([]);
                       }}
 
                       sizeClass="px-4 py-2 sm:px-5"
@@ -234,76 +293,26 @@ const TabFilters = ({ moduleList }) => {
     );
   };
 
-  // OK
-  const renderTabsSortOrder = () => {
+
+  const renderTabsType = () => {
     return (
       <Popover className="relative">
         {({ open, close }) => (
           <>
             <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm border rounded-full focus:outline-none 
-              ${open ? "!border-primary-500 " : ""}
-                ${!!sortOrderStates.length
-                  ? "!border-primary-500 bg-primary-50 text-primary-900"
-                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+              className={`flex items-center justify-center px-4 py-2 text-sm  rounded-xl border focus:outline-none
+               ${open
+                  ? "!border-primary-500 "
+                  : "border-neutral-300 dark:border-neutral-700"
                 }
+               "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
+                
                 `}
             >
-              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M11.5166 5.70834L14.0499 8.24168"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M11.5166 14.2917V5.70834"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8.48327 14.2917L5.94995 11.7583"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8.48315 5.70834V14.2917"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10.0001 18.3333C14.6025 18.3333 18.3334 14.6024 18.3334 10C18.3334 5.39763 14.6025 1.66667 10.0001 1.66667C5.39771 1.66667 1.66675 5.39763 1.66675 10C1.66675 14.6024 5.39771 18.3333 10.0001 18.3333Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* <BulbIcon/> */}
 
-              <span className="ml-2">
-                {sortOrderStates
-                  ? sortOrderRadios.filter((i) => i.id === sortOrderStates)[0]
-                    .name
-                  : "Sort order"}
-              </span>
-              {!sortOrderStates.length ? (
-                <ChevronDownIcon className="w-4 h-4 ml-3" />
-              ) : (
-                <span onClick={() => setSortOrderStates("")}>
-                  {renderXClear()}
-                </span>
-              )}
+              <span className="ml-2">Type</span>
+              <ChevronDownIcon className="w-4 h-4 ml-3" />
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -314,151 +323,56 @@ const TabFilters = ({ moduleList }) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {sortOrderRadios.map((item) => (
-                      <Radio
-                        id={item.id}
-                        key={item.id}
-                        name="radioNameSort"
-                        label={item.name}
-                        defaultChecked={sortOrderStates === item.id}
-                        onChange={setSortOrderStates}
-                      />
-                    ))}
-                  </div>
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
-                    <ButtonThird
-                      onClick={() => {
-                        close();
-                        setSortOrderStates("");
-                      }}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Clear
-                    </ButtonThird>
-                    <ButtonPrimary
-                      onClick={close}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Apply
-                    </ButtonPrimary>
-                  </div>
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </>
-        )}
-      </Popover>
-    );
-  };
+              <Popover.Panel className="absolute z-40  w-80 px-4 mt-3 left-0 sm:px-0 ">
+                <div className="overflow-hidden rounded shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
+                  <div className="relative flex text-xs flex-col px-5 py-6 space-y-2">
+                    {/* <div className="capitalize text-sm">
+                        {/* <Checkbox
+                          name={"all"}
+                          label={"all"}
+                        //  onChange={(checked) =>   setSelectedCategories(['all'])}
+                          className="text-sm"
+                        />
+                      </div> */}
+                    {typeList && typeList.length > 0 && typeList.map((item: any) => {
 
-  // OK
-  const renderTabsFileTypes = () => {
-    return (
-      <Popover className="relative">
-        {({ open, close }) => (
-          <>
-            <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none 
-              ${open ? "!border-primary-500 " : ""}
-                ${!!fileTypesState.length
-                  ? "!border-primary-500 bg-primary-50 text-primary-900"
-                  : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
-                }
-                `}
-            >
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2.52002 7.11011H21.48"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8.52002 2.11011V6.97011"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M15.48 2.11011V6.52011"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9.75 14.4501V13.2501C9.75 11.7101 10.84 11.0801 12.17 11.8501L13.21 12.4501L14.25 13.0501C15.58 13.8201 15.58 15.0801 14.25 15.8501L13.21 16.4501L12.17 17.0501C10.84 17.8201 9.75 17.1901 9.75 15.6501V14.4501V14.4501Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
-              <span className="ml-2">File Types</span>
-              {!fileTypesState.length ? (
-                <ChevronDownIcon className="w-4 h-4 ml-3" />
-              ) : (
-                <span onClick={() => setfileTypesState([])}>
-                  {renderXClear()}
-                </span>
-              )}
-            </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {fileTypes.map((item) => (
-                      <div key={item.name} className="">
+                      return <div key={item.id} className="capitalize text-xs">
                         <Checkbox
-                          name={item.name}
-                          label={item.name}
-                          defaultChecked={fileTypesState.includes(item.name)}
-                          onChange={(checked) =>
-                            handleChangeFileTypes(checked, item.name)
-                          }
+                          name={item.type_name}
+                          label={item.type_name}
+                          defaultChecked={selectedCategories.type.includes(item.type_name)}
+
+                          // onChange={(checked) => handleChangeCategoryType(checked, item.type_name)}
+                          onChange={(checked) => handleChangeCategoryTypes(checked, item.type_name, 'type')}
+                          className="text-xs"
                         />
                       </div>
-                    ))}
+                    })}
                   </div>
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
+                  <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
+                  <div className="p-3 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird
                       onClick={() => {
                         close();
-                        setfileTypesState([]);
+                        setSelectedCategories({
+                          categories: [],
+                          type: [],
+                          model: ""
+                        });
+
+
+                        handleApplyButtonClick();
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
                       Clear
                     </ButtonThird>
                     <ButtonPrimary
-                      onClick={close}
+                      onClick={() => {
+                        handleApplyButtonClick();
+                        close();
+                      }}
+
                       sizeClass="px-4 py-2 sm:px-5"
                     >
                       Apply
@@ -467,241 +381,15 @@ const TabFilters = ({ moduleList }) => {
                 </div>
               </Popover.Panel>
             </Transition>
+
           </>
         )}
       </Popover>
     );
   };
 
-  // OK
-  const renderTabsPriceRage = () => {
-    return (
-      <Popover className="relative">
-        {({ open, close }) => (
-          <>
-            <Popover.Button
-              className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border border-primary-500 bg-primary-50 text-primary-900 focus:outline-none `}
-            >
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22.5588 13.9702V16.0302C22.5588 16.5802 22.1188 17.0302 21.5588 17.0502H19.5988C18.5188 17.0502 17.5288 16.2602 17.4388 15.1802C17.3788 14.5502 17.6188 13.9602 18.0388 13.5502C18.4088 13.1702 18.9188 12.9502 19.4788 12.9502H21.5588C22.1188 12.9702 22.5588 13.4202 22.5588 13.9702Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7 12H14"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
 
-              <span className="ml-2">{`${rangePrices[0]} ETH - ${rangePrices[1]} ETH`}</span>
-              {renderXClear()}
-            </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 ">
-                <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
-                  <div className="relative flex flex-col px-5 py-6 space-y-8">
-                    <div className="space-y-5">
-                      <span className="font-medium">Price range</span>
-                      <Slider
-                        range
-                        min={0.01}
-                        max={10}
-                        step={0.01}
-                        defaultValue={[rangePrices[0], rangePrices[1]]}
-                        allowCross={false}
-                        onChange={(_input: number | number[]) =>
-                          setRangePrices(_input as number[])
-                        }
-                      />
-                    </div>
 
-                    <div className="flex justify-between space-x-5">
-                      <div>
-                        <label
-                          htmlFor="minPrice"
-                          className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                        >
-                          Min price
-                        </label>
-                        <div className="mt-1 relative rounded-md">
-                          <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
-                            ETH
-                          </span>
-                          <input
-                            type="text"
-                            name="minPrice"
-                            disabled
-                            id="minPrice"
-                            className="block w-32 pr-10 pl-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-full bg-transparent"
-                            value={rangePrices[0]}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="maxPrice"
-                          className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                        >
-                          Max price
-                        </label>
-                        <div className="mt-1 relative rounded-md">
-                          <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
-                            ETH
-                          </span>
-                          <input
-                            type="text"
-                            disabled
-                            name="maxPrice"
-                            id="maxPrice"
-                            className="block w-32 pr-10 pl-4 sm:text-sm border-neutral-200 dark:border-neutral-700 rounded-full bg-transparent"
-                            value={rangePrices[1]}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
-                    <ButtonThird
-                      onClick={() => {
-                        setRangePrices([0.01, 10]);
-                        close();
-                      }}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Clear
-                    </ButtonThird>
-                    <ButtonPrimary
-                      onClick={close}
-                      sizeClass="px-4 py-2 sm:px-5"
-                    >
-                      Apply
-                    </ButtonPrimary>
-                  </div>
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </>
-        )}
-      </Popover>
-    );
-  };
-
-  // OK
-  const renderTabVerifiedCreator = () => {
-    return (
-      <div
-        className={`flex items-center justify-center px-4 py-2 text-sm rounded-full border focus:outline-none cursor-pointer  ${isVerifiedCreator
-          ? "border-primary-500 bg-primary-50 text-primary-900"
-          : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500"
-          }`}
-        onClick={() => setIsVerifiedCreator(!isVerifiedCreator)}
-      >
-        <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M9.99992 10C12.3011 10 14.1666 8.13452 14.1666 5.83334C14.1666 3.53215 12.3011 1.66667 9.99992 1.66667C7.69873 1.66667 5.83325 3.53215 5.83325 5.83334C5.83325 8.13452 7.69873 10 9.99992 10Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2.84155 18.3333C2.84155 15.1083 6.04991 12.5 9.99991 12.5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M15.1667 17.8334C16.6394 17.8334 17.8334 16.6394 17.8334 15.1667C17.8334 13.6939 16.6394 12.5 15.1667 12.5C13.6939 12.5 12.5 13.6939 12.5 15.1667C12.5 16.6394 13.6939 17.8334 15.1667 17.8334Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M18.3333 18.3333L17.5 17.5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <span className="line-clamp-1 ml-2">Verified creator</span>
-        {isVerifiedCreator && renderXClear()}
-      </div>
-    );
-  };
-
-  // OK
-  const renderMoreFilterItem = (
-    data: {
-      name: string;
-      description?: string;
-      defaultChecked?: boolean;
-    }[]
-  ) => {
-    const list1 = data.filter((_, i) => i < data.length / 2);
-    const list2 = data.filter((_, i) => i >= data.length / 2);
-    return (
-      <div className="grid grid-cols-2 gap-8">
-        <div className="flex flex-col space-y-5">
-          {list1.map((item) => (
-            <Checkbox
-              key={item.name}
-              name={item.name}
-              subLabel={item.description}
-              label={item.name}
-              defaultChecked={!!item.defaultChecked}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col space-y-5">
-          {list2.map((item) => (
-            <Checkbox
-              key={item.name}
-              name={item.name}
-              subLabel={item.description}
-              label={item.name}
-              defaultChecked={!!item.defaultChecked}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   // FOR RESPONSIVE MOBILE
   const renderTabMobileFilter = () => {
@@ -882,7 +570,7 @@ const TabFilters = ({ moduleList }) => {
                     <ButtonThird
                       onClick={() => {
                         setRangePrices([0.01, 10]);
-                        setSaleTypeStates([]);
+                        // setSelectedCategories(["all"]);
                         setfileTypesState([]);
                         setSortOrderStates("");
                         closeModalMoreFilter();
@@ -908,21 +596,15 @@ const TabFilters = ({ moduleList }) => {
   };
 
   return (
-    <div className="flex lg:space-x-4">
-      {/* FOR DESKTOP */}
-      <div className="hidden lg:flex space-x-4">
-        {/* {renderTabsPriceRage()} */}
-        {renderTabsTypeOfSales()}
-        {/* {renderTabsFileTypes()} */}
-        {renderTabsSortOrder()}
-        {/* {renderTabVerifiedCreator()} */}
+    <div className="flex   flex-col gap-3">
+
+      <div className="lg:flex space-x-4">
+        {renderTabsCategory()}
+        {renderTabsType()}
+
       </div>
 
-      {/* FOR RESPONSIVE MOBILE */}
-      <div className="flex overflow-x-auto lg:hidden space-x-4">
-        {renderTabMobileFilter()}
-        {renderTabVerifiedCreator()}
-      </div>
+
     </div>
   );
 };

@@ -14,6 +14,7 @@ import collectionPng from "@/images/nfts/collection.png";
 import VerifyIcon from "@/components/VerifyIcon";
 import Link from "next/link";
 import { StaticImageData } from "next/image";
+import { getButtonData } from "@/hooks/getVerifyToken";
 
 export interface CardLarge1Props {
   className?: string;
@@ -21,7 +22,6 @@ export interface CardLarge1Props {
   onClickPrev?: () => void;
   isShowing?: boolean;
   featuredImgUrl?: string | StaticImageData;
-  item:any
 }
 
 const CardLarge1: FC<CardLarge1Props> = ({
@@ -30,7 +30,6 @@ const CardLarge1: FC<CardLarge1Props> = ({
   onClickNext = () => {},
   onClickPrev = () => {},
   featuredImgUrl = nftsLargeImgs[0],
-  item
 }) => {
   const randomTitle = [
     "Walking On Air ",
@@ -47,8 +46,8 @@ const CardLarge1: FC<CardLarge1Props> = ({
         <div className="nc-CardLarge1__left p-4 sm:p-8 xl:py-14 md:px-10 bg-white dark:bg-neutral-900 shadow-lg rounded-3xl space-y-3 sm:space-y-8 ">
           {/* TITLE */}
           <h2 className="text-2xl lg:text-3xl 2xl:text-5xl font-semibold ">
-            <Link href={`/item/${item.name}`} title="Walking On Air">
-              {item.name}
+            <Link href={"/nft-detail"} title="Walking On Air">
+              {randomTitle[0]}
             </Link>
           </h2>
 
@@ -66,7 +65,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
                 </div>
               </div>
             </div>
-            {/* <div className="flex items-center">
+            <div className="flex items-center">
               <div className="flex-shrink-0 h-10 w-10">
                 <Avatar sizeClass="w-10 h-10" imgUrl={collectionPng} />
               </div>
@@ -74,13 +73,13 @@ const CardLarge1: FC<CardLarge1Props> = ({
                 <div className="text-xs dark:text-neutral-400">Collection</div>
                 <div className="text-sm font-semibold ">Marscapes</div>
               </div>
-            </div> */}
+            </div>
           </div>
 
           {/* PRICE */}
           <div className="pt-6">
             <div className="flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
-              {/* <span className="block absolute bottom-full translate-y-1.5 py-1 px-1.5 bg-white dark:bg-neutral-900 text-sm text-neutral-500 dark:text-neutral-400 ring ring-offset-0 ring-white dark:ring-neutral-900">
+              <span className="block absolute bottom-full translate-y-1.5 py-1 px-1.5 bg-white dark:bg-neutral-900 text-sm text-neutral-500 dark:text-neutral-400 ring ring-offset-0 ring-white dark:ring-neutral-900">
                 Current Bid
               </span>
               <span className="text-3xl xl:text-4xl font-semibold text-green-500">
@@ -88,8 +87,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
               </span>
               <span className="text-lg text-neutral-400 sm:ml-3.5">
                 (≈ $3,221.22)
-              </span> */}
-              {item.description}
+              </span>
             </div>
           </div>
 
@@ -100,10 +98,11 @@ const CardLarge1: FC<CardLarge1Props> = ({
 
           {/* DESCRIPTION */}
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-            <ButtonPrimary  href={`/item/${item.id}`} className="flex-1">
-              Try Now
+            <ButtonPrimary href={"/nft-detail"} className="flex-1" //onClick={()=> getButtonData()}
+            >
+              Place a bid
             </ButtonPrimary>
-            <ButtonSecondary href={`/item/${item.id}`} className="flex-1">
+            <ButtonSecondary href={"/nft-detail"} className="flex-1">
               View item
             </ButtonSecondary>
           </div>

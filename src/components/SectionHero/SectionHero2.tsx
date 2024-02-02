@@ -4,58 +4,59 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 // import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
 import Image from "next/image";
 import HeroSearchForm from "../HeroSearchForm/HeroSearchForm";
+import { RightArrowIcon } from "@/icons";
+import { getButtonData } from "@/hooks/getVerifyToken";
+import Link from "next/link";
 
 export interface SectionHero2Props {
   children?: React.ReactNode;
   className?: string;
-  item?:any;
+  banner: any
 }
 
-const SectionHero2: FC<SectionHero2Props> = ({ className = "", children , item}) => {
-  console.log(item)   
-  return (
-    <div
-      className={`nc-SectionHero2 flex flex-col-reverse lg:flex-col relative ${className}`}
-    >
-    {item ?   <div className="flex flex-col lg:flex-row lg:items-center">
-        <div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 pb-14 lg:pb-36 xl:pb-60 xl:pr-14 lg:mr-10 xl:mr-0">
-          <h2 className="font-semibold text-4xl md:text-5xl xl:text-6xl !leading-[114%] ">
-            {item.heading} 
-          </h2>
-          <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400">
-          {item.subheading}
-          </span>
-          <ButtonPrimary href="/search">
-            <span>Start your search</span>
-            <span>
-              <svg className="w-5 h-5 ml-2.5" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22 22L20 20"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </ButtonPrimary>
-        </div>
-        <div className="flex-grow">
-          <Image className="w-full" src={imagePng} alt="hero" />
-        </div>
-      </div>:"loading"}
+const SectionHero2: FC<SectionHero2Props> = ({ className = "", children, banner }) => {
 
-      {/* <div className="z-10 mb-12 lg:mb-0 lg:-mt-20 xl:-mt-48 w-full">
-        <HeroSearchForm />
-      </div> */}
+  return (banner && banner.result && banner.result.length > 0 && banner.result.map((item: any, i: any) => {
+    const butn = JSON.parse(item.button_text)
+    return <div
+      className={`nc-SectionHero2 ${item.id === 0 && "bannerHero"}  ${item.id === 1 && "bannerHero2"} ${item.id === 2 && "bannerHero3"} flex flex-col-reverse lg:flex-col py-20 sm:py-8  relative ${className}`}
+      style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BACKEND_URL}${item.imageUrl})` }}
+    >
+      <div className="flex flex-col lg:flex-row lg:items-center  ">
+        <div key={i} className="flex-shrink-0 lg:w-4/6 flex flex-col z-[9] items-start gap-4  pt-14 lg:pt-12 xl:pt-24 xl:pr-14 lg:mr-14 xl:mr-0 ml-4">
+          <h2 className="font-semibold pt-14 lg:pt-12 xl:pt-24   text-3xl md:text-3xl xl:text-4xl !leading-[114%] flex flex-col ">
+            <span className={`text-white bg-opacity-50  text-2xl 
+              // ${item.id === 1 && "text-4xl pb-5 xl:text-5xl"}
+              `}> {item.title}</span>
+            <span className="text-sm text-white bg-opacity-50   rounded-xl md:text-lg font-normal dark:text-neutral-400">
+              {item.description}
+            </span>
+            <span className="text-2xl text-white bg-opacity-50  rounded-xl md:text-lg font-normal dark:text-neutral-400">  {item.subheading}</span>
+
+
+          </h2>
+
+          <div className="flex gap-3">
+            {
+              butn.map((button: any, index: any) => {
+                return <ButtonPrimary href="/collection" onClick={getButtonData()} key={index}
+                >
+                  {button}
+                  <span className="ml-2">
+                    <RightArrowIcon />
+                  </span>
+                </ButtonPrimary>
+              })
+            }
+          </div>
+        </div>
+
+
+
+      </div>
+
     </div>
+  })
   );
 };
 

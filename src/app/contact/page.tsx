@@ -6,30 +6,32 @@ import Textarea from "@/shared/Textarea/Textarea";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
+import { getButtonData } from "@/hooks/getVerifyToken";
 
 const info = [
   {
     title: "🗺️ ADDRESS",
-    desc: "Photo booth tattooed prism, portland taiyaki hoodie neutra typewriter",
+    desc: "Miami (United States ) 66 West Flagler Street, Suite #900-1140 Miami, FL 33130",
   },
   {
     title: "💌 EMAIL",
-    desc: "nc.example@example.com",
+    desc: "jaiinfoway@gamil.com",
   },
   {
     title: "📞 PHONE",
-    desc: "000-123-456-7890",
+    desc: "+1 (786) 786-7229",
   },
 ];
 
+
 const PageContact = ({}) => {
   return (
-    <div className={`nc-PageContact overflow-hidden`}>
+    <div className={`PageContact overflow-hidden`}>
       <div className="">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Contact
         </h2>
-        <div className="container max-w-7xl mx-auto">
+        <div className="container max-w-7xl mx-auto mb-8">
           <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
             <div className="max-w-sm space-y-8">
               {info.map((item, index) => (
@@ -74,8 +76,8 @@ const PageContact = ({}) => {
 
                   <Textarea className="mt-1" rows={6} />
                 </label>
-                <div>
-                  <ButtonPrimary type="submit">Send Message</ButtonPrimary>
+                <div className="mb-8">
+                  <ButtonPrimary type="submit" onClick={ getButtonData()}>Send Message</ButtonPrimary>
                 </div>
               </form>
             </div>
@@ -84,11 +86,11 @@ const PageContact = ({}) => {
       </div>
 
       {/* OTHER SECTIONS */}
-      <div className="container mb-24 lg:mb-32">
+      {/* <div className="container mb-24 lg:mb-32">
         <hr className="border-t border-neutral-200 dark:border-neutral-700 my-24 lg:my-32" />
 
         <SectionBecomeAnAuthor />
-      </div>
+      </div> */}
     </div>
   );
 };

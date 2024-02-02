@@ -5,6 +5,8 @@ import { variants } from "@/utils/animationVariants";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import PrevBtn from "@/shared/NextPrev/PrevBtn";
 import NextBtn from "@/shared/NextPrev/NextBtn";
+import NcImage from "@/shared/NcImage/NcImage";
+import Link from "next/link";
 
 export interface MySliderProps<T> {
   className?: string;
@@ -81,16 +83,16 @@ export default function MySlider<T>({
   });
 
   if (!numberOfItems) {
-    return <div></div>;
+    return <div> </div>
   }
-
+  
   return (
     <div className={`nc-MySlider ${className}`}>
       {renderSectionHeading &&
         renderSectionHeading({
           onClickPrev: () => changeItemId(currentIndex - 1),
           onClickNext: () => changeItemId(currentIndex + 1),
-          showNext: data.length > currentIndex + numberOfItems,
+          showNext: data && data.length > currentIndex + numberOfItems,
           showPrev: !!currentIndex,
         })}
 
@@ -101,15 +103,15 @@ export default function MySlider<T>({
         }}
       >
         <div className={`relative flow-root`} {...handlers}>
-          <div className={`flow-root overflow-hidden rounded-xl`}>
+          <div className={`flow-root overflow-hidden  `}>
             <motion.ul
               initial={false}
-              className="relative flex whitespace-nowrap -mx-2 xl:-mx-4 "
+              className="relative flex whitespace-nowrap mx-1"
             >
               <AnimatePresence initial={false} custom={direction}>
-                {data.map((item, indx) => (
+                {data && data.length > 0 ? data.map((item, indx) => (
                   <motion.li
-                    className={`relative flex-shrink-0 inline-block px-2 xl:px-4 whitespace-normal`}
+                    className={`relative flex-shrink-0 inline-block px-1   whitespace-normal`}
                     custom={direction}
                     initial={{
                       x: `${(currentIndex - 1) * -100}%`,
@@ -125,7 +127,27 @@ export default function MySlider<T>({
                   >
                     {renderItem(item, indx)}
                   </motion.li>
-                ))}
+                )) :
+            //  [1, 1, 1, 1, 1].map((item, indx) => (
+            //         <div className="relative flex-shrink-0 inline-block px-1 xl:px-2 whitespace-normal  " key={item}>
+            //           <div className="flex-shrink-0 relative w-full aspect-w-4 aspect-h-3 h-0 shadow bg-blue-400 rounded overflow-hidden group  ">
+            //             <NcImage containerClassName="" src="https://www.aputf.org/wp-content/uploads/2015/06/default-placeholder1-1024x1024-570x321.png" className="object-cover rounded z-0" fill />
+            //             <span className="absolute top-2 left-2 z-10 text-[10px] p-2 h-[18px] flex items-center w-fit truncate bg-gray-700 text-white rounded capitalize  ">loading...</span>
+            //             <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity  "></span>
+            //           </div>
+            //           <div className="mt-4 flex items-center animate-fade">
+            //             <div className="w-[200px] animate-fade flex flex-col gap-2">
+            //               <h2 className="text-sm text-neutral-900 dark:text-neutral-100 font-semibold h-5 bg-gray-300 whitespace-nowrap truncate overflow-hidden overflow-ellipsis"></h2>
+            //               <h2 className="text-xs capitalize text-neutral-900 dark:text-neutral-100 h-5 bg-gray-300 truncate overflow-hidden"></h2>
+            //             </div>
+            //           </div>
+            //         </div>
+
+            //       ))
+            null
+
+                }
+
               </AnimatePresence>
             </motion.ul>
           </div>
@@ -137,7 +159,7 @@ export default function MySlider<T>({
             />
           ) : null}
 
-          {data.length > currentIndex + numberOfItems && !hideNextPrev ? (
+          {data && data.length > currentIndex + numberOfItems && !hideNextPrev ? (
             <NextBtn
               onClick={() => changeItemId(currentIndex + 1)}
               className={`w-9 h-9 xl:w-12 xl:h-12 text-lg absolute bg-white -right-3 xl:-right-6 z-[1] ${arrowBtnClass}`}
