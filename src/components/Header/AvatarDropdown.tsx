@@ -16,10 +16,12 @@ export default function AvatarDropdown() {
     router.push("/signin")
   }
   useEffect(() => {
-    const b = localStorage.getItem("id")
-    let a=  JSON.parse( b)
-     setUsers(b)
-  }, [])
+    const b = localStorage.getItem("id");
+    if (b) {
+      const a = JSON.parse(b);
+      setUsers(a);
+    }
+  }, []);
   return (
     <div className="AvatarDropdown relative flex">
       <Popover className="self-center">
