@@ -79,7 +79,7 @@ const PageOTPAuthentication = () => {
     }
     
   return (
-    <div className={`nc-PageLogin`} data-nc-id="PageLogin">
+    <div className={`PageAuth`} data-nc-id="PageAuth">
       <div className="container mb-24 lg:mb-32">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Enter a email OTP 
@@ -128,7 +128,7 @@ const PageOTPAuthentication = () => {
               />
             </label>
             
-            <ButtonPrimary type="submit"   disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
+            <ButtonPrimary type="submit"       disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
           </form>
   {msg && (
             <div className="text-sm bg-red-200 absolute p-2 -bottom-[31px]  text-center w-[80%] rounded">

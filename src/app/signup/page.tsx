@@ -1,34 +1,12 @@
 "use client"
-import React, { FC, useState, useEffect } from "react";
-import facebookSvg from "@/images/Facebook.svg";
-import twitterSvg from "@/images/Twitter.svg";
-import googleSvg from "@/images/Google.svg";
-import Input from "@/shared/Input/Input";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation"
-import axios from "axios";
-import { toast } from "react-toastify"
-import { CloseEye, OpenEye } from "@/icons";
 
-const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
-  {
-    name: "Continue with Google",
-    href: "#",
-    icon: googleSvg,
-  },
-];
+import React, { useEffect, useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation" 
+import axios from "axios"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css" 
 
 const PageSignUp = () => {
   const [inputs, setInputs] = useState({
@@ -45,7 +23,9 @@ const PageSignUp = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [msg, setMsg] = useState("")
-  const router = useRouter()
+  const [companyLogoSrc, setCompanyLogoSrc] = useState("/logo.png") // Default image source
+  const { push } = useRouter()
+  const [color, setColor] = useState(false)
 
   const handleChange = (e: any) => {
     setMsg("")
@@ -90,154 +70,246 @@ const PageSignUp = () => {
     }
 
     setLoading(true)
-console.log(inputs, errors)
+
     try {
       const signup = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create_user`,
         inputs
       )
-      // Show success toast with dynamic message
 
       if (signup.data.status === true) {
-        setMsg("Signup Successful")
-        toast("Signup Successful!")
+        setMsg(
+          "Signup successful! Please verify your email; we have sent an email. "
+        )
+        setColor(true)
+        toast(
+          "Signup successful! Please verify your email; we have sent an email. "
+        )
         // Reset form fields and clear errors on success
         setInputs({ email: "", password: "", confirmpassword: "" })
         setErrors({ email: "", password: "", confirmpassword: "" })
-
+        setLoading(false)
         setTimeout(() => {
-          setLoading(false)
-          router.push(`/login`)
+          push(`/signin`)
         }, 2000)
       } else {
         setMsg(signup.data.message)
+        setColor(false)
         setLoading(false)
       }
 
       // Handle successful signup
     } catch (error) {
       console.error("Error during signup:", error)
-      // Handle error, update state, show user-friendly error message, etc.
     }
   }
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
+  
 
-  const toggleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword)
-  }
-console.log(errors)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getCompany = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get_organization`
+        )
+        const companyLogo = getCompany.data.data.company_logo
+
+        // const getCompanyLogo = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/organization_logo/${companyLogo}`,
+        //   { responseType: "arraybuffer" }
+        // )
+
+        // const imageDataUrl = `data:image/jpeg;base64,${Buffer.from(
+        //   getCompanyLogo.data,
+        //   "binary"
+        // ).toString("base64")}`
+
+        // setCompanyLogoSrc(imageDataUrl)
+      } catch (error) {
+        console.error("Error:", error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
-    <div className={`nc-PageSignUp `} data-nc-id="PageSignUp">
-      <div className="container mb-24 lg:mb-32">
-        <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-          Signup
-        </h2>
-        <div className="max-w-md mx-auto space-y-6 ">
-          {/* <div className="grid gap-3">
-            {loginSocials.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                className=" flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
-              >
-                <Image
-                  sizes="40px"
-                  className="flex-shrink-0"
-                  src={item.icon}
-                  alt={item.name}
-                />
-                <h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
-                  {item.name}
-                </h3>
-              </a>
-            ))}
-          </div> */}
-          {/* OR */}
-          {/* <div className="relative text-center">
-            <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">
-              OR
-            </span>
-            <div className="absolute left-0 w-full top-1/2 transform -translate-y-1/2 border border-neutral-100 dark:border-neutral-800"></div>
-          </div> */}
-          {/* FORM */}
-          <form className="grid grid-cols-1 gap-6" action="#" method="post">
-            <label className="block">
-              <span className="text-neutral-800 dark:text-neutral-200">
-                Email address
-              </span>
-              <Input
+    <>
+      {/* <div className="absolute max-w-3xl xl:w-[500px] sm:w-[500px] w-[300px] lg:p-8 p-2 pb-16 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg border-transparent border-2">
+        <div className=" flex flex-col gap-1 justify-center items-center">
+          <Image
+            src={companyLogoSrc}
+            alt="zen ai"
+            width={500}
+            height={500}
+            className="h-full w-[100px]"
+          />
+          <p className="lg:text-3xl text-xl text-gray-700 font-bold leading-7 tracking-wide">
+            Sign Up{" "}
+          </p>
+        </div>
+        <form className="flex flex-col gap-5 justify-center items-center mt-10 relative">
+          <div className="flex flex-col gap-3 w-full px-5 ">
+            <div className="relative flex flex-col">
+              <input
                 type="email"
                 name="email"
-                placeholder="example@example.com"
-                 className={`mt-1 ${  errors.email && "border-red-600"}`}
+                placeholder="Email Address"
                 value={inputs.email || ""}
                 onChange={handleChange}
+                className={`flex items-start self-stretch px-5 py-2.5 rounded text-sm  border-[1.25px] border-solid border-gray-200 outline-none focus:ring-[#a03f30] bg-transparent ${errors.email && "border-red-600"
+                  }`}
               />
-            </label>
-            <label className="block relative">
-              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-                Password
-              </span>
-              <Input type={showPassword ? "text" : "password"}
-                 className={`mt-1 ${  errors.password && "border-red-600"}`}
-                  name="password"
-                placeholder="Password"
-                value={inputs.password || ""}
-                onChange={handleChange} />
-              <span
-                onClick={toggleShowPassword}
-                className="absolute right-3 top-[50px] transform  -translate-y-1/2 cursor-pointer"
-              >
-                {!showPassword ? (
-                  <OpenEye className="text-gray-500" />
-                ) : (
-                  <CloseEye className="text-gray-500" />
-                )}
-              </span>
-            </label>
-            <label className="block relative">
-              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-                Confirm Password
-              </span>
-              <Input type={showConfirmPassword ? "text" : "password"}
-                name="confirmpassword"
-                placeholder="Confirm Password"
-                value={inputs.confirmpassword || ""}
-                onChange={handleChange}
-                  className={`mt-1 ${  errors.confirmpassword && "border-red-600"}`} />
-               <span
-                onClick={toggleShowConfirmPassword}
-                className="absolute right-3 top-[50px] transform  -translate-y-1/2 cursor-pointer"
-              >
-                {!showConfirmPassword ? (
-                  <OpenEye className="text-gray-500" />
-                ) : (
-                  <CloseEye className="text-gray-500" />
-                )}
-              </span>
-          
-            </label>
-               {msg && (
-            <div className="text-sm bg-red-200 absolute p-2 -bottom-[38px] text-center w-[80%] rounded">
-              {msg}
-              </div>)}
-            <ButtonPrimary type="submit"    disabled={loading && true} onClick={(e:any) => handleSubmit(e)}>Continue</ButtonPrimary>
-          </form>
+            </div>
 
-          {/* ==== */}
-          <span className="block text-center text-neutral-700 dark:text-neutral-300">
-            Already have an account? {` `}
-            <Link className="text-green-600" href="/login">
-              Sign in
-            </Link>
-          </span>
+          
+          </div>
+          {msg && (
+            <div className={`text-sm ${color ? 'bg-green-200':'bg-red-200'} absolute p-2 -bottom-[38px] text-center w-[80%] rounded`}>
+              {msg}
+            </div>
+          )}
+          <div className="flex flex-col gap-3 justify-center items-center w-full px-5 ">
+            <button
+              className="bg-[#a03f30] flex justify-center w-full border-[#dad3c8] items-center rounded  px-[16px] py-[10px]  text-white  gap-3"
+              disabled={loading && true}
+              onClick={(e) => handleSubmit(e)}
+            >
+              {loading && <div className="loader"></div>} Sign Up
+            </button>
+
+            <p className="text-gray-700 text-sm  leading-6">
+              Already have an account?{" "}
+              <span className="text-[#a03f30] text-sm font-semibold leading-6  ">
+                <Link href={"/signin"}>Sign In</Link>
+              </span>
+            </p>
+          </div>
+        </form>
+      </div> */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
+      <div className="flex flex-col xl:flex-row min-h-screen">
+        <div className="flex flex-col justify-center flex-grow xl:p-[60px] sm:p-[60px] p-[30px]  items-center">
+          <div className="rounded-lg mx-9 xl:mx-auto  sm:mx-6 bg-white p-8 xl:w-[580px] w-full border border-[#e5e7eb]">
+            <div className="text-center pb-5">
+               <div className="mb-5">
+                <Link href="/" className="flex justify-center">
+                  <img
+                    src={"/logoNew.png"}
+                    alt="zen ai"
+                    className="h-[full] w-[100px]"
+                  />
+                </Link>
+              </div>
+              <h3 className="xl:text-3xl text-xl mb-2 text-col font-bold leading-[1.6] ">
+                Sign Up to your account
+              </h3>
+              <p className="pb-5 pt-2">
+                Already a member?{" "}
+                <Link
+                  href="/signin"
+                  className="text-blue-600 hover:text-blue-700"
+                >
+                  Sign In
+                </Link>
+                .
+              </p>
+            </div>
+            <form className="relative">
+              <div className="space-y-8">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-base font-semibold text-gray-700 mb-[0.75rem]"
+                  >
+                    Email
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="email"
+                      type="email"
+                      className={`w-full border-gray-300 rounded-md py-3 px-4   focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50  ${
+                        errors.email && "border-red-600"
+                      }`}
+                      placeholder="Enter your email"
+                      name="email"
+                      value={inputs.email || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="">
+                  <button
+                    className="w-full mt-4 mb-[40px] text-lg flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm  font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    disabled={loading && true}
+                    onClick={(e) => handleSubmit(e)}
+                  >
+                    {loading && <div className="loader"></div>} Sign Up
+                  </button>
+                </div>
+              </div>
+              <div className="absolute -bottom-[58px] w-full text-center">
+                {msg && (
+                  <div
+                    className={`text-sm ${
+                      color ? "bg-green-200" : "bg-red-200"
+                    }   p-3  text-center  rounded`}
+                  >
+                    {msg}
+                  </div>
+                )}
+              </div>
+            </form>
+
+            {/* <div className="pt-4 text-center">
+              <div className="bg-white px-2 inline-block uppercase text-xs">
+                or login with
+              </div>
+            </div>
+            <div className="pt-4">
+              <button className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+               Login With Google
+              </button>
+            </div> */}
+          </div>
+        </div>
+        <div className="flex flex-col bg-gradientlng  text-white xl:w-[660px] w-full flex-initial xl:p-[60px] sm:p-[60px] p-[30px] items-center">
+          <div className="mx-0 xl:mx-auto xl:my-auto">
+            <div className="px-4 py-6">
+              <div className="flex items-center   justify-center mb-5 w-16 h-16 rounded-full bg-blue-400 text-white">
+                <span className="text-[5rem] mt-8"> &#8220;</span>
+              </div>
+              <h1 className="xl:text-5xl text-2xl font-bold  leading-[1.35] mb-[1.875rem]">
+                Your Gateway to a Smarter Experience!
+              </h1>
+              <div className="ml-0 sm:ml-5">
+                <div>
+                  <p className="text-sm  leading-[1.55]">
+                    As you embark on a journey into the future, our AI-powered
+                    authentication ensures a seamless and secure entry into a
+                    world of innovation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default PageSignUp;
+export default PageSignUp

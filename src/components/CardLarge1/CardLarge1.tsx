@@ -14,6 +14,7 @@ import collectionPng from "@/images/nfts/collection.png";
 import VerifyIcon from "@/components/VerifyIcon";
 import Link from "next/link";
 import { StaticImageData } from "next/image";
+import { getButtonData } from "@/hooks/getVerifyToken";
 
 export interface CardLarge1Props {
   className?: string;
@@ -21,7 +22,6 @@ export interface CardLarge1Props {
   onClickPrev?: () => void;
   isShowing?: boolean;
   featuredImgUrl?: string | StaticImageData;
-  item:any
 }
 
 const CardLarge1: FC<CardLarge1Props> = ({
@@ -30,7 +30,6 @@ const CardLarge1: FC<CardLarge1Props> = ({
   onClickNext = () => {},
   onClickPrev = () => {},
   featuredImgUrl = nftsLargeImgs[0],
-  item
 }) => {
   const randomTitle = [
     "Walking On Air ",
@@ -48,7 +47,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
           {/* TITLE */}
           <h2 className="text-2xl lg:text-3xl 2xl:text-5xl font-semibold ">
             <Link href={"/nft-detail"} title="Walking On Air">
-              {item.name}
+              {randomTitle[0]}
             </Link>
           </h2>
 
@@ -99,7 +98,8 @@ const CardLarge1: FC<CardLarge1Props> = ({
 
           {/* DESCRIPTION */}
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-            <ButtonPrimary href={"/nft-detail"} className="flex-1">
+            <ButtonPrimary href={"/nft-detail"} className="flex-1" //onClick={()=> getButtonData()}
+            >
               Place a bid
             </ButtonPrimary>
             <ButtonSecondary href={"/nft-detail"} className="flex-1">

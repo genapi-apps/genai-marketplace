@@ -11,11 +11,10 @@ import { Transition } from "@/app/headlessui";
 
 export interface HeaderFilterSectionProps {
   className?: string;
-  moduleList:any
 }
 
 const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
-  className = "mb-12",moduleList
+  className = "mb-12",
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [tabActive, setTabActive] = useState("All NFTs");
@@ -28,7 +27,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {/* {["All NFTs", "Arts", "Music", "Sports", "Jewels"].map(
+          {["All NFTs", "Arts", "Music", "Sports", "Jewels"].map(
             (item, index) => (
               <NavItem
                 key={index}
@@ -38,12 +37,12 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
                 {item}
               </NavItem>
             )
-          )} */}
+          )}
         </Nav>
         <span className="block flex-shrink-0">
-          <ButtonPrimary
-            className="w-full !pr-16"
-            sizeClass="pl-4 py-2.5 sm:pl-6"
+          <button
+            className="w-full !pr-16 nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+           // sizeClass="pl-4 py-2.5 sm:pl-6"
             onClick={() => {
               setIsOpen(!isOpen);
             }}
@@ -80,7 +79,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
                 aria-hidden="true"
               />
             </span>
-          </ButtonPrimary>
+          </button>
         </span>
       </div>
 
@@ -94,7 +93,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
         leaveTo="opacity-0"
       >
         <div className="w-full border-b border-neutral-200 dark:border-neutral-700 my-8"></div>
-        <TabFilters moduleList={moduleList} />
+        <TabFilters />
       </Transition>
     </div>
   );

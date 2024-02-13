@@ -81,7 +81,7 @@ const otherPageChildMenus: NavItemType[] = [
       },
       {
         id: ncNanoId(),
-        href: "/login",
+        href: "/signin",
         name: "Login",
       },
       {

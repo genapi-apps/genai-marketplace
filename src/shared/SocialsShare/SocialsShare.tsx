@@ -22,7 +22,7 @@ const socials: SocialType[] = [
   </g>
   </svg>
   `,
-    href: "#",
+    href: "https://www.facebook.com/JaiInfoway",
   },
   {
     id: "Twitter",
@@ -33,7 +33,7 @@ const socials: SocialType[] = [
   </g>
   </svg>
   `,
-    href: "#",
+    href: "https://twitter.com/i/flow/login?redirect_after_login=%2Fjaiinfoway",
   },
   {
     id: "Linkedin",
@@ -44,7 +44,7 @@ const socials: SocialType[] = [
   </g>
   </svg>
   `,
-    href: "#",
+    href: "https://www.linkedin.com/company/jaiinfoway/?originalSubdomain=in",
   },
   {
     id: "Instagram",
@@ -57,7 +57,7 @@ const socials: SocialType[] = [
   </g>
   </svg>
   `,
-    href: "#",
+    href: "https://www.instagram.com/jaiinfowayofficial/",
   },
 ];
 

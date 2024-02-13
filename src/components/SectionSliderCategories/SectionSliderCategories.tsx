@@ -5,27 +5,22 @@ import Heading from "@/components/Heading/Heading";
 import CardCategory5 from "@/components/CardCategory5/CardCategory5";
 import { nftsCatImgs } from "@/contains/fakeData";
 import MySlider from "../MySlider";
+import Link from "next/link";
 
 export interface SectionSliderCategoriesProps {
   className?: string;
   heading?: string;
   subHeading?: string;
+  categoryList:any
 }
 
-const ntfsCatNames = [
-  "Arts",
-  "Entertainment",
-  "Music",
-  "News",
-  "Science",
-  "Sports",
-  "Technology",
-];
+ 
 
 const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
-  heading = "Browse by category",
-  subHeading = "Explore the NFTs in the most featured categories.",
+  heading = "Collection",
+  subHeading = "",
   className = "",
+  categoryList
 }) => {
   return (
     <div className={`nc-SectionSliderCategories ${className}`}>
@@ -47,18 +42,20 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
               disableNext={!showNext}
               disablePrev={!showPrev}
             >
-              {heading}
+              {heading}       <Link href="/collection"><span className="text-[10px] mt-1 tracking-wide font-normal bg-primary-6000 hover:bg-primary-700 text-neutral-50 p-1 rounded cursor-pointer" >Explore More</span></Link> 
+          
             </Heading>
           );
         }}
-        data={[1, 1, 1, 1, 1, 1]}
-        renderItem={(_, index) => {
+        data={categoryList}
+        renderItem={(item, index) => {
+         
           return (
             <CardCategory5
               key={index}
               index={index}
-              featuredImage={nftsCatImgs[index]}
-              name={`${ntfsCatNames[index]}`}
+             
+              item={item}
             />
           );
         }}
@@ -68,3 +65,8 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
 };
 
 export default SectionSliderCategories;
+
+
+
+
+ 

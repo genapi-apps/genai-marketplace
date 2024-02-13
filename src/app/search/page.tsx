@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import CardNFT from "@/components/CardNFT";
+import Card from "@/components/Card";
 import HeaderFilterSearchPage from "@/components/HeaderFilterSearchPage";
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionSliderCollections from "@/components/SectionSliderCollections";
@@ -22,8 +22,10 @@ const PageSearch = ({ }) => {
   const dispatch = useDispatch()
   const getModule = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/get-modules`,
+        const userId = localStorage.getItem("id")
+           
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-modules`, { user_id: userId && userId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +45,7 @@ const PageSearch = ({ }) => {
     try {
       if (keyword.trim() !== "") {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/search/${keyword}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -51,7 +53,7 @@ const PageSearch = ({ }) => {
             },
           }
         );
-        setModuleList(response.data.data);
+        setModuleList(response.data.data);  dispatch(setModuleList(response.data.data))
         setNoDataFound(response.data.data.length === 0);
       } else {
         getModule();
@@ -76,9 +78,9 @@ const PageSearch = ({ }) => {
 
 
   return (
-    <div className={`nc-PageSearch `}>
+    <div className={`PageSearch `}>
       <div
-        className={`nc-HeadBackgroundCommon h-24 2xl:h-28 top-0 left-0 right-0 w-full bg-primary-50 dark:bg-neutral-800/20 `}
+        className={`HeadBackgroundCommon h-24 2xl:h-28 top-0 left-0 right-0 w-full bg-primary-50 dark:bg-neutral-800/20 `}
       />
       <div className="container">
         <header className="max-w-2xl mx-auto -mt-10 flex flex-col lg:-mt-7">
@@ -145,27 +147,23 @@ const PageSearch = ({ }) => {
           {noDataFound ? (
             <p className="text-black-800 text-center">No data found.</p>
           ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-4 mt-8 lg:mt-10">
             {moduleList && moduleList.map((item: any, index: any) => (
-              <CardNFT key={index} item={item} />
+              <Card key={index} item={item} />
             ))}
           </div>
   )}
-          {/* PAGINATION */}
-          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            <Pagination />
-            {/* <ButtonPrimary loading>Show me more</ButtonPrimary> */}
-          </div>
+        
         </main>
 
         {/* === SECTION 5 === */}
-        <div className="relative py-16 lg:py-28">
+        {/* <div className="relative py-16 lg:py-28">
           <BackgroundSection />
           <SectionSliderCollections />
-        </div>
+        </div> */}
 
         {/* SUBCRIBES */}
-        <SectionBecomeAnAuthor />
+        {/* <SectionBecomeAnAuthor /> */}
       </div>
     </div>
   );
